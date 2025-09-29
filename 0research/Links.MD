@@ -2,26 +2,37 @@
 
 ## IMGUI
 
-* Dear ImGui <https://github.com/ocornut/imgui>
-* egui <https://github.com/emilk/egui>
-* Nuklear <https://github.com/Immediate-Mode-UI/Nuklear>
-* [Horus UI](https://github.com/7thFACTOR/horus_ui), last commit 3 yrs ago
+Name|Lang|nStars|Active
+---|---|--:|:-:
+[Dear ImGui](https://github.com/ocornut/imgui)|C++|68 500|✓
+[egui](https://github.com/emilk/egui)|Rust|26 600|✓
+[Clay](https://github.com/nicbarker/clay)|C|15 500|✓
+[DearPyGui](https://github.com/hoffstadt/DearPyGui)|Python|14 800|✓
+[Nuklear](https://github.com/Immediate-Mode-UI/Nuklear)|C|10 400|5 months ago
+[raygui](https://github.com/raysan5/raygui)|C|4 300|✓
+[giu](https://github.com/AllenDang/giu)|Go|2 600|✓
+[Gio](https://github.com/gioui/gio)|Go|2 000|✓
+[Horus UI](https://github.com/7thFACTOR/horus_ui)|C|147|3 years ago
+[koi](https://github.com/johnnovak/koi)|Nim|87|✓
 
 ### Obecnější frameworky
 
-* SDL – Simple DirectMedia Layer
-* libgdx <https://github.com/libgdx/libgdx>, zaměřeno na videohry, lze použít pouze UI modul <http://en.esotericsoftware.com/>
+* [libgdx](https://github.com/libgdx/libgdx), zaměřeno na videohry, lze použít pouze UI modul, ukázka programu: <http://en.esotericsoftware.com/>
+* SDL – Simple DirectMedia Layer, [list-all-gui-toolkits-for-sdl](https://discourse.libsdl.org/t/list-all-gui-toolkits-for-sdl/21911)
 
 ### Reference
 
-* <https://caseymuratori.com/blog_0001> prvotní definice IMGUI
-* <http://iki.fi/sol/imgui/> IMGUI tutorial by Jari Komppa
+* <https://caseymuratori.com/blog_0001> – prvotní definice IMGUI
+* [IMGUI tutorial by Jari Komppa](http://iki.fi/sol/imgui/)
 * [What are the algorithms and the data structures for GUIs and input management? - Theoretical Computer Science Stack Exchange](https://cstheory.stackexchange.com/questions/20369)
+* [I can&#x27;t find a clear explanation of &quot;immediate mode&quot; GUI creation - Hacker News](https://news.ycombinator.com/item?id=24318313)
+* [Immediate Mode GUI Is a Mirage](http://geoffprewett.com/blog/software/ImmediateModeGUIIsAMirage.html)
+* [Immediate Mode GUIs](https://news.wolfgame.com/post/116650847232/immediate-mode-guis)
 
 ## RMGUI
 
-* wxWidgets <https://wxwidgets.org/>
-* FLTK <https://github.com/fltk/fltk>
+* [wxWidgets](https://wxwidgets.org/)
+* [FLTK](https://github.com/fltk/fltk)
 * Qt
 * GTK
 * .NET (official: WinForms, WPF, MAUI; 3rd party: Avalonia, Uno, ...)
@@ -31,4 +42,5 @@
 
 ## Kuriozity
 
-* LIBTWO <https://github.com/hugoam/two/blob/master/docs/ui.md>
+* [LIBTWO](https://github.com/hugoam/two/blob/master/docs/ui.md)
+* [rui](https://github.com/audulus/rui)

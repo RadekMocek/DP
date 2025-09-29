@@ -1,0 +1,102 @@
+% !TEX TS-program = xelatex
+
+% Inicializace tulthesis
+\documentclass[FM,DP]{tulthesis}
+% Typografie pro češtinu; xelatex alternativa pro babel
+\usepackage{polyglossia}
+\setdefaultlanguage{czech}
+% Angličtina pro abstrakt
+\makeatletter
+\ExplSyntaxOn
+\pretocmd\xpg@set@alias@values{%
+	\prop_if_exist:cF { xpg@alias@keyvals@#1@#4 }
+	{ \prop_new:c {xpg@alias@keyvals@#1@#4} }
+}{}{}
+\ExplSyntaxOff
+\makeatother
+\setotherlanguage{english}
+% Automatické pevné mezery
+\usepackage{xevlna}
+% Zabránění vdov a sirotků
+\usepackage[all]{nowidow}
+% Snížit šanci na rozdělení posledního slova odstavce
+\finalhyphendemerits=200000
+
+% Pro seznam použité literatury
+\usepackage[backend=biber, style=iso-numeric]{biblatex}
+\addbibresource{zdroje.bib}
+% Poslední dva autory knihy neoddělovat středníkem ale písmenem 'a'
+\DeclareDelimFormat{finalnamedelim}{\addspace a\space}
+
+% Název práce
+\TULtitle{Grafické uživatelské rozhraní v režimu okamžitého vykreslování}{Graphical user interface in immediate rendering mode}
+
+% -- Prozatimní úvodní stránka --
+\TULprogramme{N0613A140028}{Informační technologie}{Information technology}
+\TULbranch{}{Aplikovaná informatika}{Applied Informatics}
+\TULauthor{Radek Mocek}
+\TULsupervisor{Ing. Jiří Jeníček, Ph.D.}
+\TULyear{2025}
+% -------------------------------
+
+% Začátek dokumentu
+\begin{document}
+	
+	\ThesisStart{male} % Prozatimní úvodní stránka
+	% Úvodní stránky ze STAGu
+	%\ThesisStart{vskp_-_zadani_vskp.pdf}	
+	
+	% Poděkování
+	\begin{acknowledgement}
+		Děkuji.
+	\end{acknowledgement}
+	
+	% Abstrakt česky
+	\begin{abstractCZ}
+		Abstrakt česky.
+	\end{abstractCZ}
+	
+	% Klíčová slova česky
+	\begin{keywordsCZ}
+		Klíčová, slova, česky.
+	\end{keywordsCZ}
+	\clearpage
+	
+	% Abstrakt anglicky
+	\begin{abstractEN}		
+		\begin{english}
+			English abstract.
+		\end{english}
+	\end{abstractEN}
+	
+	% Klíčová slova anglicky
+	\begin{keywordsEN}
+		\begin{english}English, keywords.\end{english}
+	\end{keywordsEN}
+	
+	% Obsah
+	\tableofcontents
+	
+	% Seznam obrázků
+	\listoffigures
+	
+	% Seznam tabulek
+	\listoftables
+	
+	\clearpage
+	
+	% Zkratky
+	\begin{abbrList}
+		\textbf{IMGUI} & immediate mode graphical user interface \\
+	\end{abbrList}
+	
+	% Jádro zprávy
+	\chapter{Úvod}
+	
+	Úvod
+	
+	\chapter{Grafické uživatelské rozhraní v režimu okamžitého vykreslování}
+	
+	...
+	
+\end{document}

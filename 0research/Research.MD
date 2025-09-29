@@ -13,3 +13,15 @@
 * Velikost binárky
 
 * Náročnost na HW při běhu
+
+* Multi-monitor support
+
+* Více oken
+
+* DPI scaling
+
+* Responsive UI?
+
+* Fonty
+
+* Dostupné widgety
