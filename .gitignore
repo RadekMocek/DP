@@ -1,3 +1,6 @@
+# Visual Studio
+.vs/
+
 # Thesis & Slideshow (MiKTeX + TeXstudio)
 *.pdf
 *.acn
@@ -46,4 +49,4 @@
 *blx.bib
 .bak 
 .mtc
-build/
+[Bb]uild/
