@@ -1,4 +1,4 @@
-# Running Dear ImGui with SDL3, OpenGL3, vcpkg
+# Running Dear ImGui with OpenGL3, GLFW, vcpkg
 
 ## Windows 10 22H2 + Visual Studio 2022
 
@@ -29,15 +29,12 @@ cd vcpkg
 * __2.5.__ Select _Build_ → _Build All_ &ensp;(or press Ctrl + Shift + B)
 * __2.6.__ Select _SampleProject.exe_ next to the green arrow &ensp;(or press F5)
 
-## Linux Mint 22.2 Cinnamon Edition
-
-> [!WARNING]  
-> So far I was able to build the sample project but when I run it I get `Error: SDL_Init(): No available video device`
+## Linux Debian 13.1 KDE Plasma
 
 ```bash
 # Install dependencies
 
-sudo apt install git cmake ninja-build autoconf autoconf-archive automake libtool meson python3-jinja2
+sudo apt install curl cmake ninja-build
 
 # Set up vcpkg
 
@@ -51,9 +48,9 @@ cd "<path_to_this_repository>/1source/00DearImGui/00SampleProject"
 
 export VCPKG_ROOT=<path_to_bootstrapped_vcpkg> && export PATH=$VCPKG_ROOT:$PATH
 
-cmake –preset=vcpkg
+cmake --preset=vcpkg
 
-cmake –build build
+cmake --build build
 
 ./build/SampleProject
 ```

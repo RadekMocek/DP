@@ -7,7 +7,7 @@ Name|Lang|License|nStars|Active
 [Dear ImGui](https://github.com/ocornut/imgui)|C++|MIT|68 500|✓
 [egui](https://github.com/emilk/egui)|Rust|MIT or Apache-2.0|26 600|✓
 [Clay](https://github.com/nicbarker/clay)|C|Zlib|15 500|✓
-[DearPyGui](https://github.com/hoffstadt/DearPyGui)|Python|MIT|14 800|✓
+~~[DearPyGui](https://github.com/hoffstadt/DearPyGui)~~|~~Python~~|~~MIT~~|~~14 800~~|~~✓~~
 [Nuklear](https://github.com/Immediate-Mode-UI/Nuklear)|C|MIT or Unlicense|10 400|5 months ago
 [microui](https://github.com/rxi/microui)|C|MIT|5 000|last year
 [raygui](https://github.com/raysan5/raygui)|C|Zlib|4 300|✓
@@ -15,6 +15,8 @@ Name|Lang|License|nStars|Active
 [Gio](https://github.com/gioui/gio)|Go|MIT or Unlicense|2 000|✓
 [Horus UI](https://github.com/7thFACTOR/horus_ui)|C|MIT|147|3 years ago
 [koi](https://github.com/johnnovak/koi)|Nim|WTFPL|87|✓
+
+\* DearPyGui spíše RMGUI abstrakce nad Dear ImGui
 
 ### Obecnější frameworky
 
