@@ -67,3 +67,7 @@
 * Klasické vrchní menu, alt zkratky
 
 * Dock
+
+* Lokalizace (vícejazyčná aplikace)
+
+* Přepínaní themes (např. dark/light mode)

@@ -1,4 +1,10 @@
-﻿// Dear ImGui: standalone example application for GLFW + OpenGL 3, using programmable pipeline
+﻿/*
+Template from https://github.com/ocornut/imgui/tree/master/examples
+by https://github.com/ocornut
+under https://github.com/ocornut/imgui/blob/master/LICENSE.txt
+*/
+
+// Dear ImGui: standalone example application for GLFW + OpenGL 3, using programmable pipeline
 // (GLFW is a cross-platform general purpose library for handling windows, inputs, OpenGL/Vulkan/Metal graphics context creation, etc.)
 
 // Learn about Dear ImGui:
