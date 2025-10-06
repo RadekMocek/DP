@@ -37,6 +37,7 @@ Name|Lang|License|nStars|Active
 * [Johannes Norneby's take on IMGUI](https://www.johno.se/book/imgui.html)
 * [Statefulness in GUIs](https://samsartor.com/guis-1/)
 * [GIO snippet](https://eliasnaur.com/blog/immediate-mode-gui-programming)
+* [Introducing Clay - High Performance UI Layout in C | YouTube](https://youtu.be/DYWTw19_8r4)
 
 ## RMGUI
 
@@ -49,6 +50,7 @@ Name|Lang|License|nStars|Active
 * JavaFX, Swing
 * pascal, Delphi, Lazarus
 * Racket GUI
+* [HikoGUI](https://hikogui.org/)
 
 ## Kuriozity
 
