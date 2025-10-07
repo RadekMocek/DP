@@ -1,13 +1,15 @@
-# Running Dear ImGui with OpenGL3, GLFW, vcpkg
+# Dear ImGui
 
-## Windows 10 22H2 + Visual Studio 2022
+## Running Dear ImGui with OpenGL3, GLFW, vcpkg
 
-### Prerequisites
+### Windows 10 22H2 + Visual Studio 2022
+
+#### Prerequisites
 
 * [Visual Studio](https://visualstudio.microsoft.com/downloads/) with C++ development workload and [CMake component](https://learn.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=msvc-170#installation)
 * [Git](https://git-scm.com/downloads)
 
-### 1. Set up vcpkg
+#### 1. Set up vcpkg
 
 * __1.1.__ Open PowerShell where you want the vcpkg to be installed and run these commands:
 
@@ -20,7 +22,7 @@ cd vcpkg
 * __1.1.__ Create new user environment variable called `VCPKG_ROOT` and set it to vcpkg's root directory
 * __1.2.__ Add `%VCPKG_ROOT%` to `Path`
 
-### 2. Run the sample project
+#### 2. Run the sample project
 
 * __2.1.__ Run Visual Studio launcher
 * __2.2.__ Select _Open a local folder_
@@ -29,7 +31,7 @@ cd vcpkg
 * __2.5.__ Select _Build_ → _Build All_ &ensp;(or press Ctrl + Shift + B)
 * __2.6.__ Select _SampleProject.exe_ next to the green arrow &ensp;(or press F5)
 
-## Linux Debian 13.1 KDE Plasma
+### Linux Debian 13.1 KDE Plasma
 
 ```bash
 # Install dependencies

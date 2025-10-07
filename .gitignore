@@ -1,6 +1,9 @@
 # Visual Studio
 .vs/
 
+# JetBrains
+.idea/
+
 # Thesis & Slideshow (MiKTeX + TeXstudio)
 *.pdf
 *.acn

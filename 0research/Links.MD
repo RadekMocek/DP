@@ -2,21 +2,16 @@
 
 ## IMGUI
 
-Name|Lang|License|nStars|Active
----|---|:-:|--:|:-:
-[Dear ImGui](https://github.com/ocornut/imgui)|C++|MIT|68 500|✓
-[egui](https://github.com/emilk/egui)|Rust|MIT or Apache-2.0|26 600|✓
-[Clay](https://github.com/nicbarker/clay)|C|Zlib|15 500|✓
-~~[DearPyGui](https://github.com/hoffstadt/DearPyGui)~~|~~Python~~|~~MIT~~|~~14 800~~|~~✓~~
-[Nuklear](https://github.com/Immediate-Mode-UI/Nuklear)|C|MIT or Unlicense|10 400|5 months ago
-[microui](https://github.com/rxi/microui)|C|MIT|5 000|last year
-[raygui](https://github.com/raysan5/raygui)|C|Zlib|4 300|✓
-[giu](https://github.com/AllenDang/giu)|Go|MIT|2 600|✓
-[Gio](https://github.com/gioui/gio)|Go|MIT or Unlicense|2 000|✓
-[Horus UI](https://github.com/7thFACTOR/horus_ui)|C|MIT|147|3 years ago
-[koi](https://github.com/johnnovak/koi)|Nim|WTFPL|87|✓
-
-\* DearPyGui spíše RMGUI abstrakce nad Dear ImGui
+Name|Lang|License|nStars|Active|Bindings/abstrakce|...
+---|---|:-:|--:|:-:|---|---
+[Dear ImGui](https://github.com/ocornut/imgui)|C++|MIT|68 500|✓|[mnoho](https://github.com/ocornut/imgui/wiki/Bindings#language-bindings)|[...](../1source/00DearImGui)
+[egui](https://github.com/emilk/egui)|Rust|MIT or Apache-2.0|26 600|✓|[.NET](https://github.com/DouglasDwyer/Egui.NET)|[...](../1source/01egui)
+[Clay](https://github.com/nicbarker/clay)|C|Zlib|15 500|✓|[více](https://github.com/nicbarker/clay/tree/main/bindings)|[...](../1source/02ClayMan)
+[Nuklear](https://github.com/Immediate-Mode-UI/Nuklear)|C|MIT or Unlicense|10 400|5 months ago|[více](https://github.com/Immediate-Mode-UI/Nuklear?tab=readme-ov-file#bindings)|[...](../1source/03Nuklear)
+[microui](https://github.com/rxi/microui)|C|MIT|5 000|last year|[Go](https://github.com/gabstv/microui-go)|[...](../1source/04microui)
+[raygui](https://github.com/raysan5/raygui)|C|Zlib|4 300|✓|[C++ WIP?](https://github.com/scastd/raygui-cpp)|[...](../1source/05raygui)
+[Gio](https://github.com/gioui/gio)|Go|MIT or Unlicense|2 000|✓|—|[...](../1source/06Gio)
+[koi](https://github.com/johnnovak/koi)|Nim|WTFPL|87|✓|—|&nbsp;
 
 ### Obecnější frameworky
 
@@ -56,3 +51,4 @@ Name|Lang|License|nStars|Active
 
 * [LIBTWO](https://github.com/hugoam/two/blob/master/docs/ui.md)
 * [rui](https://github.com/audulus/rui)
+* <https://publish.obsidian.md/xybre/permalink/60cc03b9-2e66-4a8a-a737-1e6e92105b53> zajímavý web
