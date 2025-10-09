@@ -21,8 +21,10 @@
 #define NK_IMPLEMENTATION
 #include "nuklear.h"
 
-//#define STB_IMAGE_IMPLEMENTATION
-//#include "stb_image.h"
+//*
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+/**/
 
 /* macros */
 #define WINDOW_WIDTH 1200

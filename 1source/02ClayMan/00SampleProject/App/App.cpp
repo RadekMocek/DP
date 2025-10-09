@@ -2,16 +2,16 @@
 #include "clayman.hpp"
 #include "clay_renderer_raylib.c"
 
-//Your project's main entry
+// Your project's main entry
 void App::run() {
 
-    //Reserve memory for raylib fonts
+    // Reserve memory for raylib fonts
     Font fonts[1];
 
-    //Initialize ClayMan object using the constructor
+    // Initialize ClayMan object using the constructor
     ClayMan clayMan(1024, 786, Raylib_MeasureText, fonts);
 
-    //Initialize Raylib
+    // Initialize Raylib
     Clay_Raylib_Initialize(
         clayMan.getWindowWidth(),
         clayMan.getWindowHeight(),
@@ -19,20 +19,20 @@ void App::run() {
         FLAG_WINDOW_RESIZABLE | FLAG_WINDOW_HIGHDPI | FLAG_MSAA_4X_HINT | FLAG_VSYNC_HINT
     );
 
-    //Load fonts after initializing raylib
+    // Load fonts after initializing raylib
     fonts[0] = LoadFontEx("resources/Roboto-Regular.ttf", 48, 0, 400);
 
-    //Set fonts texture filters
+    // Set fonts texture filters
     SetTextureFilter(fonts[0].texture, TEXTURE_FILTER_BILINEAR);
 
-    //Raylib render loop
+    // Raylib render loop
     while (!WindowShouldClose()) {
 
-        //Raylib mouse position and scroll vectors
+        // Raylib mouse position and scroll vectors
         Vector2 mousePosition = GetMousePosition();
         Vector2 scrollDelta = GetMouseWheelMoveV();
 
-        //Update clay state (window size, mouse position/scroll, time delta, left button state)
+        // Update clay state (window size, mouse position/scroll, time delta, left button state)
         clayMan.updateClayState(
             GetScreenWidth(), //Raylib window width
             GetScreenHeight(), //Raylib window height
@@ -44,12 +44,12 @@ void App::run() {
             IsMouseButtonDown(0) //Raylib left button down
         );
 
-        //Prep for layout
+        // Prep for layout
         clayMan.beginLayout();
 
-        //Example full-window parent container
+        // Example full-window parent container
         clayMan.element(
-            { //Configure element
+            { // Configure element
                 .id = clayMan.hashID("YourElementID"),
                 .layout = {
                     .sizing = clayMan.expandXY(),
@@ -59,10 +59,10 @@ void App::run() {
                 },
                 .backgroundColor = {50,50,50,255}
             },
-            [&] { //Child elements in here
+            [&] { // Child elements in here
                 clayMan.textElement(
                     "Here is some text",
-                    { //Configure text
+                    { // Configure text
                         .textColor = {255,255,255,255},
                         .fontId = 0,
                         .fontSize = 16
@@ -71,12 +71,12 @@ void App::run() {
             }
         );
 
-        //Pass your layout to the manager to get the render commands
+        // Pass your layout to the manager to get the render commands
         Clay_RenderCommandArray renderCommands = clayMan.endLayout();
 
-        BeginDrawing(); //Start Raylib's draw block
-        ClearBackground(BLACK); //Raylib's clear function
-        Clay_Raylib_Render(renderCommands, fonts); //Render Clay Layout
-        EndDrawing(); //End Raylib's draw block
+        BeginDrawing(); // Start Raylib's draw block
+        ClearBackground(BLACK); // Raylib's clear function
+        Clay_Raylib_Render(renderCommands, fonts); // Render Clay Layout
+        EndDrawing(); // End Raylib's draw block
     }
 }

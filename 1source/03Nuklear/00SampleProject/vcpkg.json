@@ -1,7 +1,8 @@
 {
   "dependencies": [
-    "nuklear",
     "glew",
-    "glfw3"
+    "glfw3",
+    "nuklear",
+    "stb"
   ]
 }

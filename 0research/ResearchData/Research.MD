@@ -1,6 +1,6 @@
 # Rešerše
 
-* Tabulka s IMGUI knihovnami je o [soubor vedle](./Links.MD#imgui) :)
+* Konkrétní poznámky k samotným IMGUI knihovnám jsou o [soubor vedle](./Libraries.MD)
 
 ## Poznámky
 
@@ -27,12 +27,30 @@
 * <https://github.com/ocornut/imgui/wiki/About-the-IMGUI-paradigm>
   * _Nowadays I am starting to believe that the term has caused more harm than benefits, because it suggests there are two camps "IMGUI" vs "RMGUI". The reality is there is a continuum of possibilities over multiple unrelated axises. Many of them haven't been explored enough, as popular IMGUI libraries have been designed for certain needs and not others._
   * Viz _Modeless write-up_
+* [Introducing Clay - High Performance UI Layout in C | YouTube](https://youtu.be/DYWTw19_8r4)
+  * V IMGUI rešíme jak má UI vypadat právě teď, podle aktuálního stavu; v RMGUI řešíme přechod z předchozího stavu do aktuálního
 * Knihy? Papers?
   * [Digital Image Processing: Practical Approach](https://link.springer.com/chapter/10.1007/978-3-319-96634-2_2) obsahuje nějaké imgui tutoriály
   * [Exploring the immediate mode GUI concept for graphical user interfaces in mixed reality applications](https://www.researchgate.net/publication/386416751_Exploring_the_immediate_mode_GUI_concept_for_graphical_user_interfaces_in_mixed_reality_applications)
   * [2025 paper, není anglicky](http://vestnik2079-5459.khpi.edu.ua/article/view/325758)
 
-## Co mě zajímá u GUI knihoven
+## Reference
+
+* <https://caseymuratori.com/blog_0001> – prvotní definice IMGUI
+* <https://archive.org/details/GDM_September_2005/page/n35/mode/2up> – další OG definice
+* [IMGUI tutorial by Jari Komppa](http://iki.fi/sol/imgui/)
+* [What are the algorithms and the data structures for GUIs and input management? - Theoretical Computer Science Stack Exchange](https://cstheory.stackexchange.com/questions/20369)
+* [I can&#x27;t find a clear explanation of &quot;immediate mode&quot; GUI creation - Hacker News](https://news.ycombinator.com/item?id=24318313)
+* [IMGUI on C2 WIKI](https://wiki.c2.com/?ImmediateModeGui)
+* [CppCon 2016: Nicolas Guillemot "Dear imgui", YouTube, 4 minuty, pěkný slide pros & cons](https://youtu.be/LSRJ1jZq90k)
+* [Immediate Mode GUI Is a Mirage](http://geoffprewett.com/blog/software/ImmediateModeGUIIsAMirage.html)
+* [Immediate Mode GUIs](https://news.wolfgame.com/post/116650847232/immediate-mode-guis)
+* [Johannes Norneby's take on IMGUI](https://www.johno.se/book/imgui.html)
+* [Statefulness in GUIs](https://samsartor.com/guis-1/)
+* [egui readme take on imgui](https://github.com/emilk/egui?tab=readme-ov-file#why-immediate-mode)
+* [GIO snippet](https://eliasnaur.com/blog/immediate-mode-gui-programming)
+
+## Co by mě mohlo zajímat u GUI knihoven
 
 * Udělal v tom někdo něco používaného?
 
@@ -59,6 +77,8 @@
 * Fonty
 
 * Dostupné widgety
+
+* Tvorba custom widgetů
 
 * "Async"
 

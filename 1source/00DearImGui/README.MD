@@ -1,6 +1,6 @@
 # Dear ImGui
 
-## Running Dear ImGui with OpenGL3, GLFW, vcpkg
+## Running Dear ImGui v1.91.9 with OpenGL3, GLFW, vcpkg
 
 ### Windows 10 22H2 + Visual Studio 2022
 
@@ -56,3 +56,11 @@ cmake --build build
 
 ./build/SampleProject
 ```
+
+## Resources
+
+* [Getting started](https://github.com/ocornut/imgui/wiki/Getting-Started)
+* [wiki](https://github.com/ocornut/imgui/wiki)
+* [FAQ](https://github.com/ocornut/imgui/blob/master/docs/FAQ.md)
+* [Interactive "manual"](https://pthom.github.io/imgui_manual_online/manual/imgui_manual.html)
+* [Useful Extensions](https://github.com/ocornut/imgui/wiki/Useful-Extensions)
