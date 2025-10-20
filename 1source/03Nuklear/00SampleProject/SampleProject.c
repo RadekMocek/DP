@@ -425,10 +425,10 @@ int main(int argc, char* argv[])
              * e.g.: ctx->style.font.height = 20. */
             nk_font_atlas_init_default(&atlas);
             nk_font_atlas_begin(&atlas);
-            media.font_14 = nk_font_atlas_add_from_file(&atlas, "./font/ProggyClean.ttf", 14.0f, &cfg);
-            media.font_18 = nk_font_atlas_add_from_file(&atlas, "./font/ProggyClean.ttf", 18.0f, &cfg);
-            media.font_20 = nk_font_atlas_add_from_file(&atlas, "./font/ProggyClean.ttf", 20.0f, &cfg);
-            media.font_22 = nk_font_atlas_add_from_file(&atlas, "./font/ProggyClean.ttf", 22.0f, &cfg);
+            media.font_14 = nk_font_atlas_add_from_file(&atlas, "./font/Inconsolata-Medium.ttf", 14.0f, &cfg);
+            media.font_18 = nk_font_atlas_add_from_file(&atlas, "./font/Inconsolata-Medium.ttf", 18.0f, &cfg);
+            media.font_20 = nk_font_atlas_add_from_file(&atlas, "./font/Inconsolata-Medium.ttf", 20.0f, &cfg);
+            media.font_22 = nk_font_atlas_add_from_file(&atlas, "./font/Inconsolata-Medium.ttf", 22.0f, &cfg);
             image = nk_font_atlas_bake(&atlas, &w, &h, NK_FONT_ATLAS_RGBA32);
             device_upload_atlas(&device, image, w, h);
             nk_font_atlas_end(&atlas, nk_handle_id((int)device.font_tex), &device.tex_null);

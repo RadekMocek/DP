@@ -1,6 +1,6 @@
 # Dear ImGui
 
-## Running Dear ImGui v1.91.9 with OpenGL3, GLFW, vcpkg
+## Running Dear ImGui [v1.91.9] with OpenGL3, GLFW, vcpkg
 
 ### Windows 10 22H2 + Visual Studio 2022
 

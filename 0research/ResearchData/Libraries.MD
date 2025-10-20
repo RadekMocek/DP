@@ -43,7 +43,8 @@ Name|Lang|License|nStars|Active|Bindings/abstrakce|...
 ### Nuklear
 
 * ~18KLOC header file with zero dependencies
-* (Na první dojem nepůsobí příliš seriózně/použitelně, proto se touto knihovnou dále nezabývám)
+* Hodně DIY
+* __-__ Textbox umí pohybovat s kurzorem, ale neumí označovat text a neumí ctrl+v
 
 ### mikroui
 
