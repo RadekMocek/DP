@@ -90,6 +90,6 @@
 
 * Lokalizace (vícejazyčná aplikace)
 
-* UTF-8
+* UTF-8, více fontů
 
 * Přepínaní themes (např. dark/light mode)

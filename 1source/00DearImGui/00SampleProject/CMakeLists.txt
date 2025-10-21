@@ -1,13 +1,20 @@
-﻿cmake_minimum_required(VERSION 3.8)
+﻿cmake_minimum_required(VERSION 3.10)
 
-project(SampleProject)
+project(ImguiApp)
 
 find_package(imgui CONFIG REQUIRED)
 find_package(GLEW CONFIG REQUIRED)
 
-add_executable(SampleProject SampleProject.cpp)
+file(GLOB_RECURSE SOURCES 
+    "${PROJECT_SOURCE_DIR}/App/*.cpp"    
+)
 
-target_link_libraries(SampleProject PRIVATE
+add_executable(ImguiApp
+	"Run.cpp"
+	${SOURCES}
+)
+
+target_link_libraries(ImguiApp PRIVATE
 	imgui::imgui
 	GLEW::GLEW
 )

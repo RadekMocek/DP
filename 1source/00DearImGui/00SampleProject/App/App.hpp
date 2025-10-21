@@ -1,0 +1,49 @@
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+#include <stdio.h>
+#define GL_SILENCE_DEPRECATION
+#if defined(IMGUI_IMPL_OPENGL_ES2)
+#include <GLES2/gl2.h>
+#endif
+#include <GLFW/glfw3.h> // Will drag system OpenGL headers
+
+// To link with VS2010-era libraries, VS2015+ requires linking with legacy_stdio_definitions.lib, which we do using this pragma.
+#if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
+#pragma comment(lib, "legacy_stdio_definitions")
+#endif
+
+// See 'Makefile.emscripten' for details.
+#ifdef __EMSCRIPTEN__
+#include "../libs/emscripten/emscripten_mainloop_stub.h"
+#endif
+
+class App
+{
+public:
+	App() = default;
+
+	bool Init();
+	void Run();
+
+	~App();
+
+private:
+	// = Members =
+	GLFWwindow* window{};
+	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
+	const char* window_title = "Dear ImGui GLFW+OpenGL3 example";
+	const bool is_dark_mode = true;
+
+	// User state
+	bool show_demo_window{};
+	bool show_another_window{};
+
+	// = Functions =
+	static void GLFWErrorCallback(int error, const char* description);
+	void Start();
+	void Update();
+
+	// User functions
+};
