@@ -2,9 +2,11 @@
 
 App app;
 
-void main()
+int main()
 {
 	if (app.Init()) {
 		app.Run();
 	}
+
+	return 0;
 }

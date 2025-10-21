@@ -4,6 +4,7 @@ project(ImguiApp)
 
 find_package(imgui CONFIG REQUIRED)
 find_package(GLEW CONFIG REQUIRED)
+find_package(Freetype REQUIRED)
 
 file(GLOB_RECURSE SOURCES 
     "${PROJECT_SOURCE_DIR}/App/*.cpp"    
@@ -17,6 +18,7 @@ add_executable(ImguiApp
 target_link_libraries(ImguiApp PRIVATE
 	imgui::imgui
 	GLEW::GLEW
+	Freetype::Freetype
 )
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/App/Resources 

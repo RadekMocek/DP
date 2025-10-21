@@ -4,9 +4,11 @@
       "name": "imgui",
       "features": [
         "opengl3-binding",
-        "glfw-binding"
+        "glfw-binding",
+        "freetype"
       ]
     },
-    "glew"
+    "glew",
+    "freetype"
   ]
 }
