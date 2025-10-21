@@ -64,3 +64,4 @@ cmake --build build
 * [FAQ](https://github.com/ocornut/imgui/blob/master/docs/FAQ.md)
 * [Interactive "manual"](https://pthom.github.io/imgui_manual_online/manual/imgui_manual.html)
 * [Useful Extensions](https://github.com/ocornut/imgui/wiki/Useful-Extensions)
+* [Using fonts](https://github.com/ocornut/imgui/blob/master/docs/FONTS.md)

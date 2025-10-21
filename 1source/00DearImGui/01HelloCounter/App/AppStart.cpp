@@ -20,7 +20,9 @@ void App::Start()
     //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, nullptr, io.Fonts->GetGlyphRangesJapanese());
     //IM_ASSERT(font != nullptr);
 
-    // Our state
-    show_demo_window = true;
-    show_another_window = false;
+    ImGuiIO& io = ImGui::GetIO();
+
+    ImFont* font = io.Fonts->AddFontFromFileTTF("./App/Resources/Inconsolata-Medium.ttf", 26.0f);
+
+    IM_ASSERT(font != nullptr);
 }
