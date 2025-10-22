@@ -40,10 +40,6 @@ private:
 
 	// = Functions =
 	static void GLFWErrorCallback(int error, const char* description);
-
-	bool Run_HandleEventsAndStartFrame();
-	void Run_Render();
-
 	void Start();
 	void Update();
 

@@ -2,11 +2,11 @@
 
 void App::Update()
 {
-    static int counter = 1;
+    static int counter = 0;
 
     ImGui::Begin("Hello Counter");
 
-    ImGui::BeginDisabled(counter == 1);
+    ImGui::BeginDisabled(counter == 0);
     if (ImGui::Button("-")) {
         counter--;
     }
