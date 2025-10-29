@@ -15,7 +15,7 @@
     * V hlavní smyčce si řešíme logiku „sami“
     * Tohle je celá myšlenka; implementováno to může být různě
     * Vhodné pro realtime aplikace, vhodné pro integraci s _unaware components_ (např. 3D aplikace)
-    * Nevýhoda je složitá „reflexe“, např. když chceme vědět, jak je náš layout widgetů velký a nějak na to zareagovat – vždy budeme o&nbsp;jeden frame dozadu, nejdřív se to musí vykreslit
+    * Nevýhoda je složitá „reflexe“, např. když chceme vědět, jak je náš layout widgetů velký a nějak na to zareagovat – vždy budeme o&nbsp;jeden frame dozadu, nejdřív se to musí vykreslit (např. window autosize)
     * Další nevýhoda: pokud bychom nechtěli vše překreslovat každý snímek, ale aktualizovat jen to potřebné, kód by byl značně nabobtnal
     * Dále <https://archive.org/details/GDM_September_2005/page/n35/mode/2up> – _IMMEDIATE VS. RETAINED MODE_, Table 1, ...
     * _I began to realize that “retained” GUI code design has all the same drawbacks that typically cause us to avoid using retained-mode APIs in graphics. I experimented with having the GUI code operate in a more immediate fashion, like an immediate-mode graphics API, and found that everything was simpler, more powerful, and could span the gamut of both 2D and 3D interaction seamlessly._
@@ -93,3 +93,7 @@
 * UTF-8, více fontů
 
 * Přepínaní themes (např. dark/light mode)
+
+* Accesibility
+  * _AT-SPI 2_ ?
+  * _libatk_ ?

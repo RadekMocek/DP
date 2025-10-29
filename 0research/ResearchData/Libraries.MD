@@ -48,7 +48,7 @@ Name|Lang|License|nStars|Active|Bindings/abstrakce|...
 
 ### mikroui
 
-* [Web demo](https://floooh.github.io/sokol-html5/sgl-microui-sapp.html)
+* [Web demo](https://floooh.github.io/sokol-html5/sgl-microui-sapp.html), [Post a screenshot](https://github.com/rxi/microui/issues/35#issuecomment-662313343)
 * Dostupné prvky: window, scrollable panel, button, slider, textbox, label, checkbox, wordwrapped text
 * ~1KLOC, fixed-memory usage
 * __-__ Textbox neumí pohybovat s kurzorem a označovat text
