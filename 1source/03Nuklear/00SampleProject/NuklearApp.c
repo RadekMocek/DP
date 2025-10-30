@@ -21,10 +21,8 @@
 #define NK_IMPLEMENTATION
 #include "nuklear.h"
 
-//*
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
-/**/
 
 /* macros */
 #define WINDOW_WIDTH 1200
@@ -314,7 +312,7 @@ device_draw(struct device* dev, struct nk_context* ctx, int width, int height,
             config.vertex_layout = vertex_layout;
             config.vertex_size = sizeof(struct nk_glfw_vertex);
             config.vertex_alignment = NK_ALIGNOF(struct nk_glfw_vertex);
-            config.null = dev->tex_null;
+            config.tex_null = dev->tex_null;
             config.circle_segment_count = 22;
             config.curve_segment_count = 22;
             config.arc_segment_count = 22;

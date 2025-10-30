@@ -21,10 +21,8 @@
 #define NK_IMPLEMENTATION
 #include "nuklear.h"
 
-//*
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
-/**/
 
 /* macros */
 #define WINDOW_WIDTH 1200
@@ -57,34 +55,65 @@ struct media {
  *
  * ===============================================================*/
 static void
-hello_counter(struct nk_context* ctx, struct media* media)
+hello_counter(struct nk_context* ctx, struct media* media, GLFWwindow* win)
 {
+    // State
     static int counter = 1;
     static char char_arr[1];
     static int show_popup_window = 1;
 
+    // :: WINDOW 1 :: Main ::
     nk_style_set_font(ctx, &media->font_22->handle);
     if (nk_begin(ctx, "Hello Counter", nk_rect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT),
         (NK_WINDOW_NO_SCROLLBAR | NK_WINDOW_NO_INPUT)))
     {
-        
-        nk_layout_row_dynamic(ctx, 30, 1);
-        
-        nk_checkbox_label(ctx, "Pop-up", &show_popup_window);
+        // .: MENUBAR :.
+        nk_menubar_begin(ctx);
+        nk_layout_row(ctx, NK_STATIC, 30, 1, (float[]) { 100 });
+        if (nk_menu_begin_label(ctx, "File", NK_TEXT_LEFT, nk_vec2(120, 150))) {
+            
+            nk_layout_row_dynamic(ctx, 30, 1);
 
-        nk_layout_row_dynamic(ctx, 30, 3);
+            // .. Checkbox for showing pop-up window ..
+            nk_checkbox_label(ctx, "Pop-up", &show_popup_window);
+            
+            if (nk_menu_item_label(ctx, "Exit", NK_TEXT_LEFT)) {
+                glfwSetWindowShouldClose(win, GLFW_TRUE);
+            }
+
+            nk_menu_end(ctx);
+        }
+        nk_menubar_end(ctx);        
+
+        // .: VERTICAL SPACE :.
+        nk_layout_row_dynamic(ctx, 20, 0);
         
-        if (nk_button_text(ctx, "-", 1) && counter != 1) {
+        // .: ROW :: Counter :.
+        nk_layout_row(ctx, NK_STATIC, 30, 3, (float[]) { 60, 40, 60 });
+        
+        // .. Decrement counter button ..
+        if (counter == 1) nk_widget_disable_begin(ctx);
+
+        if (nk_button_text(ctx, "-", 1)) {
             counter--;
         }
+
+        nk_widget_disable_end(ctx);
         
+        // .. Counter value label ..
         sprintf(char_arr, "%d", counter);
         nk_label(ctx, char_arr, NK_TEXT_CENTERED);
 
-        if (nk_button_text(ctx, "+", 1) && counter != 5) {
+        // .. Increment counter button ..
+        if (counter == 5) nk_widget_disable_begin(ctx);
+
+        if (nk_button_text(ctx, "+", 1)) {
             counter++;
         }
 
+        nk_widget_disable_end(ctx);
+
+        // .: ROW :: Show hello if counter==3 :.
         if (counter == 3) {
             nk_label(ctx, "Hello!", NK_TEXT_LEFT);
         }
@@ -92,6 +121,7 @@ hello_counter(struct nk_context* ctx, struct media* media)
     }
     nk_end(ctx);
 
+    // :: WINDOW 2 :: POPUP ::
     if (!show_popup_window) {
 
         nk_style_set_font(ctx, &media->font_20->handle);
@@ -334,7 +364,7 @@ device_draw(struct device* dev, struct nk_context* ctx, int width, int height,
             config.vertex_layout = vertex_layout;
             config.vertex_size = sizeof(struct nk_glfw_vertex);
             config.vertex_alignment = NK_ALIGNOF(struct nk_glfw_vertex);
-            config.null = dev->tex_null;
+            config.tex_null = dev->tex_null;
             config.circle_segment_count = 22;
             config.curve_segment_count = 22;
             config.arc_segment_count = 22;
@@ -418,7 +448,7 @@ int main(int argc, char* argv[])
 #ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
-    win = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Demo", NULL, NULL);
+    win = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Nuklear :: Hello Counter", NULL, NULL);
     glfwMakeContextCurrent(win);
     glfwSetWindowUserPointer(win, &ctx);
     glfwSetCharCallback(win, text_input);
@@ -501,7 +531,7 @@ int main(int argc, char* argv[])
         }
 
         /* GUI */
-        hello_counter(&ctx, &media);
+        hello_counter(&ctx, &media, win);
 
         /* Draw */
         glViewport(0, 0, display_width, display_height);
