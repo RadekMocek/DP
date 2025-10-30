@@ -1,0 +1,53 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="AvaloniaApplication1.MainWindow"
+        Title="Avalonia – Hello Counter – Code Behind">
+
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <!--
+                <MenuItem Header="_Pop-up" Click="MenuPopupClicked" />
+
+                https://docs.avaloniaui.net/docs/basics/user-interface/messagebox
+                -->
+                <MenuItem Header="_Exit" Click="MenuExitClicked" />
+            </MenuItem>
+        </Menu>
+
+        <StackPanel Margin="14,14,0,0">
+
+            <Grid
+                ColumnDefinitions="50,30,50"
+                RowDefinitions="30">
+
+                <Button
+                    Name="ButtonDecr"
+                    Grid.Column="0"
+                    Width="50"
+                    HorizontalContentAlignment="Center"
+                    Click="ButtonDecrClicked"
+                    Content="-" />
+
+                <Label Name="LabelCounter" Grid.Column="1" HorizontalAlignment="Center">1</Label>
+
+                <Button
+                    Name="ButtonIncr"
+                    Grid.Column="2"
+                    Width="50"
+                    HorizontalContentAlignment="Center"
+                    Click="ButtonIncrClicked"
+                    Content="+" />
+
+            </Grid>
+
+            <Label Name="LabelHello">Hello!</Label>
+
+        </StackPanel>
+
+    </DockPanel>
+
+</Window>

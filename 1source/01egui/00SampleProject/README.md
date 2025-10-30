@@ -6,15 +6,15 @@
 Change the name of the crate: Choose a good name for your project, and change the name to it in:
 
 * `Cargo.toml`
-  * Change the `package.name` from `eframe_template` to `your_crate`.
-  * Change the `package.authors`
+  * Change the `[package] name` from `SampleProject` to `your_crate`.
+  * Change the `[package] authors`
 * `main.rs`
-  * Change `eframe_template::TemplateApp` to `your_crate::TemplateApp`
+  * Change `SampleProject::TemplateApp` to `your_crate::TemplateApp` (on two places)
 * `index.html`
   * Change the `<title>eframe template</title>` to `<title>your_crate</title>`. optional.
 * `assets/sw.js`
-  * Change the `'./eframe_template.js'` to `./your_crate.js` (in `filesToCache` array)
-  * Change the `'./eframe_template_bg.wasm'` to `./your_crate_bg.wasm` (in `filesToCache` array)
+  * Change the `'./SampleProject.js'` to `./your_crate.js` (in `filesToCache` array)
+  * Change the `'./SampleProject_bg.wasm'` to `./your_crate_bg.wasm` (in `filesToCache` array)
 
 ## Learning about egui
 

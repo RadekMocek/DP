@@ -104,7 +104,7 @@ hello_counter(struct nk_context* ctx, struct media* media)
             nk_label(ctx, "Not much you can do here...", NK_TEXT_LEFT);
             
             nk_layout_row_dynamic(ctx, 30, 1);
-            if (nk_button_text(ctx, "close", 5)) {
+            if (nk_button_text(ctx, "Close", 5)) {
                 show_popup_window = 1;
             }
 
