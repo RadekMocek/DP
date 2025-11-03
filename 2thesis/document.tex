@@ -21,6 +21,11 @@
 \usepackage[all]{nowidow}
 % Snížit šanci na rozdělení posledního slova odstavce
 \finalhyphendemerits=200000
+% Díky balíku caption kliknutí na \ref odkazující na obrázek skočí opravdu na obrázek, a ne na popisek pod ním
+\usepackage{caption}
+% Tabulky
+\usepackage{enumitem} % Umožní prostředí NiceTabular používat vlastní footnotes
+\usepackage{nicematrix} % Posyktuje prostředí NiceTabular
 
 % Pro seznam použité literatury
 \usepackage[backend=biber, style=iso-numeric]{biblatex}
@@ -87,7 +92,11 @@
 	
 	% Zkratky
 	\begin{abbrList}
-		\textbf{IMGUI} & immediate mode graphical user interface \\
+		\textbf{API} & application programming interface, rozhraní pro programování aplikací \\
+		\textbf{GUI} & graphical user interface, grafické uživatelské rozhraní \\
+		\textbf{IMGUI} & immediate mode graphical user interface, grafické uživatelské rozhraní v režimu okamžitého vykreslování \\
+		\textbf{RMGUI} & retained mode graphical user interface, grafické uživatelské rozhraní v režimu soběstačného vykreslování \\
+		\textbf{WPF} & Windows Presentation Foundation, knihovna umožňující tvorbu GUI aplikací pro operační systém Windows \\
 	\end{abbrList}
 	
 	% Jádro zprávy
@@ -97,6 +106,51 @@
 	
 	\chapter{Grafické uživatelské rozhraní v režimu okamžitého vykreslování}
 	
-	...
+	Grafické uživatelské rozhraní v režimu okamžitého vykreslování (\textit{immediate mode graphical user interface}, zkráceně IMGUI) je specifický přístup k programování aplikačního softwaru s grafickým uživatelským rozhraním. Základní myšlenku tohoto přístupu veřejně představil Casey Muratori již v roce 2005. Definice IMGUI není příliš komplexní ani striktní, a proto se postupem času začaly objevovat různé úhly pohledu a interpretace toho, co by „okamžitý režim“ v kontextu vývoje GUI aplikací měl a neměl znamenat. \cite{online_casey}
+	
+	Autor přístupu IMGUI využil pro jeho pojmenování přívlastek „okamžitý“ z důvodu určité podobnosti k režimu okamžitého vykreslování v některých grafických API té doby \cite{online_casey}. Příkladem může být Direct3D, grafické API od společnosti Microsoft, které mohlo dříve pracovat ve dvou režimech: soběstačný (\textit{retained}) a okamžitý (\textit{immediate}). Z pohledu abstrakce je soběstačný režim na vyšší úrovni, kdy si knihovna interně uchovává model 3D scény a od aplikačního kódu přijímá příkazy, které manipulují s objekty v této scéně. Pro vykreslení snímku pak knihovna transformuje informace o objektech ve scéně na sadu příkazů pro vykreslování. V okamžitém režimu se s modelem scény pracuje na straně aplikačního kódu a knihovna přijímá až samotné příkazy pro vykreslování. Tím sice narůstá počet úkonů, které musí být provedeny na straně aplikačního kódu, zároveň se ale zvětšuje flexibilita a prostor pro optimalizace. \cite{book_direct3dbible, online_direct2d}
+	
+	% [? Diagram IM vs RM, případně diagram dobového Direct3D ?]
+	
+	Podobně lze nahlížet na programování GUI aplikací. Běžně používané knihovny, které tvorbu GUI aplikací umožňují, jsou v této analogii chápány jako soběstačný režim a přísluší jim zkratka RMGUI (\textit{retained mode graphical user interface}). S využitím těchto knihoven definuje aplikační kód jednotlivé ovládací prvky, u kterých obvykle specifikuje jejich identifikátory, vzájemné rozložení, a případné callback metody. Knihovna pak ve své interní smyčce řeší vykreslování ovládacích prvků a reakce na události. Mezi zástupce tohoto přístupu patří např. knihovny Qt a WPF. Oproti tomu aplikace využívající knihovnu s přístupem IMGUI \dots
+	
+	% * Stav ovládacích prvků, ...
+	% * na imgui pohlížíme z pohledu api, neznámená to tedy, že imgui knihovna nemůže pod kapotou mít uložený nějaký stav, a nebo že musí překreslovat celé gui každý frame
+	% * i přesto jde ale ruku v ruce s realtime aplikacemi
+	% * výhody
+	% * nevýhody	
+	
+	\section{Demonstrace rozdílu mezi přístupy RMGUI a IMGUI}
+	
+	% * gui není jen imgui vs rmgui; viz webové aplikace, jetpack?, MVVM
+	
+	\section{Existující knihovny pro tvorbu GUI aplikací s přístupem IMGUI}
+	
+	% * i když je imgui starý koncept, knihovny jsou stále ve vývoji
+		
+	\begin{table}[ht]
+		\centering
+		\caption{Přehled knihoven pro tvorbu GUI aplikací s přístupem IMGUI}
+		\begin{NiceTabular}{ l l l c r }[cell-space-limits=3pt]
+			\CodeBefore
+				\rowcolors[gray]{2}{0.95}{}
+			\Body
+				\RowStyle{\bfseries}
+					Název & Jazyk & Licence & Vznik & Popularita\tabularnote[$\star$]{počet hvězd na platformě GitHub ke dni 2. 11. 2025} \\
+				\hline
+					Dear ImGui  & C++  & MIT             & 2014 & 69 088 \\
+					egui        & Rust & MIT, Apache-2.0 & 2018 & 26 997 \\
+					Nuklear     & C    & MIT, Unlicense  & 2015 & 10 522 \\
+					microui     & C    & MIT             & 2018 &  5 117 \\
+					raygui      & C    & Zlib            & 2014 &  4 407 \\\RowStyle[cell-space-bottom-limit=1pt]{}
+					Gio         & Go   & MIT, Unlicense  & 2019 &  2 050 \\
+				\hline
+		\end{NiceTabular}
+	\end{table}
+	
+	% Zdroje
+	\chapter*{Seznam použité literatury}
+	\addcontentsline{toc}{chapter}{Seznam použité literatury}
+	\printbibliography[heading=none]
 	
 \end{document}

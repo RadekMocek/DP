@@ -9,7 +9,7 @@
 ### Run the sample project
 
 ```powershell
-cd ...\1source\01egui\00SampleProject
+cd <path_to_this_repository>\1source\01egui\00SampleProject
 
 cargo run --release
 ```

@@ -6,7 +6,7 @@ Podobně lze nahlížet na chod desktopových GUI aplikací. V soběstačném (_
 
 Pro vývoj GUI aplikací se běžně používá nějaká forma RMGUI (Qt, WPF, ...), nebo se nasazuje webová aplikace společně s chromiem pomocí Electronu. IMGUI je sice poměrně starý koncept (~2002), ale některé IMGUI knihovny jsou stále ve vývoji a některé programy toto paradigma úspěšně využívají. Objevují se diskuse o jeho ne/efektivitě a jiných ne/výhodách, nenašel jsem ale žádný „akademičtější deep dive“.
 
-Proto mě napadá zvolit si nějaký IMGUI framework (Dear ImGui, Nuklear, libGDX, ...) a implementovat v něm ukázkovou aplikaci. Nebo to zkusit kompletně od základů pomocí Direct2D/OpenGL/OpenVG (?). Tuto aplikaci pak znovu implementovat v něčem tradičnějším a porovnat výsledky (HW vytížení, velikost binárky).
+Proto mě napadá zvolit si nějaký IMGUI framework (Dear ImGui, Nuklear, ...) a implementovat v něm ukázkovou aplikaci. Nebo to zkusit kompletně od základů pomocí Direct2D/OpenGL/OpenVG (?). Tuto aplikaci pak znovu implementovat v něčem tradičnějším a porovnat výsledky (HW vytížení, velikost binárky).
 
 ## Motivace
 
@@ -17,9 +17,9 @@ Proto mě napadá zvolit si nějaký IMGUI framework (Dear ImGui, Nuklear, libGD
 
 Napadá mě jednoduchý editor stavových/class diagramů. Preferuji WYSIWYM před WYSIWYG. To je např. Mermaid, ten ale nedává žádnou kontrolu pro umístění jednotlivých uzlů apod. Běžně používám Draw.io, to je ale na mě někdy až zbytečně komplexní: když chci hnout s uzlem, tak se to s sebou snaží dynamicky vzít všechny přidružené hrany... to bych raději dělal ručně. Zkrátka by se mi líbilo něco víc _simple studid_. V jedné části obrazovky by byl kód ve stylu XML/JSON a v druhé výsledný diagram: obdélníčky s textem spojené šipkami :).
 
-## Nástřel zadání
+## Zadání
 
 1. Rešerše IMGUI
 2. Návrh ukázkové aplikace
 3. Implementace ukázkové aplikace ve vybraných knihovnách
-4. „Benchmark“
+4. Porovnání výsledků

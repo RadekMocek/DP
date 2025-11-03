@@ -2,7 +2,7 @@
 
 ## Running Gio
 
-### Windows
+### Windows 10 22H2
 
 * [Download](https://go.dev/dl/) and install Go
 
@@ -11,12 +11,12 @@
 go install gioui.org/cmd/gogio@latest
 
 # Navigate to sample project, update all the dependencies, and run the program
-cd ...\1source\6Gio\00SampleProject
+cd <path_to_this_repository>\1source\6Gio\00SampleProject
 go mod tidy
 go run .
 ```
 
-### Linux
+### Linux Debian 13.1 KDE Plasma
 
 ```bash
 # Download and untar Go from https://go.dev/dl/
@@ -31,7 +31,7 @@ go install gioui.org/cmd/gogio@latest
 sudo apt install gcc pkg-config libwayland-dev libx11-dev libx11-xcb-dev libxkbcommon-x11-dev libgles2-mesa-dev libegl1-mesa-dev libffi-dev libxcursor-dev libvulkan-dev
 
 # Navigate to sample project, update all the dependencies, and run the program
-cd .../1source/6Gio/00SampleProject
+cd <path_to_this_repository>/1source/6Gio/00SampleProject
 go mod tidy
 go run .
 ```

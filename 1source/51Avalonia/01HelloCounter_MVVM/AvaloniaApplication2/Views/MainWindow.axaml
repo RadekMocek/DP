@@ -1,0 +1,64 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:AvaloniaApplication2.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="AvaloniaApplication2.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="AvaloniaApplication2">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <!--
+                <MenuItem Header="_Pop-up" Click="MenuPopupClicked" />
+
+                https://docs.avaloniaui.net/docs/basics/user-interface/messagebox
+                -->
+                <MenuItem Header="_Exit" Command="{Binding MenuExitClickedCommand}" />
+            </MenuItem>
+        </Menu>
+
+        <StackPanel Margin="14,14,0,0">
+
+            <Grid
+                ColumnDefinitions="50,30,50"
+                RowDefinitions="30">
+
+                <Button
+                    Grid.Column="0"
+                    Width="50"
+                    HorizontalContentAlignment="Center"
+                    Command="{Binding ButtonDecrClickedCommand}"
+                    IsEnabled="{Binding IsButtonDecrEnabled}"
+                    Content="-" />
+
+                <Label
+                    Grid.Column="1"
+                    HorizontalAlignment="Center"
+                    Content="{Binding Counter}" />
+
+                <Button
+                    Grid.Column="2"
+                    Width="50"
+                    HorizontalContentAlignment="Center"
+                    Command="{Binding ButtonIncrClickedCommand}"
+                    IsEnabled="{Binding IsButtonIncrEnabled}"
+                    Content="+" />
+
+            </Grid>
+
+            <Label IsVisible="{Binding IsLabelHelloVisible}">Hello!</Label>
+
+        </StackPanel>
+
+    </DockPanel>
+
+</Window>

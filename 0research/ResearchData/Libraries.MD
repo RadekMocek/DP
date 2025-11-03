@@ -68,11 +68,6 @@ Name|Lang|License|nStars|Active|Bindings/abstrakce|...
 
 ## Ostatní
 
-### Obecnější frameworky
-
-* [libgdx](https://github.com/libgdx/libgdx), zaměřeno na videohry, lze použít pouze UI modul, ukázka programu: <http://en.esotericsoftware.com/>
-* SDL – Simple DirectMedia Layer, [list-all-gui-toolkits-for-sdl](https://discourse.libsdl.org/t/list-all-gui-toolkits-for-sdl/21911)
-
 ### RMGUI
 
 * [wxWidgets](https://wxwidgets.org/)
@@ -85,6 +80,7 @@ Name|Lang|License|nStars|Active|Bindings/abstrakce|...
 * pascal, Delphi, Lazarus
 * Racket GUI
 * [HikoGUI](https://hikogui.org/)
+* [libgdx](https://github.com/libgdx/libgdx), zaměřeno na videohry, lze použít pouze UI modul, ukázka programu: <http://en.esotericsoftware.com/>
 
 ### Kuriozity
 

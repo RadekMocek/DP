@@ -1,8 +1,16 @@
 # Visual Studio
 .vs/
 
+# - .NET
+bin/
+obj/
+PUBLISHED/
+
 # JetBrains
 .idea/
+
+# Cmake
+[Bb]uild/
 
 # Thesis & Slideshow (MiKTeX + TeXstudio)
 *.pdf
@@ -52,4 +60,3 @@
 *blx.bib
 .bak 
 .mtc
-[Bb]uild/
