@@ -6,9 +6,9 @@
 
 #### 1. Set up Qt
 
-* __1.1.__ Install Qt (<https://www.qt.io/>), make sure you have MSVC component selected in the installer:
-  * _Component Name_: _Qt_ → _Qt 6.10.0_ → _MSVC 2022 64-bit_
-  * Maybe it works with defaultly selected MinGW? (haven't tested that)
+* __1.1.__ Install Qt (<https://www.qt.io/>), choose custom installation:
+  * The only component needed is _Qt_ → _Qt 6.10.0_ → _MSVC 2022 64-bit_
+  * Additional components can be installed later via _Qt Maintenance Tool_
 * __1.2.__ Create a new system environment variable called `QTDIR` with value: `<path_to_qt_installation>\6.10.0\msvc2022_64`
 * __1.3.__ Add two new values to system environment variable PATH:
   * `%QTDIR%\bin`

@@ -1,0 +1,55 @@
+% == Zdrojové kódy se syntax highlight ==
+\usepackage{listings}
+\definecolor{color_gray}{rgb}{0.5294117647058824, 0.5803921568627451, 0.5764705882352941}
+\definecolor{color_violet}{rgb}{0.403921568627451, 0.4196078431372549, 0.7607843137254902}
+\definecolor{color_blue}{rgb}{0.13725490196078433, 0.49019607843137253, 0.7450980392156863}
+\definecolor{color_green}{rgb}{0.4549019607843137, 0.5215686274509804, 0.00784313725490196}
+\lstset{
+    , basicstyle = \ttfamily\footnotesize
+    , breaklines = true
+    , frame = tb
+    , commentstyle = \color{color_gray}
+    , keywordstyle = \color{color_violet}
+    , ndkeywordstyle = \color{color_blue}
+    , stringstyle = \color{color_green}
+    , showstringspaces = false
+    , prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}}
+}
+
+
+% HelloCounter Qt
+\lstdefinelanguage{CppQt}[]{C++}{
+    , morendkeywords={init_phase, QHBoxLayout, QPushButton, addWidget, connect, QLabel, number, on_button_decrement_clicked, on_button_increment_clicked, on_counter_update, setEnabled, setVisible}
+}
+
+
+% HelloCounter ImGUI
+\lstdefinelanguage{CppImGui}[]{C++}{
+    , morendkeywords={update, Begin, BeginDisabled, Button, EndDisabled, Text, End}
+}
+
+
+% Highlight českých znaků
+\makeatletter
+\lst@InputCatcodes
+\def\lst@DefEC{
+	\lst@CCECUse \lst@ProcessLetter
+	^^80^^81^^82^^83^^84^^85^^86^^87^^88^^89^^8a^^8b^^8c^^8d^^8e^^8f
+	^^90^^91^^92^^93^^94^^95^^96^^97^^98^^99^^9a^^9b^^9c^^9d^^9e^^9f
+	^^a0^^a1^^a2^^a3^^a4^^a5^^a6^^a7^^a8^^a9^^aa^^ab^^ac^^ad^^ae^^af
+	^^b0^^b1^^b2^^b3^^b4^^b5^^b6^^b7^^b8^^b9^^ba^^bb^^bc^^bd^^be^^bf
+	^^c0^^c1^^c2^^c3^^c4^^c5^^c6^^c7^^c8^^c9^^ca^^cb^^cc^^cd^^ce^^cf
+	^^d0^^d1^^d2^^d3^^d4^^d5^^d6^^d7^^d8^^d9^^da^^db^^dc^^dd^^de^^df
+	^^e0^^e1^^e2^^e3^^e4^^e5^^e6^^e7^^e8^^e9^^ea^^eb^^ec^^ed^^ee^^ef
+	^^f0^^f1^^f2^^f3^^f4^^f5^^f6^^f7^^f8^^f9^^fa^^fb^^fc^^fd^^fe^^ff
+	^^^^010c^^^^010d% č
+    ^^^^0158^^^^0159% ř
+    ^^^^011a^^^^011b% ě
+    ^^^^010e^^^^010f% ď
+    ^^^^0160^^^^0161% š
+    ^^^^016e^^^^016f% ů
+    ^^^^0147^^^^0148% ň
+    ^^^^0164^^^^0165% ť
+	^^00}
+\lst@RestoreCatcodes
+\makeatother

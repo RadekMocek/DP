@@ -27,6 +27,9 @@
 \usepackage{enumitem} % Umožní prostředí NiceTabular používat vlastní footnotes
 \usepackage{nicematrix} % Posyktuje prostředí NiceTabular
 
+% Zdrojové kódy
+\input{code/code}
+
 % Pro seznam použité literatury
 \usepackage[backend=biber, style=iso-numeric]{biblatex}
 \addbibresource{zdroje.bib}
@@ -112,17 +115,24 @@
 	
 	% [? Diagram IM vs RM, případně diagram dobového Direct3D ?]
 	
-	Podobně lze nahlížet na programování GUI aplikací. Běžně používané knihovny, které tvorbu GUI aplikací umožňují, jsou v této analogii chápány jako soběstačný režim a přísluší jim zkratka RMGUI (\textit{retained mode graphical user interface}). S využitím těchto knihoven definuje aplikační kód jednotlivé ovládací prvky, u kterých obvykle specifikuje jejich identifikátory, vzájemné rozložení, a případné callback metody. Knihovna pak ve své interní smyčce řeší vykreslování ovládacích prvků a reakce na události. Mezi zástupce tohoto přístupu patří např. knihovny Qt a WPF. Oproti tomu aplikace využívající knihovnu s přístupem IMGUI \dots
-	
-	% * Stav ovládacích prvků, ...
-	% * na imgui pohlížíme z pohledu api, neznámená to tedy, že imgui knihovna nemůže pod kapotou mít uložený nějaký stav, a nebo že musí překreslovat celé gui každý frame
-	% * i přesto jde ale ruku v ruce s realtime aplikacemi
-	% * výhody
-	% * nevýhody	
+	Podobně lze nahlížet na programování GUI aplikací. Běžně používané knihovny, které tvorbu GUI aplikací umožňují, jsou v této analogii chápány jako soběstačný režim a přísluší jim zkratka RMGUI (\textit{retained mode graphical user interface}). S využitím těchto knihoven definuje aplikační kód jednotlivé ovládací prvky, u kterých obvykle specifikuje jejich identifikátory, vzájemné rozložení, a případné callback metody. Knihovna pak ve své interní smyčce řeší vykreslování ovládacích prvků a reakce na události. Mezi zástupce tohoto přístupu patří např. knihovny Qt a WPF. Oproti tomu aplikační kód, který využívá knihovnu s přístupem IMGUI, neobsahuje žádnou inicializační fázi, kde by se definovali jednotlivé ovládací prvky, ani callback metody, které by reagovali na určité události. Aplikační kód zde definuje pouze hlavní smyčku, která obsahuje jak příkazy pro vykreslování ovládacích prvků, tak reakce na případné události. Definice přístupu IMGUI explicitně zmiňuje pouze tento rozdíl z pohledu programátora koncové aplikace, implementace samotných knihoven mohou být různé. \cite{online_casey}
 	
 	\section{Demonstrace rozdílu mezi přístupy RMGUI a IMGUI}
 	
 	% * gui není jen imgui vs rmgui; viz webové aplikace, jetpack?, MVVM
+	
+	% <? Zde by mohla být přidána sekce nastiňující jak to funguje pod kapotou (IMGUI vs RMGUI) ?>
+	
+	\section{Důsledky přístupu IMGUI}
+	
+	% * Stav ovládacích prvků, ...
+	% * na imgui pohlížíme z pohledu api, neznámená to tedy, že imgui knihovna nemůže pod kapotou mít uložený nějaký stav, a nebo že musí překreslovat celé gui každý frame
+	% * i přesto jde ale ruku v ruce s realtime aplikacemi (immediate mode nemusí nutně znamenat že imgui jede na opengl aspol.)
+	% * výhody - gui neuchovává žádná data, pokud chci využít data z textboxu v jiném widgetu, nemusím přistupovat k textbox inner state, ...
+	% * nevýhody:
+	% * - https://gamedev.stackexchange.com/a/24148/167872
+	
+	% důsledky opengl aspol: vypadá to všude stejně :), fonty :(
 	
 	\section{Existující knihovny pro tvorbu GUI aplikací s přístupem IMGUI}
 	
@@ -164,5 +174,19 @@
 	\chapter*{Seznam použité literatury}
 	\addcontentsline{toc}{chapter}{Seznam použité literatury}
 	\printbibliography[heading=none]
+	
+	% Přílohy
+	\appendix
+	\chapter{Ukázkové kódy}
+	
+	\begin{figure}[ht]
+		\lstinputlisting[language=CppQt]{code/hello_counter_rmgui.cpp}
+		\caption{HelloCounterQt}
+	\end{figure}
+	
+	\begin{figure}[ht]
+		\lstinputlisting[language=CppImGui]{code/hello_counter_imgui.cpp}
+		\caption{HelloCounterImGui}
+	\end{figure}
 	
 \end{document}

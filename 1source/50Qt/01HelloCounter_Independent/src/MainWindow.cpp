@@ -2,6 +2,7 @@
 
 #include "MainWindow.hpp"
 
+
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
 {
@@ -14,6 +15,7 @@ MainWindow::MainWindow(QWidget* parent)
     on_counter_update();
 }
 
+
 void MainWindow::on_counter_update()
 {
     label_counter_value->setText(QString::number(counter));
@@ -23,6 +25,7 @@ void MainWindow::on_counter_update()
 
     label_hello->setVisible(counter == 3);
 }
+
 
 void MainWindow::on_button_decrement_clicked()
 {
@@ -57,6 +60,7 @@ void MainWindow::create_menus()
     QAction* exit_action = file_menu->addAction("Exit");
     connect(exit_action, &QAction::triggered, this, &QWidget::close);
 }
+
 
 void MainWindow::create_central_widget()
 {
