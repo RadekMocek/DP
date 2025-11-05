@@ -4,14 +4,16 @@
 void App::init() {
     button_counter_decrement = new QPushButton("-");
     layout->addWidget(button_counter_decrement);
-    connect(button_counter_decrement, &QPushButton::clicked, this, &App::on_button_decrement_clicked);
+    connect(button_counter_decrement, &QPushButton::clicked, this,
+        &App::on_button_decrement_clicked);
 
     label_counter_value = new QLabel("");
     layout->addWidget(label_counter_value);
 
     button_counter_increment = new QPushButton("+");
     layout->addWidget(button_counter_increment);
-    connect(button_counter_increment, &QPushButton::clicked, this, &App::on_button_increment_clicked);
+    connect(button_counter_increment, &QPushButton::clicked, this,
+        &App::on_button_increment_clicked);
 
     label_hello = new QLabel("Hello!");
     layout->addWidget(label_hello);

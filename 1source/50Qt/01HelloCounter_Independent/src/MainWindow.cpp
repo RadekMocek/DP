@@ -76,14 +76,16 @@ void MainWindow::create_central_widget()
 
     button_counter_decrement = new QPushButton("-");
     row_counter->addWidget(button_counter_decrement);
-    connect(button_counter_decrement, &QPushButton::clicked, this, &MainWindow::on_button_decrement_clicked);
+    connect(button_counter_decrement, &QPushButton::clicked, this,
+        &MainWindow::on_button_decrement_clicked);
 
     label_counter_value = new QLabel("?");
     row_counter->addWidget(label_counter_value);
 
     button_counter_increment = new QPushButton("+");
     row_counter->addWidget(button_counter_increment);
-    connect(button_counter_increment, &QPushButton::clicked, this, &MainWindow::on_button_increment_clicked);
+    connect(button_counter_increment, &QPushButton::clicked, this,
+        &MainWindow::on_button_increment_clicked);
 
     row_counter->addStretch();
 

@@ -4,7 +4,7 @@ void App::update() {
     ImGui::Begin("Hello Counter");
 
     ImGui::BeginDisabled(counter == 1);
-    if (ImGui::Button("-", button_size)) {
+    if (ImGui::Button("-")) {
         counter--;
     }
     ImGui::EndDisabled();
@@ -12,7 +12,7 @@ void App::update() {
     ImGui::Text("%d", counter);
 
     ImGui::BeginDisabled(counter == 5);
-    if (ImGui::Button("+", button_size)) {
+    if (ImGui::Button("+")) {
         counter++;
     }
     ImGui::EndDisabled();
