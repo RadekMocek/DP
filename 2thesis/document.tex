@@ -27,7 +27,7 @@
 \usepackage{enumitem} % Umožní prostředí NiceTabular používat vlastní footnotes
 \usepackage{nicematrix} % Posyktuje prostředí NiceTabular
 
-% Zdrojové kódy
+% Zdrojové kódy (konfigurace je v externím souboru, který je sem vložen)
 \input{code/code}
 
 % Pro seznam použité literatury
@@ -45,7 +45,7 @@
 \TULauthor{Radek Mocek}
 \TULsupervisor{Ing. Jiří Jeníček, Ph.D.}
 \TULyear{2025}
-% -------------------------------
+% --- --- --- --- --- --- --- ---
 
 % Začátek dokumentu
 \begin{document}
@@ -91,6 +91,9 @@
 	% Seznam tabulek
 	\listoftables
 	
+	% Seznam zdrojových kódů
+	\listofcodes
+	
 	\clearpage
 	
 	% Zkratky
@@ -116,7 +119,7 @@
 	
 	% [? Diagram IM vs RM, případně diagram dobového Direct3D ?]
 	
-	Podobně lze nahlížet na programování GUI aplikací. Běžně používané knihovny, které tvorbu GUI aplikací umožňují, jsou v této analogii chápány jako soběstačný režim a přísluší jim zkratka RMGUI (\textit{retained mode graphical user interface}). S využitím těchto knihoven definuje aplikační kód jednotlivé ovládací prvky, u kterých obvykle specifikuje jejich identifikátory, vzájemné rozložení, a případné callback metody. Knihovna pak ve své interní smyčce řeší vykreslování ovládacích prvků a reakce na události. Mezi zástupce tohoto přístupu patří např. knihovny Qt a WPF. Oproti tomu aplikační kód, který využívá knihovnu s přístupem IMGUI, neobsahuje žádnou inicializační fázi, kde by se definovali jednotlivé ovládací prvky, ani callback metody, které by reagovali na určité události. Aplikační kód zde definuje pouze hlavní smyčku, která obsahuje jak příkazy pro vykreslování ovládacích prvků, tak reakce na případné události. Definice přístupu IMGUI explicitně zmiňuje pouze tento rozdíl z pohledu programátora koncové aplikace, implementace samotných knihoven mohou být různé. \cite{online_casey}
+	Podobně lze nahlížet na programování GUI aplikací. Běžně používané knihovny, které tvorbu GUI aplikací umožňují, jsou v této analogii chápány jako soběstačný režim a přísluší jim zkratka RMGUI (\textit{retained mode graphical user interface}). S využitím těchto knihoven definuje aplikační kód jednotlivé ovládací prvky, u kterých obvykle specifikuje jejich identifikátory, vzájemné rozložení, a případné callback metody. Knihovna pak ve své interní smyčce řeší vykreslování ovládacích prvků a reakce na události. Mezi zástupce tohoto přístupu patří např. knihovny Qt a WPF. Oproti tomu aplikační kód, který využívá knihovnu s přístupem IMGUI, neobsahuje žádnou inicializační fázi, kde by se definovaly jednotlivé ovládací prvky, ani callback metody, které by reagovaly na určité události. Aplikační kód zde definuje pouze hlavní smyčku, která obsahuje jak příkazy pro vykreslování ovládacích prvků, tak reakce na případné události. Definice přístupu IMGUI explicitně zmiňuje pouze tento rozdíl z pohledu programátora koncové aplikace, implementace samotných knihoven mohou být různé. \cite{online_casey}
 	
 	\section{Demonstrace rozdílu mezi přístupy RMGUI a IMGUI}
 	
@@ -124,9 +127,9 @@
 	
 	Tlačítka jsou označena symboly „$+$“ a „$-$“. Po kliknutí na tlačítko se symbolem „$+$“ se přičte jednička k hodnotě čítače a kliknutím na tlačítko se symbolem „$-$“ se jednička naopak odečte. Jelikož se má čítat pouze od jedné do pěti, tak je tlačítko se symbolem „$-$“ neaktivní v případě, kdy je hodnota čítače rovna jedné. Podobné pravidlo platí pro tlačítko se symbolem „$+$“, které je neaktivní zase tehdy, pokud je hodnota čítače rovna pěti.
 	
-	Z důvodu zvýšení přehlednosti neobsahují ukázky logiku pro nastavení vzhledu a rozmístění ovládacích prvků, je zde pouze to důležité pro pochopení principu daného přístupu. Kód \ref{_tag_code_HelloCounterQt} představuje přístup RMGUI v knihovně Qt. Metoda \texttt{init} obsahuje logiku inicializační fáze, která postupně nastaví čtyři ovládaní prvky a stavovou proměnnou. Všechny ovládací prvky jsou vytvořeny a přidány do rozložení hlavního okna, které je reprezentované proměnnou \texttt{layout}. U tlačítek je pomocí funkce \texttt{connect} nastavena jejich callback metoda, která se volá po kliknutí na dané tlačítko. Nakonec je čítač nastaven na svou výchozí hodnotu a volá se metoda \texttt{on\_counter\_update}, která zajistí, aby textové popisky a stav tlačítek (zdali jsou nebo nejsou aktivní) odpovídaly aktuální hodnotě čítače. Callback metody pak upravují hodnotu čítače, po čemž opět volají metodu \texttt{on\_counter\_update}.
+	Z důvodu zvýšení přehlednosti neobsahují ukázky logiku pro nastavení vzhledu a rozmístění ovládacích prvků, je zde pouze to důležité pro pochopení principu daného přístupu. Kód \ref{_tag_code_HelloCounterQt} představuje přístup RMGUI v knihovně Qt. Metoda \texttt{init} obsahuje logiku inicializační fáze, která postupně nastaví čtyři ovládaní prvky a stavovou proměnnou. Všechny ovládací prvky jsou vytvořeny a přidány do rozložení hlavního okna, které je reprezentované proměnnou \texttt{layout}. U tlačítek je pomocí funkce \texttt{connect} nastavena jejich callback metoda, která se volá po kliknutí na dané tlačítko. Nakonec je čítač nastaven na svou výchozí hodnotu a volá se metoda \texttt{on\_counter\_update}, která zajistí, aby textové popisky a stav tlačítek (zdali jsou nebo nejsou aktivní) odpovídaly aktuální hodnotě čítače. Callback metody upravují hodnotu čítače, a následně opět volají metodu \texttt{on\_counter\_update}.
 	
-	Kód \ref{_tag_code_HelloCounterImGui} představuje přístup IMGUI v knihovně \textit{Dear ImGui}. Metoda \texttt{update} obsahuje logiku hlavní smyčky, která je obvykle volána se stejnou frekvencí, jako je obnovovací frekvence zobrazovacího zařízení. Jako první je nastaven čítač na svou výchozí hodnotu, kterou si díky klíčovému slovu \texttt{static} drží i při opakovaném volání metody. Vybraná knihovna se chová jako stavový automat, což je vidět na kódu, který následuje: po zavolání metody \texttt{Begin($x$)} je vytvořeno okno s názvem $x$ a všechny další příkazy se provádí relativně k tomuto oknu, dokud není zavolána metoda \texttt{End}. To samé platí pro dvojici metod \texttt{BeginDisabled($p$)} a \texttt{EndDisabled}. Je-li  splněna podmínka $p$, pak jsou veškeré ovládací prvky, jejichž vykreslení je definováno mezi voláními těchto dvou metod, označeny jako neaktivní. Metoda \texttt{Button} říká, že má být vykresleno dané tlačítko, a zároveň vrací hodnotu, která vyjadřuje, zdali bylo tlačítko stisknuto. Metoda \texttt{Text} pak vykresluje textové popisky. Oproti přístupu RMGUI, kde se u objektu reprezentujícího textové pole, který je pod správou knihovny Qt, přenastavuje parametr viditelnosti, je zde samotné vykreslení textu s pozdravem podmíněno.
+	Kód \ref{_tag_code_HelloCounterImGui} představuje přístup IMGUI v knihovně \textit{Dear ImGui}. Metoda \texttt{update} obsahuje logiku hlavní smyčky, která je obvykle volána se stejnou frekvencí, jako je obnovovací frekvence zobrazovacího zařízení. Jako první je nastaven čítač na svou výchozí hodnotu, kterou si díky klíčovému slovu \texttt{static} drží i při opakovaném volání metody. Vybraná knihovna se chová jako stavový automat, což je vidět na kódu, který následuje: po zavolání metody \texttt{Begin($x$)} je vytvořeno okno s názvem $x$ a všechny další příkazy se provádí relativně k tomuto oknu, dokud není zavolána metoda \texttt{End}. To samé platí pro dvojici metod \texttt{BeginDisabled($p$)} a \texttt{EndDisabled}. Je-li  splněna podmínka $p$, pak jsou veškeré ovládací prvky, jejichž vykreslení je definováno mezi voláními těchto dvou metod, označeny jako neaktivní. Metoda \texttt{Button} říká, že má být vykresleno dané tlačítko, a zároveň vrací pravdivostní hodnotu, která vyjadřuje, zdali bylo tlačítko stisknuto. Metoda \texttt{Text} pak vykresluje textové popisky. Oproti přístupu RMGUI, kde se u objektu reprezentujícího textové pole, který je pod správou knihovny Qt, přenastavuje parametr viditelnosti, je zde samotné vykreslení textu s pozdravem podmíněno.
 	
 	% <? Zde by mohla být přidána sekce nastiňující jak to funguje pod kapotou (IMGUI vs RMGUI) ?>
 	
@@ -151,9 +154,6 @@
 	% - Fonty
 	% - Koncoví uživatelé jsou zvyklí na "systémově vypadající" aplikace
 	% - Podpora čteček a dalčí možnosti přístupnosti nejsou samozřejmostí
-	
-	% * - https://gamedev.stackexchange.com/a/24148/167872
-	
 	
 	\section{Existující knihovny pro tvorbu GUI aplikací s přístupem IMGUI}
 	
@@ -182,6 +182,8 @@
 	\subsection{Dear ImGui}
 	
 	% * Mrknout na hello imgui a imgui toolkit
+	% * Zmínit docking branch
+	% * Je to C++ nebo jen C?
 	
 	\subsection{egui}
 	
@@ -202,16 +204,16 @@
 	\appendix
 	\chapter{Ukázkové kódy}
 	
-	\begin{figure}[ht]
+	\begin{code}
 		\lstinputlisting[language=CppQt]{code/hello_counter_rmgui.cpp}
 		\caption{Kód demonstrující přístup RMGUI s využitím knihovny Qt}
 		\label{_tag_code_HelloCounterQt}
-	\end{figure}
+	\end{code}
 	
-	\begin{figure}[ht]
+	\begin{code}
 		\lstinputlisting[language=CppImGui]{code/hello_counter_imgui.cpp}
 		\caption{Kód demonstrující přístup IMGUI s využitím knihovny Dear ImGui}
 		\label{_tag_code_HelloCounterImGui}
-	\end{figure}
+	\end{code}
 	
 \end{document}

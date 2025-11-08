@@ -34,6 +34,7 @@ PUBLISHED/
 *.ilg
 *.ind
 *.ist
+*.locode
 *.lof
 *.log
 *.lol
