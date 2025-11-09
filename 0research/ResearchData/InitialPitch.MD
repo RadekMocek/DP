@@ -15,7 +15,7 @@ Proto mě napadá zvolit si nějaký IMGUI framework (Dear ImGui, Nuklear, ...) 
 
 ## Ukázková aplikace
 
-Napadá mě jednoduchý editor stavových/class diagramů. Preferuji WYSIWYM před WYSIWYG. To je např. Mermaid, ten ale nedává žádnou kontrolu pro umístění jednotlivých uzlů apod. Běžně používám Draw.io, to je ale na mě někdy až zbytečně komplexní: když chci hnout s uzlem, tak se to s sebou snaží dynamicky vzít všechny přidružené hrany... to bych raději dělal ručně. Zkrátka by se mi líbilo něco víc _simple studid_. V jedné části obrazovky by byl kód ve stylu XML/JSON a v druhé výsledný diagram: obdélníčky s textem spojené šipkami :).
+Napadá mě jednoduchý editor stavových/class diagramů. Preferuji WYSIWYM před WYSIWYG. To je např. Mermaid, ten ale nedává žádnou kontrolu pro umístění jednotlivých uzlů apod. Běžně používám Draw.io, to je ale na mě někdy až zbytečně komplexní: když chci hnout s uzlem, tak se to s sebou snaží dynamicky vzít všechny přidružené hrany... to bych raději dělal ručně. Zkrátka by se mi líbilo něco víc _simple studid_. V&nbsp;jedné části obrazovky by byl kód ve stylu XML/JSON a v druhé výsledný diagram: obdélníčky s textem spojené šipkami :).
 
 ## Zadání
 

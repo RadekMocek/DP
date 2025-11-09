@@ -12,7 +12,7 @@
     * Potřeba globálních identifikátorů pro GUI prvky, přistupujeme k nim z různých míst (init, callback metoda)
   * IMGUI: Není nutný init, žádné callbacky, pouze hlavní smyčka (_main update path_)
     * Podobnost k immediate mode drawing
-    * V hlavní smyčce si řešíme logiku „sami“
+    * V hlavní smyčce si řešíme logiku „sami“ a nemusíme mapovat naší logiku na logiku knihovny
     * Tohle je celá myšlenka; implementováno to může být různě
     * Vhodné pro realtime aplikace, vhodné pro integraci s _unaware components_ (např. 3D aplikace)
     * Nevýhoda je složitá „reflexe“, např. když chceme vědět, jak je náš layout widgetů velký a nějak na to zareagovat – vždy budeme o&nbsp;jeden frame dozadu, nejdřív se to musí vykreslit (např. window autosize)
@@ -25,22 +25,27 @@
 * [IMGUI tutorial by Jari Komppa](http://iki.fi/sol/imgui/)
   * _There's a bit of global data that's shared by all of the widgets that enables them to work. There's no setup phase, but if a widget needs some data to show it's state (say, a scroll bar, text edit field, etc), the state data is owned by the host application and not the widget. This is surprisingly handy and performance-friendly, as there's no querying and message-sending involved. There's also no cleanup required, except for the data that you have allocated yourself. The widgets only exist when they're called, so you'll need to ask for them each frame you want to use them._
   * _Nothing is ever simply positive, and IMGUI does have its problems. The most obvious one is that it's just about as anti-OOP as you can get, so it may feel wrong for you. Other problems are related to the fact that the widgets don't really exist except when they are queried, and as such things like automatic layouts or keyboard focus get somewhat more difficult._
-* __<https://news.ycombinator.com/item?id=24318313>__
+* <https://news.ycombinator.com/item?id=24318313>
   * _it's important to point out that "immediate mode" only applies to the API, not to the implementation_
-* __<https://github.com/ocornut/imgui/wiki/About-the-IMGUI-paradigm>__
+* <https://github.com/ocornut/imgui/wiki/About-the-IMGUI-paradigm>
   * _Nowadays I am starting to believe that the term has caused more harm than benefits, because it suggests there are two camps "IMGUI" vs "RMGUI". The reality is there is a continuum of possibilities over multiple unrelated axises. Many of them haven't been explored enough, as popular IMGUI libraries have been designed for certain needs and not others._
   * Viz _Modeless write-up_
+* [CppCon 2016: Nicolas Guillemot "Dear imgui", YouTube, 4 minuty, ale není úplně korektní](https://youtu.be/LSRJ1jZq90k)
+  * ~ Render each iteration – looks weird at a first glance, but is actually better at clean code and speed of coding
+  * IMGUI approach is very dynamic
+  * Comments:
+    * _it really does not regenerate the entire GUi it store a lot (and i mean a lot) of state internally. So technically the library emulates immediate mode._, _that's the imgui performance secret sauce. immediate mode interface, retained mode implementation. Some imgui implementations make that more explicit, where you actually have to manually mark widgets as "dirty" and etc._
 * Knihy? Papers?
   * [Digital Image Processing: Practical Approach](https://link.springer.com/chapter/10.1007/978-3-319-96634-2_2) obsahuje nějaké imgui snippety
   * [Exploring the immediate mode GUI concept for graphical user interfaces in mixed reality applications](https://www.researchgate.net/publication/386416751_Exploring_the_immediate_mode_GUI_concept_for_graphical_user_interfaces_in_mixed_reality_applications)
   * [2025 paper, není anglicky](http://vestnik2079-5459.khpi.edu.ua/article/view/325758)
+  * [2003 OG paper, Zero Memory Widgets](https://web.archive.org/web/20220516004122/https://perso.univ-lyon1.fr/thierry.excoffier/ZMW/rr_2003_03_11.pdf)
 
 ## Reference
 
 * [What are the algorithms and the data structures for GUIs and input management? - Theoretical Computer Science Stack Exchange](https://cstheory.stackexchange.com/questions/20369)
 * [IMGUI on C2 WIKI](https://wiki.c2.com/?ImmediateModeGui)
-* [CppCon 2016: Nicolas Guillemot "Dear imgui", YouTube, 4 minuty, pěkný slide pros & cons](https://youtu.be/LSRJ1jZq90k)
-* [__Immediate Mode GUI Is a Mirage__](http://geoffprewett.com/blog/software/ImmediateModeGUIIsAMirage.html)
+* [Immediate Mode GUI Is a Mirage](http://geoffprewett.com/blog/software/ImmediateModeGUIIsAMirage.html)
 * [Immediate Mode GUIs](https://news.wolfgame.com/post/116650847232/immediate-mode-guis)
 * [Johannes Norneby's take on IMGUI](https://www.johno.se/book/imgui.html)
 * [Statefulness in GUIs](https://samsartor.com/guis-1/)

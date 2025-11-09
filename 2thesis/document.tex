@@ -113,7 +113,7 @@
 	
 	\chapter{Grafické uživatelské rozhraní v režimu okamžitého vykreslování}
 	
-	Grafické uživatelské rozhraní v režimu okamžitého vykreslování (\textit{immediate mode graphical user interface}, zkráceně IMGUI) je specifický přístup k programování aplikačního softwaru s grafickým uživatelským rozhraním. Základní myšlenku tohoto přístupu veřejně představil Casey Muratori již v roce 2005. Definice IMGUI není příliš komplexní ani striktní, a proto se postupem času začaly objevovat různé úhly pohledu a interpretace toho, co by „okamžitý režim“ v kontextu vývoje GUI aplikací měl a neměl znamenat. \cite{online_casey}
+	Grafické uživatelské rozhraní v režimu okamžitého vykreslování (\textit{immediate mode graphical user interface}, zkráceně IMGUI) je specifický přístup k programování aplikačního softwaru s grafickým uživatelským rozhraním. Základní koncept tohoto přístupu veřejně představil Casey Muratori v roce 2005 a s podobnou myšlenkou pracoval i Thierry Excoffier v roce 2003 \cite{report_zeromemorywidgets}. Definice IMGUI není příliš komplexní ani striktní, a proto se postupem času začaly objevovat různé úhly pohledu a interpretace toho, co by „okamžitý režim“ v kontextu vývoje GUI aplikací měl a neměl znamenat. \cite{online_casey}
 	
 	Autor přístupu IMGUI využil pro jeho pojmenování přívlastek „okamžitý“ z důvodu určité podobnosti k režimu okamžitého vykreslování v některých grafických API té doby \cite{online_casey}. Příkladem může být Direct3D, grafické API od společnosti Microsoft, které mohlo dříve pracovat ve dvou režimech: soběstačný (\textit{retained}) a okamžitý (\textit{immediate}). Z pohledu abstrakce je soběstačný režim na vyšší úrovni, kdy si knihovna interně uchovává model 3D scény a od aplikačního kódu přijímá příkazy, které manipulují s objekty v této scéně. Pro vykreslení snímku pak knihovna transformuje informace o objektech ve scéně na sadu příkazů pro vykreslování. V okamžitém režimu se s modelem scény pracuje na straně aplikačního kódu a knihovna přijímá až samotné příkazy pro vykreslování. Tím sice narůstá počet úkonů, které musí být provedeny na straně aplikačního kódu, zároveň se ale zvětšuje flexibilita a prostor pro optimalizace. \cite{book_direct3dbible, online_direct2d}
 	
@@ -131,11 +131,17 @@
 	
 	Kód \ref{_tag_code_HelloCounterImGui} představuje přístup IMGUI v knihovně \textit{Dear ImGui}. Metoda \texttt{update} obsahuje logiku hlavní smyčky, která je obvykle volána se stejnou frekvencí, jako je obnovovací frekvence zobrazovacího zařízení. Jako první je nastaven čítač na svou výchozí hodnotu, kterou si díky klíčovému slovu \texttt{static} drží i při opakovaném volání metody. Vybraná knihovna se chová jako stavový automat, což je vidět na kódu, který následuje: po zavolání metody \texttt{Begin($x$)} je vytvořeno okno s názvem $x$ a všechny další příkazy se provádí relativně k tomuto oknu, dokud není zavolána metoda \texttt{End}. To samé platí pro dvojici metod \texttt{BeginDisabled($p$)} a \texttt{EndDisabled}. Je-li  splněna podmínka $p$, pak jsou veškeré ovládací prvky, jejichž vykreslení je definováno mezi voláními těchto dvou metod, označeny jako neaktivní. Metoda \texttt{Button} říká, že má být vykresleno dané tlačítko, a zároveň vrací pravdivostní hodnotu, která vyjadřuje, zdali bylo tlačítko stisknuto. Metoda \texttt{Text} pak vykresluje textové popisky. Oproti přístupu RMGUI, kde se u objektu reprezentujícího textové pole, který je pod správou knihovny Qt, přenastavuje parametr viditelnosti, je zde samotné vykreslení textu s pozdravem podmíněno.
 	
+	% [? Obrázek HelloCounter ?]
+	
 	% <? Zde by mohla být přidána sekce nastiňující jak to funguje pod kapotou (IMGUI vs RMGUI) ?>
 	
-	Z rozdílů mezi řešeními pomocí RMGUI a IMGUI, které byly představeny v této ukázce, vyplývají některé přednosti a úskalí obou přístupů. Nejprve je ale třeba zmínit, že problematika není takto černobílá. Jednotlivé architektury a knihovny se mohou lišit v drobných detailech, kombinovat oba přístupy, nebo problém řešit přístupem zcela odlišným. Např., oproti zde představenému řešení v knihovně Qt, by v architektuře MVVM mohla hodnota textového popisku být svázána přímo s proměnnou reprezentující hodnotu čítače. Vzdálenějším příkladem je knihovna React, která si uchovává strom programátorem definovaných komponent ve stylu soběstačného režimu, logika jednotlivých komponent se pak ale více podobná režimu okamžitému \cite{online_hybridui}.
+	Z rozdílů mezi řešeními pomocí RMGUI a IMGUI, které byly představeny v této ukázce, vyplývají některé přednosti a úskalí obou přístupů. Nejprve je ale třeba zmínit, že problematika není takto černobílá. Jednotlivé architektury a knihovny se mohou lišit v drobných detailech, kombinovat oba přístupy, nebo problém řešit přístupem zcela odlišným. Např., oproti zde představenému řešení v knihovně Qt, by v architektuře MVVM mohla hodnota textového popisku být svázána přímo s proměnnou reprezentující hodnotu čítače.
+	
+	Vzdálenějším příkladem jsou knihovny pro tvorbu GUI v jazyce JavaScript, jako je např. React. Zde si knihovna obvykle uchovává strom programátorem definovaných komponent ve stylu soběstačného režimu. Z pohledu aplikačního kódu se pak ale logika jednotlivých komponent místy podobá režimu okamžitému. \cite{online_hybridui}
 	
 	\section{Důsledky přístupu IMGUI}
+	
+	Výhody přístupu IMGUI se projevují především při psaní aplikačního kódu. Knihovna neustále přijímá příkazy pro vykreslování samotných ovládacích prvků a díky tomu si nemusí uchovávat jejich stav. Toto platí alespoň z pohledu programátora koncové aplikace. Nemusí to nutně znamenat, že si knihovna pracující v okamžitém režimu nemůže o ovládacích prvcích uchovávat žádná data. Příkladem stavu u tlačítka může být jeho textový popisek, nebo informace o tom, zdali je aktivní. Tento stav je tlačítku předán v každém průchodu hlavní smyčkou jako součást volání příkazu pro jeho vykreslení. Všechny stavové hodnoty jsou tedy uloženy a spravovány pouze na straně aplikačního kódu
 	
 	% IMGUI:
 	% - furt se překresluje → performance
@@ -143,7 +149,7 @@
 	% - koncept widgetů neexistuje mimo jejich samotné vykreslení, problém opět při auto layout nebo přepínání pomocí tab/alt, ...
 	% + minimální stav, eliminace getů a setů z objektů reprezentujících widgety (data is owned by the host application and not the widget)
 	% + rychlé, nepříliš ukecané
-	% + knihovny mohou být velmi malé; kód začne bobtnat s příchodem optimalizací (cache, vykreslovat jen když je potřeba)? https://rxi.github.io/cached_software_rendering.html
+	% + knihovny mohou být velmi malé; kód začne bobtnat s příchodem optimalizací (cache, vykreslovat jen když je potřeba)?
 	% "The widgets only exist when they're called, so you'll need to ask for them each frame you want to use them" → snadno lze dělat velmi proměnlivé UI
 	% ~ související věci na jednom místě → význam, logika, design, prezentace se mixují, ale...?
 	% ~ není OOP friendly ?
@@ -153,7 +159,7 @@
 	% + Ideální pro kombinaci s dalším řešením využívajícím realtime rendering (unaware components)
 	% - Fonty
 	% - Koncoví uživatelé jsou zvyklí na "systémově vypadající" aplikace
-	% - Podpora čteček a dalčí možnosti přístupnosti nejsou samozřejmostí
+	% - Podpora čteček a další možnosti přístupnosti nejsou samozřejmostí
 	
 	\section{Existující knihovny pro tvorbu GUI aplikací s přístupem IMGUI}
 	
