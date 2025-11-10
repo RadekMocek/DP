@@ -1,7 +1,7 @@
 # Gio
 
 * `00SampleProject` – Empty Gio project
-* `01HelloCounter` – HelloCounter (simple counter project for understanding the basic principles of the imgui paradigm)
+* `01HelloCounter` – HelloCounter (simple counter project for understanding the basic principles of the IMGUI paradigm)
 
 ## Running Gio
 

@@ -1,7 +1,9 @@
 # microui
 
-* `00SampleProject` – Empty microui project; uses vcpkg to get SDL2
-* `01HelloCounter` – HelloCounter (simple counter project for understanding the basic principles of the imgui paradigm); uses vcpkg to get SDL2
+* Projects that use vcpkg to get _SDL2_:
+  * `00SampleProject` – Empty microui project
+  * `01HelloCounter` – HelloCounter (simple counter project for understanding the basic principles of the IMGUI paradigm)
+  * `02Playground` – Project for testing microui features as part of the research
 
 ## Running microui with SDL2, vcpkg
 

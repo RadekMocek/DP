@@ -141,7 +141,7 @@
 	
 	\section{Důsledky přístupu IMGUI}
 	
-	Výhody přístupu IMGUI se projevují především při psaní aplikačního kódu. Knihovna neustále přijímá příkazy pro vykreslování samotných ovládacích prvků a díky tomu si nemusí uchovávat jejich stav. Toto platí alespoň z pohledu programátora koncové aplikace. Nemusí to nutně znamenat, že si knihovna pracující v okamžitém režimu nemůže o ovládacích prvcích uchovávat žádná data \cite{online_imguiwiki}.
+	Výhody přístupu IMGUI se projevují především při psaní aplikačního kódu. Knihovna neustále přijímá příkazy pro vykreslování samotných ovládacích prvků, a díky tomu si nemusí uchovávat jejich stav. Toto platí alespoň z pohledu programátora koncové aplikace. Nemusí to nutně znamenat, že si knihovna pracující v okamžitém režimu nemůže o ovládacích prvcích uchovávat žádná data \cite{online_imguiwiki}.
 	
 	Příkladem myšleného stavu u tlačítka může být jeho textový popisek, nebo informace o tom, zdali je tlačítko aktivní. Tento stav je tlačítku předán v každém průchodu hlavní smyčkou jako součást volání příkazů pro jeho vykreslení. Všechny stavové hodnoty jsou tedy uloženy a spravovány pouze na straně aplikačního kódu, a není proto nutné je synchronizovat se stavem, který by si udržovala knihovna.
 	
@@ -149,14 +149,26 @@
 	
 	Z hlediska programování samotných knihoven přicházejí s přístupem IMGUI určité implementační výzvy. Překreslování statického GUI šedesátkrát (nebo i vícekrát) za vteřinu by zbytečně zatěžovalo zařízení, a proto je vhodné, aby knihovna dokázala překreslovat jen ty ovládací prvky, které se od minulého průchodu změnily. To znamená, že i když to knihovna nedává nijak najevo, musí si o vykreslovaných ovládacích prvcích interně udržovat určité informace, které přetrvají déle než jeden průchod hlavní smyčkou.
 	
-	Udržovat si určité informace je potřeba i z důvodu podpory komplexnějšího rozložení ovládacích prvků. Příkladem může být dialogové okno, které se má objevit přesně uprostřed hlavního okna a které si automaticky určuje svou velikost podle svého obsahu. Je-li jeho obsahem jedno tlačítko, pak šířka tohoto tlačítka určuje šířku celého dialogového okna. Aby mohlo být dialogové okno umístěno doprostřed okna hlavního, je nejprve potřeba znát jeho velikost\footnote{Pokud se umístění prvků specifikuje souřadnicemi levého horního rohu, pak je horizontální souřadnice prvku, který je umístěn uprostřed rodičovského prvku, vypočítána odečtením poloviny šířky prvku od poloviny šířky rodiče.}, pro kterou je zase potřeba znát šířku tlačítka. Tlačítko je proto nutné vykreslit, v této části kódu ale ještě není známo jeho umístění.
+	Udržovat si určité informace je potřeba i z důvodu podpory komplexnějšího rozložení ovládacích prvků. Jednoduchým příkladem je nemodální dialogové okno, které si automaticky určuje svou velikost podle svého obsahu. Je-li jeho obsahem jeden textový popisek, pak počet řádků tohoto popisku určuje výšku celého dialogového okna. Chová-li se knihovna jako stavový automat, pak je nejprve potřeba vykreslit dialogové okno, a až poté relativně k němu vykreslit textový popisek. Pokud by se o ovládacích prvcích neuchovávala žádná data, pak by v době vykreslování dialogového okna nebyla známa ani existence textového popisku, který se v něm nachází. Problému nenapomáhá ani fakt, že textový popisek může být dynamický a měnit tak svůj obsah každý snímek.
 	
-	Problému nenapomáhá ani fakt, že textový popisek tlačítka je dynamický a může se tedy měnit každý snímek. \cite{online_eguidocs}
+	Řešením může být uchovávání velikosti textového popisku z předchozích iterací, kde je předpoklad takový, že velikost popisku v aktuální iteraci je stejná, jako byla v iteraci předchozí. Změna velikosti textového popisku se s tímto přístupem projeví na velikosti rodičovského okna se zpožděním minimálně jednoho snímku. Alternativně lze pro každý vykreslený snímek projít hlavní smyčkou dvakrát, kdy první průchod řeší korektní rozložení ovládacích prvků, a druhý průchod pak řeší jejich vykreslení a reakce na události. Dále je možné přidat logiku, která určuje, zdali je pro další snímek nutné projít hlavní smyčkou dvakrát, nebo jen jednou. \cite{online_casey, online_eguidocs}
 	
-	% Na imgui pohlížíme z pohledu api, neznamená to tedy, že imgui knihovna nemůže pod kapotou mít uložený nějaký stav, a nebo že musí překreslovat celé gui každý frame; i přesto jde ale ruku v ruce s realtime aplikacemi. Teoreticky nemusí nutně běžet na nějakém opengl apod., ale v praxi to tak obvykle je, a z toho vyplývá:
+	Obrázek \ref{_tag_img_microUiAutosizeDelay}	ukazuje šest po sobě jdoucích snímků aplikace, která s využitím knihovny \textit{microui} vykresluje dvě okna. Vrchní okno, které na začátku obsahuje dva řádky textu, má nastaven příznak \texttt{MU\_OPT\_AUTOSIZE}, který říká, že má dané okno automaticky měnit svou velikost podle svého obsahu. Spodní okno obsahuje tlačítko, které po kliknutí přidá do vrchního okna další dva řádky textu, a textový popisek, který zobrazuje číslo aktuálního snímku. V prvním snímku je zaregistrováno kliknutí na tlačítko. V druhém snímku už vrchní okno obsahuje čtyři řádky textu, které ale v tu chvíli nejsou vidět. Velikost vrchního okna je ustálena až na snímku číslo šest.
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{img/microui_autosize_delay}
+		\caption{Zpoždění při aktualizaci okna s automatickou velikostí}
+		\label{_tag_img_microUiAutosizeDelay}
+	\end{figure}
+	
+	Jak již bylo zmíněno, původní definice přístupu IMGUI se zaměřuje hlavně na to, jak má vypadat kód využívající knihovnu, která tento přístup poskytuje. 
+	
+	% Na imgui pohlížíme z pohledu api, neznamená to tedy, že musí překreslovat celé gui každý frame; i přesto jde ale ruku v ruce s realtime aplikacemi. Teoreticky nemusí nutně běžet na nějakém opengl apod., ale v praxi to tak obvykle je, a z toho vyplývá:
 	% + Vypadá to na všech platformách stejně (a je to multiplatformní)
 	% + Ideální pro kombinaci s dalším řešením využívajícím realtime rendering (unaware components)
 	% ~ NEMODÁLNÍ DIALOGOVÁ OKNA
+	% ~ OS dekorace okna
 	% - Fonty
 	% - Koncoví uživatelé jsou zvyklí na "systémově vypadající" aplikace
 	% - Podpora čteček a další možnosti přístupnosti nejsou samozřejmostí
