@@ -37,6 +37,10 @@ int main()
         }
         GuiSetState(STATE_NORMAL);
 
+        if (counter == 3) {
+            GuiLabel((Rectangle) { 24, 75, 50, 30 }, "Hello!");
+        }
+
         if (show_popup_window) {
             int result = GuiMessageBox((Rectangle) { (float)GetScreenWidth() / 2 - 125, (float)GetScreenHeight() / 2 - 50, 250, 100 },
                 "Pop-up window", "Not much you can do here...", "Close");

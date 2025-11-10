@@ -9,7 +9,7 @@ PUBLISHED/
 # JetBrains
 .idea/
 
-# Cmake
+# CMake
 [Bb]uild/
 
 # Thesis & Slideshow (MiKTeX + TeXstudio)

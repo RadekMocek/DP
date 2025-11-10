@@ -1,5 +1,8 @@
 # Qt
 
+* `00HelloCounter_QtCreator` – HelloCounter (simple counter project for understanding the basic principles of the imgui paradigm (and the difference compared to rmgui)); project made in Qt Creator, so not very compatible
+* `01HelloCounter_Independent` – HelloCounter; this project doesn't need Qt Creator (and defines layout in code instead of a .ui file), local installation of Qt is needed
+
 ## Running Qt 6.10.0
 
 ### Windows 10 22H2 + Visual Studio 2022

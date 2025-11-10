@@ -1,5 +1,8 @@
 # Avalonia
 
+* `00HelloCounter_CodeBehind` – HelloCounter (simple counter project for understanding the basic principles of the imgui paradigm (and the difference compared to rmgui)); uses the "code behind" approach
+* `01HelloCounter_Independent` – HelloCounter; uses the "MVVM" approach
+
 ## Running Avalonia
 
 ### Windows 10 22H2

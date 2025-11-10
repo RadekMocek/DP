@@ -4,8 +4,8 @@
 include(FetchContent)
 
 # Project name is not the same as binary name
-set(PROJECT_NAME "ImGuiProj")
-set(BINARY_NAME "ImGuiApp")
+set(PROJECT_NAME "NuklearProj")
+set(BINARY_NAME "NuklearApp")
 
 # Project setup
 project("${PROJECT_NAME}")
@@ -20,11 +20,10 @@ set(GLFW_INSTALL OFF CACHE BOOL "" FORCE)
 set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
 
 # Configure, fetch and use 'imgui-glfw-glad-glm' by 'cmmw' <3
-set(IGG_COMPONENTS  "IMGUI" CACHE STRING "" FORCE)
+set(IGG_COMPONENTS  "GLFW;GLAD" CACHE STRING "" FORCE)
 set(IGG_GLAD_DOWNLOAD ON CACHE BOOL "" FORCE)
 set(IGG_GLAD_GL_CORE ON CACHE BOOL "" FORCE)
-set(IGG_GLAD_GL_VERSION "4.6" CACHE STRING "" FORCE)
-set(IGG_IMGUI_TAG "v1.91.9b" CACHE STRING "" FORCE)
+set(IGG_GLAD_GL_VERSION "3.3" CACHE STRING "" FORCE)
 set(IGG_GLFW_TAG "3.3.10" CACHE STRING "" FORCE)
 FetchContent_Declare(
     imgui-glfw-glad-glm
@@ -33,14 +32,28 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(imgui-glfw-glad-glm)
 
-# Executable setup
-file(GLOB_RECURSE SOURCES 
-    "${PROJECT_SOURCE_DIR}/App/*.cpp"    
+# Fetch Nuklear
+FetchContent_Declare(
+    nuklear
+    GIT_REPOSITORY https://github.com/Immediate-Mode-UI/Nuklear.git
+    GIT_TAG 242f35efa067a46c595645eeda7b1771ea1f83b1 # 4.12.8
 )
+FetchContent_MakeAvailable(nuklear)
 
+# Fetch stb
+FetchContent_Declare(
+    stb
+    GIT_REPOSITORY https://github.com/nothings/stb.git
+    GIT_TAG master
+    GIT_SHALLOW TRUE
+)
+FetchContent_MakeAvailable(stb)
+add_library(stb INTERFACE ${stb_SOURCE_DIR}/stb_image.h)
+target_include_directories(stb INTERFACE ${stb_SOURCE_DIR})
+
+# Executable setup
 add_executable("${BINARY_NAME}"
-    "Run.cpp"
-	${SOURCES}
+    "NuklearApp.c"
 )
 
 if(MSVC)
@@ -48,10 +61,15 @@ if(MSVC)
 endif()
 
 target_link_libraries("${BINARY_NAME}"
-    imgui
+    glfw
+    glad
+    stb
 )
 
-# Copy resources folder
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/App/Resources 
-	DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/App/
+target_include_directories("${BINARY_NAME}" SYSTEM PRIVATE
+    ${nuklear_SOURCE_DIR}	
 )
+
+# Copy font folder
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/font
+    DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
