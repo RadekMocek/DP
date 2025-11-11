@@ -97,14 +97,21 @@
 	\clearpage
 	
 	% Zkratky
-	\begin{abbrList}
+	
+	\newenvironment{abbrList2}{\phantomsection
+		{\section*{Seznam zkratek}\addcontentsline{toc}{section}{Seznam zkratek}}
+		\noindent\tabularx{\linewidth}{@{}lX@{}}}
+	{\endtabularx
+		\clearpage}
+	
+	\begin{abbrList2}
 		\textbf{API} & application programming interface, rozhraní pro programování aplikací \\
 		\textbf{GUI} & graphical user interface, grafické uživatelské rozhraní \\
 		\textbf{IMGUI} & immediate mode graphical user interface, grafické uživatelské rozhraní v režimu okamžitého vykreslování \\
 		\textbf{MVVM} & model–view–viewmodel, architektonický vzor \\
 		\textbf{RMGUI} & retained mode graphical user interface, grafické uživatelské rozhraní v režimu soběstačného vykreslování \\
 		\textbf{WPF} & Windows Presentation Foundation, knihovna umožňující tvorbu GUI aplikací pro operační systém Windows \\
-	\end{abbrList}
+	\end{abbrList2}
 	
 	% Jádro zprávy
 	\chapter{Úvod}
@@ -129,15 +136,15 @@
 	
 	Z důvodu zvýšení přehlednosti neobsahují ukázky logiku pro nastavení vzhledu a rozmístění ovládacích prvků, je zde pouze to důležité pro pochopení principu daného přístupu. Kód \ref{_tag_code_HelloCounterQt} představuje přístup RMGUI v knihovně Qt. Metoda \texttt{init} obsahuje logiku inicializační fáze, která postupně nastaví čtyři ovládaní prvky a stavovou proměnnou. Všechny ovládací prvky jsou vytvořeny a přidány do rozložení hlavního okna, které je reprezentované proměnnou \texttt{layout}. U tlačítek je pomocí funkce \texttt{connect} nastavena jejich callback metoda, která se volá po kliknutí na dané tlačítko. Nakonec je čítač nastaven na svou výchozí hodnotu a volá se metoda \texttt{on\_counter\_update}, která zajistí, aby textové popisky a stav tlačítek (zdali jsou nebo nejsou aktivní) odpovídaly aktuální hodnotě čítače. Callback metody upravují hodnotu čítače, a následně opět volají metodu \texttt{on\_counter\_update}. Všechny čtyři ovládací prvky v této ukázce jsou dynamické, a proto se musí jednat o členy třídy \texttt{App}, aby k nim bylo možné přistupovat z callback metod.
 	
-	Kód \ref{_tag_code_HelloCounterImGui} představuje přístup IMGUI v knihovně \textit{Dear ImGui}. Metoda \texttt{update} obsahuje logiku hlavní smyčky, která je obvykle volána se stejnou frekvencí, jako je obnovovací frekvence zobrazovacího zařízení. Jako první je nastaven čítač na svou výchozí hodnotu, kterou si díky klíčovému slovu \texttt{static} drží i při opakovaném volání metody. Vybraná knihovna se chová jako stavový automat, což je vidět na kódu, který následuje: po zavolání metody \texttt{Begin($x$)} je vytvořeno okno s názvem $x$ a všechny další příkazy se provádí relativně k tomuto oknu, dokud není zavolána metoda \texttt{End}. To samé platí pro dvojici metod \texttt{BeginDisabled($p$)} a \texttt{EndDisabled}. Je-li  splněna podmínka $p$, pak jsou veškeré ovládací prvky, jejichž vykreslení je definováno mezi voláními těchto dvou metod, označeny jako neaktivní. Metoda \texttt{Button} říká, že má být vykresleno dané tlačítko, a zároveň vrací pravdivostní hodnotu, která vyjadřuje, zdali bylo tlačítko stisknuto. Metoda \texttt{Text} pak vykresluje textové popisky. Oproti přístupu RMGUI, kde se u objektu reprezentujícího textové pole, který je pod správou knihovny Qt, přenastavuje parametr viditelnosti, je zde samotné vykreslení textu s pozdravem podmíněno.
+	Kód \ref{_tag_code_HelloCounterImGui} představuje přístup IMGUI v knihovně \textit{Dear ImGui}. Metoda \texttt{update} obsahuje logiku hlavní smyčky, která je obvykle volána se stejnou frekvencí, jako je obnovovací frekvence zobrazovacího zařízení. Jako první je nastaven čítač na svou výchozí hodnotu, kterou si díky klíčovému slovu \texttt{static} drží i při opakovaném volání metody. Vybraná knihovna se chová jako stavový automat, což je vidět na kódu, který následuje: po zavolání metody \texttt{Begin($x$)} je vytvořeno okno s názvem $x$ a všechny další příkazy se provádí relativně k tomuto oknu, dokud není zavolána metoda \texttt{End}. To samé platí pro dvojici metod \texttt{BeginDisabled($p$)} a \texttt{EndDisabled}. Je-li  splněna podmínka $p$, pak jsou veškeré ovládací prvky, jejichž vykreslení je definováno mezi voláními těchto dvou metod, označeny jako neaktivní. Metoda \texttt{Button} říká, že má být vykresleno dané tlačítko, a zároveň vrací pravdivostní hodnotu, která vyjadřuje, zdali bylo tlačítko stisknuto. Metoda \texttt{Text} pak vykresluje textové popisky. Oproti přístupu RMGUI, kde se u objektu pod správou knihovny Qt, který reprezentuje textové pole s pozdravem, přepíná parametr viditelnosti, je v přístupu IMGUI vykreslení textu jednoduše podmíněno.
 	
 	% [? Obrázek HelloCounter ?]
 	
 	% <? Zde by mohla být přidána sekce nastiňující jak to funguje pod kapotou (IMGUI vs RMGUI) ?>
 	
-	Z rozdílů mezi řešeními pomocí RMGUI a IMGUI, které byly představeny v této ukázce, vyplývají některé přednosti a úskalí obou přístupů. Nejprve je ale třeba zmínit, že problematika není takto černobílá. Jednotlivé architektury a knihovny se mohou lišit v drobných detailech, kombinovat oba přístupy, nebo problém řešit přístupem zcela odlišným. Např., oproti zde představenému řešení v knihovně Qt, by v architektuře MVVM mohla hodnota textového popisku být svázána přímo s proměnnou reprezentující hodnotu čítače.
+	Z rozdílů mezi řešeními pomocí RMGUI a IMGUI, které byly představeny v této ukázce, vyplývají některé přednosti a úskalí obou přístupů. Nejprve je ale třeba zmínit, že problematika není takto černobílá. Jednotlivé architektury a knihovny se mohou lišit v drobných detailech, kombinovat oba přístupy, nebo problém řešit přístupem zcela odlišným. Např., oproti zde představenému řešení v knihovně Qt, by v architektuře MVVM mohla být hodnota textového popisku svázána přímo s proměnnou reprezentující hodnotu čítače. Při jakékoliv změně proměnné \texttt{counter} by se pak hodnota popisku \texttt{label\_counter\_value} aktualizovala automaticky.
 	
-	Vzdálenějším příkladem jsou knihovny pro tvorbu GUI v jazyce JavaScript, jako je např. React. Zde si knihovna obvykle uchovává strom programátorem definovaných komponent ve stylu soběstačného režimu. Z pohledu aplikačního kódu se pak ale logika jednotlivých komponent místy podobá režimu okamžitému. \cite{online_hybridui}
+	Vzdálenějším příkladem jsou knihovny pro tvorbu GUI v jazyce JavaScript, jako je např. React. Zde si knihovna obvykle uchovává strom programátorem definovaných komponent ve stylu soběstačného režimu. Z pohledu aplikačního kódu se pak ale logika jednotlivých komponent místy podobá spíše režimu okamžitému. \cite{online_hybridui}
 	
 	\section{Důsledky přístupu IMGUI}
 	
@@ -149,11 +156,11 @@
 	
 	Z hlediska programování samotných knihoven přicházejí s přístupem IMGUI určité implementační výzvy. Překreslování statického GUI šedesátkrát (nebo i vícekrát) za vteřinu by zbytečně zatěžovalo zařízení, a proto je vhodné, aby knihovna dokázala překreslovat jen ty ovládací prvky, které se od minulého průchodu změnily. To znamená, že i když to knihovna nedává nijak najevo, musí si o vykreslovaných ovládacích prvcích interně udržovat určité informace, které přetrvají déle než jeden průchod hlavní smyčkou.
 	
-	Udržovat si určité informace je potřeba i z důvodu podpory komplexnějšího rozložení ovládacích prvků. Jednoduchým příkladem je nemodální dialogové okno, které si automaticky určuje svou velikost podle svého obsahu. Je-li jeho obsahem jeden textový popisek, pak počet řádků tohoto popisku určuje výšku celého dialogového okna. Chová-li se knihovna jako stavový automat, pak je nejprve potřeba vykreslit dialogové okno, a až poté relativně k němu vykreslit textový popisek. Pokud by se o ovládacích prvcích neuchovávala žádná data, pak by v době vykreslování dialogového okna nebyla známa ani existence textového popisku, který se v něm nachází. Problému nenapomáhá ani fakt, že textový popisek může být dynamický a měnit tak svůj obsah každý snímek.
+	Udržovat si určité informace je potřeba i z důvodu podpory komplexnějšího rozložení ovládacích prvků. Jednoduchým příkladem je nemodální dialogové okno, které si automaticky určuje svou velikost podle svého obsahu. Je-li jeho obsahem jeden textový popisek, pak počet řádků tohoto popisku určuje výšku celého dialogového okna. Chová-li se knihovna jako stavový automat, pak je nejprve potřeba vykreslit dialogové okno, a až poté relativně k němu vykreslit textový popisek. Pokud by se o ovládacích prvcích neuchovávala žádná data, pak by v době vykreslování dialogového okna nebyla existence textového popisku, který se v něm nachází, vůbec známa. Problému nenapomáhá ani fakt, že textový popisek může být dynamický a měnit tak svůj obsah každý snímek.
 	
 	Řešením může být uchovávání velikosti textového popisku z předchozích iterací, kde je předpoklad takový, že velikost popisku v aktuální iteraci je stejná, jako byla v iteraci předchozí. Změna velikosti textového popisku se s tímto přístupem projeví na velikosti rodičovského okna se zpožděním minimálně jednoho snímku. Alternativně lze pro každý vykreslený snímek projít hlavní smyčkou dvakrát, kdy první průchod řeší korektní rozložení ovládacích prvků, a druhý průchod pak řeší jejich vykreslení a reakce na události. Dále je možné přidat logiku, která určuje, zdali je pro další snímek nutné projít hlavní smyčkou dvakrát, nebo jen jednou. \cite{online_casey, online_eguidocs}
 	
-	Obrázek \ref{_tag_img_microUiAutosizeDelay}	ukazuje šest po sobě jdoucích snímků aplikace, která s využitím knihovny \textit{microui} vykresluje dvě okna. Vrchní okno, které na začátku obsahuje dva řádky textu, má nastaven příznak \texttt{MU\_OPT\_AUTOSIZE}, který říká, že má dané okno automaticky měnit svou velikost podle svého obsahu. Spodní okno obsahuje tlačítko, které po kliknutí přidá do vrchního okna další dva řádky textu, a textový popisek, který zobrazuje číslo aktuálního snímku. V prvním snímku je zaregistrováno kliknutí na tlačítko. V druhém snímku už vrchní okno obsahuje čtyři řádky textu, které ale v tu chvíli nejsou vidět. Velikost vrchního okna je ustálena až na snímku číslo šest.
+	Obrázek \ref{_tag_img_microUiAutosizeDelay}	ukazuje šest po sobě jdoucích snímků aplikace, která s využitím knihovny \textit{microui} vykresluje dvě okna. Vrchní okno, které na začátku obsahuje dva řádky textu, má nastaven příznak \texttt{MU\_OPT\_AUTOSIZE}, který říká, že má dané okno automaticky měnit svou velikost podle svého obsahu. Spodní okno obsahuje tlačítko, které po kliknutí přidá do vrchního okna další dva řádky textu, a textový popisek, který zobrazuje číslo aktuálního snímku. V prvním snímku je zaregistrováno kliknutí na tlačítko. V druhém snímku už vrchní okno obsahuje čtyři řádky textu, které ale v tu chvíli nejsou ještě vidět. Velikost vrchního okna je ustálena až na snímku číslo šest.
 	
 	\begin{figure}[ht]
 		\centering
@@ -164,21 +171,17 @@
 	
 	Jak již bylo zmíněno, původní definice přístupu IMGUI se zaměřuje hlavně na to, jak má vypadat aplikační kód, který využívá knihovnu poskytující tento přístup. Teoreticky tedy mohou jednotlivé knihovny využívat libovolných technologií. V praxi mají ale všechny jedno společné: pro zobrazování GUI využívají některého z existujících rozhraní pro vykreslování počítačové grafiky, jako je např. OpenGL, Vulkan, nebo DirectX. V terminologii přístupu IMGUI bývá takovéto rozhraní nazýváno \textit{backend}.
 	
-	Z využití multiplatformního grafického API vyplývá několik vlastností. Výsledná aplikace by měla podporovat všechny platformy, které jsou podporované vybraným backendem, a zároveň bude na všech platformách vypadat stejně (až na tzv. dekorace okna, které přidává operační systém). Stejný vzhled na všech platformách nemusí být nutně výhodou. Koncoví uživatelé mohou být zvyklí na to, že jejich aplikace vypadají „nativně“, tedy že využívají ovládacích prvků poskytnutých daným operačním systémem.
+	Z využití multiplatformního grafického API vyplývá několik vlastností. Výsledná aplikace by měla podporovat všechny platformy, které jsou podporované vybraným backendem, a zároveň bude na všech platformách vypadat stejně (až na tzv. dekorace okna, které přidává operační systém). Stejný vzhled na všech platformách nemusí být nutně výhodou. Koncoví uživatelé mohou být zvyklí na to, že jejich aplikace vypadají „nativně“, tedy že využívají ovládacích prvků poskytnutých daným operačním systémem. Díky tomu, že knihovna zobrazuje GUI posíláním příkazů pro vykreslení vybranému backendu, může být vzhled ovládacích prvků výsledné aplikace velmi přizpůsobitelný včetně možnosti snadno jej měnit i za běhu aplikace. To umožňuje mimo jiné imitovat nativní vzhled aplikací.
 	
-	Díky tomu, že knihovna zobrazuje GUI posíláním příkazů pro vykreslení vybranému backendu, může být vzhled ovládacích prvků výsledné aplikace velmi přizpůsobitelný včetně možnosti snadno jej měnit i za běhu aplikace. To umožňuje mimo jiné imitovat nativní vzhled aplikací.
+	Vzhled aplikace ale není jediná vlastnost, na kterou mohou být uživatelé zvyklí. Dalším příkladem může být horní lišta nabídek (\textit{menu bar}), u které se očekává možnost navigace pomocí klávesových zkratek. Ne každá aplikace sice potřebuje disponovat lištou nabídek, každopádně její případné zobrazení je např. v knihovně Qt záležitostí volání jedné metody. U knihoven s přístupem IMGUI toto není zaručeno a logika lišty nabídek musí být explicitně implementována buď ze strany knihovny, nebo až v aplikačním kódu. Totéž platí např. pro nastavení přístupnosti, jako je respektování velikosti písma nastavené v rámci operačního systému nebo podpora odečítače obrazovky.
 	
-	Vzhled aplikace ale není jediná vlastnost, na kterou mohou být uživatelé zvyklí.
-	
-	% + Ideální pro kombinaci s dalším řešením využívajícím realtime rendering (unaware components)
-	% + možnost změny backendu (→EMSCIPTEN,...)
-	% ~ NEMODÁLNÍ DIALOGOVÁ OKNA
-	% - Fonty
-	% - Podpora čteček a další možnosti přístupnosti nejsou samozřejmostí; škálování; alt-zkratky; ...
+	Knihovny s přístupem IMGUI se často používají pro přidání ovládacích prvků do existující interaktivní aplikace, která využívá stejný backend. Taková aplikace už má definovanou svou vykreslovací smyčku, do které lze snadno přidat příkazy pro vykreslování GUI. Z toho důvodu bývá u těchto knihoven základním stavebním prvkem nemodální dialogové okno. Tato okna jsou vykreslována nad existující interaktivní aplikací, která o nich v podstatě „neví“, a obsahují např. ovládací prvky pro ladění nebo změnu určitých parametrů za běhu.
 	
 	\section{Existující knihovny pro tvorbu GUI aplikací s přístupem IMGUI}
 	
 	% * i když je imgui starý koncept, knihovny jsou stále ve vývoji
+		
+	Tabulka \ref{_tag_table_libraries}\dots
 		
 	\begin{table}[ht]
 		\centering
@@ -198,15 +201,23 @@
 					Gio         & Go   & MIT, Unlicense  & 2019 &  2 052 \\
 				\hline
 		\end{NiceTabular}
+		\label{_tag_table_libraries}
 	\end{table}
 	
 	\subsection{Dear ImGui}
+	
+	% * neexistuje proper dokumentace ale example je slušný
+	% * extensions jako implot
 	
 	% * Mrknout na hello imgui a imgui toolkit
 	% * Zmínit docking branch
 	% * Je to C++ nebo jen C?
 	
+	% * Umí měnit kurzor?
+	
 	\subsection{egui}
+	
+	% CtrlF v textu ?
 	
 	\subsection{Nuklear}
 	
