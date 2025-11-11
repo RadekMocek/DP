@@ -162,16 +162,19 @@
 		\label{_tag_img_microUiAutosizeDelay}
 	\end{figure}
 	
-	Jak již bylo zmíněno, původní definice přístupu IMGUI se zaměřuje hlavně na to, jak má vypadat kód využívající knihovnu, která tento přístup poskytuje. 
+	Jak již bylo zmíněno, původní definice přístupu IMGUI se zaměřuje hlavně na to, jak má vypadat aplikační kód, který využívá knihovnu poskytující tento přístup. Teoreticky tedy mohou jednotlivé knihovny využívat libovolných technologií. V praxi mají ale všechny jedno společné: pro zobrazování GUI využívají některého z existujících rozhraní pro vykreslování počítačové grafiky, jako je např. OpenGL, Vulkan, nebo DirectX. V terminologii přístupu IMGUI bývá takovéto rozhraní nazýváno \textit{backend}.
 	
-	% Na imgui pohlížíme z pohledu api, neznamená to tedy, že musí překreslovat celé gui každý frame; i přesto jde ale ruku v ruce s realtime aplikacemi. Teoreticky nemusí nutně běžet na nějakém opengl apod., ale v praxi to tak obvykle je, a z toho vyplývá:
-	% + Vypadá to na všech platformách stejně (a je to multiplatformní)
+	Z využití multiplatformního grafického API vyplývá několik vlastností. Výsledná aplikace by měla podporovat všechny platformy, které jsou podporované vybraným backendem, a zároveň bude na všech platformách vypadat stejně (až na tzv. dekorace okna, které přidává operační systém). Stejný vzhled na všech platformách nemusí být nutně výhodou. Koncoví uživatelé mohou být zvyklí na to, že jejich aplikace vypadají „nativně“, tedy že využívají ovládacích prvků poskytnutých daným operačním systémem.
+	
+	Díky tomu, že knihovna zobrazuje GUI posíláním příkazů pro vykreslení vybranému backendu, může být vzhled ovládacích prvků výsledné aplikace velmi přizpůsobitelný včetně možnosti snadno jej měnit i za běhu aplikace. To umožňuje mimo jiné imitovat nativní vzhled aplikací.
+	
+	Vzhled aplikace ale není jediná vlastnost, na kterou mohou být uživatelé zvyklí.
+	
 	% + Ideální pro kombinaci s dalším řešením využívajícím realtime rendering (unaware components)
+	% + možnost změny backendu (→EMSCIPTEN,...)
 	% ~ NEMODÁLNÍ DIALOGOVÁ OKNA
-	% ~ OS dekorace okna
 	% - Fonty
-	% - Koncoví uživatelé jsou zvyklí na "systémově vypadající" aplikace
-	% - Podpora čteček a další možnosti přístupnosti nejsou samozřejmostí
+	% - Podpora čteček a další možnosti přístupnosti nejsou samozřejmostí; škálování; alt-zkratky; ...
 	
 	\section{Existující knihovny pro tvorbu GUI aplikací s přístupem IMGUI}
 	
