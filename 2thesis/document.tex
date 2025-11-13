@@ -33,7 +33,7 @@
 % Pro seznam použité literatury
 \usepackage[backend=biber, style=iso-numeric]{biblatex}
 \addbibresource{zdroje.bib}
-% Poslední dva autory knihy neoddělovat středníkem ale písmenem 'a'
+% Poslední dva autory knihy neoddělovat středníkem, ale písmenem 'a'
 \DeclareDelimFormat{finalnamedelim}{\addspace a\space}
 
 % Název práce
@@ -177,11 +177,15 @@
 	
 	Knihovny s přístupem IMGUI se často používají pro přidání ovládacích prvků do existující interaktivní aplikace, která využívá stejný backend. Taková aplikace už má definovanou svou vykreslovací smyčku, do které lze snadno přidat příkazy pro vykreslování GUI. Z toho důvodu bývá u těchto knihoven základním stavebním prvkem nemodální dialogové okno. Tato okna jsou vykreslována nad existující interaktivní aplikací, která o nich v podstatě „neví“, a obsahují např. ovládací prvky pro ladění nebo změnu určitých parametrů za běhu.
 	
+	% <?
+	% * Prázdná Qt aplikace využívá ~10 MB RAM; Dear ImGui ~100 MB
+	% * Možnost změny backendu; Emscripten→web
+	% * Proč Microui trvá 5 snímků "nastavit" správnou velikost okna?
+	% ?>
+	
 	\section{Existující knihovny pro tvorbu GUI aplikací s přístupem IMGUI}
 	
-	% * i když je imgui starý koncept, knihovny jsou stále ve vývoji
-		
-	Tabulka \ref{_tag_table_libraries}\dots
+	I přes to, že přístup IMGUI je poměrně starý koncept a na poli tvorby „běžných“ GUI aplikací dominuje přístup RMGUI, jsou některé IMGUI knihovny stále ve vývoji a nachází svá uplatnění.	Tabulka \ref{_tag_table_libraries} představuje knihovny, které jsou součástí této rešerše. Existuje mnoho projektů, které nějakým způsobem využívají knihovnu Dear ImGui ve smyslu, že ji buď rozšiřují, nebo převádí do ekosystému jiného programovacího jazyka. Tato rešerše se soustředí na knihovny, které přichází s kompletně vlastním řešením. Kromě projektu microui, který měl poslední aktualizaci v srpnu roku 2024, jsou v době psaní této rešerše všechny knihovny v aktivním vývoji.
 		
 	\begin{table}[ht]
 		\centering
@@ -191,14 +195,15 @@
 				\rowcolors[gray]{2}{0.95}{}
 			\Body
 				\RowStyle{\bfseries}
-					Název & Jazyk & Licence & Vznik & Popularita\tabularnote[$\star$]{počet hvězd na platformě GitHub ke dni 3. 11. 2025} \\
+					Název & Jazyk & Licence & Vznik & Popularita\tabularnote[$\star$]{počet hvězd na platformě GitHub ke dni 12. 11. 2025} \\
 				\hline
-					Dear ImGui  & C++  & MIT             & 2014 & 69 111 \\
-					egui        & Rust & MIT, Apache-2.0 & 2018 & 27 003 \\
-					Nuklear     & C    & MIT, Unlicense  & 2015 & 10 530 \\
-					microui     & C    & MIT             & 2018 &  5 120 \\
-					raygui      & C    & Zlib            & 2014 &  4 409 \\\RowStyle[cell-space-bottom-limit=1pt]{}
-					Gio         & Go   & MIT, Unlicense  & 2019 &  2 052 \\
+					Dear ImGui  & C++  & MIT             & 2014 & 69 315 \\
+					egui        & Rust & MIT, Apache-2.0 & 2018 & 27 111 \\
+					Nuklear     & C    & MIT, Unlicense  & 2015 & 10 554 \\
+					microui     & C    & MIT             & 2018 &  5 140 \\
+					raygui      & C    & Zlib            & 2014 &  4 437 \\
+					Gio         & Go   & MIT, Unlicense  & 2019 &  2 059 \\\RowStyle[cell-space-bottom-limit=1pt]{}
+					dvui		& Zig  & MIT			 & 2022 &    993 \\
 				\hline
 		\end{NiceTabular}
 		\label{_tag_table_libraries}
@@ -206,15 +211,20 @@
 	
 	\subsection{Dear ImGui}
 	
-	% * neexistuje proper dokumentace ale example je slušný
+	Dear ImGui je knihovna pro tvorbu GUI s přístupem IMGUI napsaná v jazyce C++. Její kód splňuje standard \textit{C++11} a nepoužívá žádné standardní knihovny. Dear ImGui se často využívá ve videoherním průmyslu k tvorbě dynamických nástrojů pro ladění. Knihovna je psaná tak, aby šla snadno integrovat do existujícího projektu s libovolným backendem. Základním stavebním prvkem je tedy nemodální dialogové okno, knihovna ale umožňuje
+	
+	\dots\ \dots\ \dots\ \dots\ \dots\ \dots
+	
+	\cite{online_imguiwiki}
+	
+	% * neexistuje proper dokumentace, ale example je slušný
 	% * extensions jako implot
 	
 	% * Mrknout na hello imgui a imgui toolkit
 	% * Zmínit docking branch
-	% * Je to C++ nebo jen C?
 	
-	% * Umí měnit kurzor?
-	
+	% * Umí měnit kurzor? (myšleno nativní druhy kurzoru, nikoliv vlastní obrázek)
+		
 	\subsection{egui}
 	
 	% CtrlF v textu ?
@@ -225,7 +235,11 @@
 	
 	\subsection{raygui}
 	
+	% * https://github.com/raysan5/rguilayout
+	
 	\subsection{Gio}
+	
+	\subsection{dvui}
 	
 	% Zdroje
 	\chapter*{Seznam použité literatury}
