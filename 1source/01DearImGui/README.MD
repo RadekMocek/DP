@@ -1,8 +1,8 @@
 # Dear ImGui
 
-* Projects that use vcpkg to get _Dear ImGui_, _GLFW_, _GLEW_:
+* Projects that use vcpkg to get _Dear ImGui_, _GLFW_, _GLEW_, _FreeType_:
   * `00SampleProject` – Empty Dear ImGui project
-  * `01HelloCounter_FreeType` – HelloCounter (simple counter project for understanding the basic principles of the IMGUI paradigm); includes _FreeType_ via vcpkg
+  * `01HelloCounter` – HelloCounter (simple counter project for understanding the basic principles of the IMGUI paradigm)
 * Projects that use CMake's FetchContent to get _Dear ImGui_, _GLFW_, _glad_:
   * `02HelloCounter_NoVcpkg` – HelloCounter
 
