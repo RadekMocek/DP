@@ -1,7 +1,8 @@
 # Avalonia
 
-* `00HelloCounter_CodeBehind` – HelloCounter (simple counter project for understanding the basic principles of the IMGUI paradigm (and the difference compared to RMGUI)); uses the "code behind" approach
-* `01HelloCounter_Independent` – HelloCounter; uses the "MVVM" approach
+* For a description of the different types of projects, see the parent directory README
+* `00HelloCounter_CodeBehind` – uses the "code behind" approach
+* `01HelloCounter_MVVM` – uses the "MVVM" approach
 
 ## Running Avalonia
 

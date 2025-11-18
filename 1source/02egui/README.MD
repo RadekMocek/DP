@@ -1,7 +1,8 @@
 # egui
 
-* `00SampleProject` – Empty egui project
-* `01HelloCounter` – HelloCounter (simple counter project for understanding the basic principles of the IMGUI paradigm)
+* For a description of the different types of projects, see the parent directory README
+* `00SampleProject`
+* `01HelloCounter`
 
 ## Running egui
 

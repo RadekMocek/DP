@@ -1,7 +1,8 @@
 # Qt
 
-* `00HelloCounter_QtCreator` – HelloCounter (simple counter project for understanding the basic principles of the IMGUI paradigm (and the difference compared to RMGUI)); project made in Qt Creator, so not very compatible
-* `01HelloCounter_Independent` – HelloCounter; this project doesn't need Qt Creator (and defines layout in code instead of a .ui file), local installation of Qt is needed
+* For a description of the different types of projects, see the parent directory README
+* `00HelloCounter_QtCreator` – project made in Qt Creator, so not very compatible
+* `01HelloCounter_Independent` – this project doesn't need Qt Creator (and defines layout in code instead of an .ui file), local installation of Qt is needed
 
 ## Running Qt 6.10.0
 

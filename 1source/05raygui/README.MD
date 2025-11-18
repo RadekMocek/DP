@@ -1,8 +1,9 @@
 # raygui
 
+* For a description of the different types of projects, see the parent directory README
 * Projects that use vcpkg to get raygui, raylib, GLFW:
-  * `00SampleProject` – Empty raygui project
-  * `01HelloCounter` – HelloCounter (simple counter project for understanding the basic principles of the IMGUI paradigm)
+  * `00SampleProject`
+  * `01HelloCounter`
 
 ## Running raygui with raylib, vcpkg
 
