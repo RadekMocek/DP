@@ -19,5 +19,5 @@ Project type|Description
 ---|---
 `SampleProject`|Empty project for a given library ready for tinkering.
 `Playground`|Project for testing given library features as part of the research.
-`HelloCounter`|Simple project for understanding the basic principles of the IMGUI paradigm. Contains label that shows counter value. The counter can count from 1 to 5 by pushing buttons `+` and `-`. "Hello" label is displayed when counter==3. Buttons are disabled appropriately. Also contains menu bar with option to show pop-up window.
+`HelloCounter`|Simple project for understanding the basic principles of the IMGUI paradigm. Contains label that shows counter value. The counter can count from 1 to 5 by pushing buttons `+` and `-`. "Hello" label is displayed when counter==3. Buttons are disabled appropriately. Also contains menu bar with option to show pop-up window. [Screenshot](../2thesis/img/imgui_qt_win10_plasma.png).
 `ConceptA`|...

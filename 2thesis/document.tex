@@ -189,7 +189,7 @@
 	Knihovny s přístupem IMGUI se často používají pro přidání ovládacích prvků do existující interaktivní aplikace, která využívá stejný backend. Taková aplikace už má definovanou svou vykreslovací smyčku, do které lze snadno přidat příkazy pro vykreslování GUI. To je jeden z důvodů, proč bývá u těchto knihoven základním stavebním prvkem právě nemodální dialogové okno. Tato okna jsou vykreslována nad existující interaktivní aplikací, která o nich v podstatě „neví“, a obsahují např. ovládací prvky pro ladění nebo změnu určitých parametrů za běhu.
 	
 	% <?
-	% * Prázdná Qt aplikace využívá ~10 MB RAM; Dear ImGui ~100 MB
+	% * Prázdná Qt aplikace využívá ~10 MB RAM; Dear ImGui ~100 MB, nebo 20 MB? (jak vůastně správně benchmarkovat ?)
 	% * Problematika renderování fontů (v OpenGL)
 	% * Implementační jazyky obvykle low level
 	% * Možnost změny backendu; Emscripten→web

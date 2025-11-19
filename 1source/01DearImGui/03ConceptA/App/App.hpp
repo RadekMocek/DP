@@ -37,7 +37,7 @@ private:
 	GLFWwindow* window{};
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-	const char* window_title = "Something something";
+	const char* window_title = "Dear ImGui :: ConceptA";
 	const bool is_dark_mode = false;
 
 	// Fonts
@@ -47,7 +47,7 @@ private:
 
 	// User state
 	ImVec2 m_fps_info_size;
-	std::string m_source = "\"Hello\" 0 0\n";
+	std::string m_source = "\"Hello\" 40 40\n\"Dear ImGui!\" 160 50";
 
 	// = Functions =
 	static void GLFWErrorCallback(int error, const char* description);
