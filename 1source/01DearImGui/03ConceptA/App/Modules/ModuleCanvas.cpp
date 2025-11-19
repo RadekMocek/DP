@@ -30,18 +30,20 @@ void App::ModuleCanvas()
 
     static ImVec2 scrolling(0.0f, 0.0f); // Scrolling means moving the canvas in this context
 
+    static float zoom_level = 1.0f;
+
     // Options
-    const float border_offset = 18.0f; // Padding of rectangle border around text in canvas
+    const float border_offset_base = 18.0f; // Padding of rectangle border around text in canvas
+    float border_offset = border_offset_base * zoom_level;
     static bool is_grid_enabled = true;
     const auto color_grid_line = IM_COL32(200, 200, 200, 40);
     const auto color_node = IM_COL32(0, 0, 0, 255);
     const auto color_ghost = IM_COL32(0, 0, 196, 196);
 
-    // Using InvisibleButton() as a convenience:
-    // 1) it will advance the layout cursor
-    // 2) allows us to use IsItemHovered()/IsItemActive()
+    // Determine canvas size
     ImVec2 canvas_p0 = ImGui::GetCursorScreenPos(); // ImDrawList API uses screen coordinates!
     ImVec2 canvas_sz = ImGui::GetContentRegionAvail(); // Resize canvas to what's available
+    canvas_sz.y -= 29.0f; // Make room for slider
     ImVec2 canvas_p1 = ImVec2(canvas_p0.x + canvas_sz.x, canvas_p0.y + canvas_sz.y);
 
     ImDrawList* draw_list = ImGui::GetWindowDrawList(); // Enables us to draw primitives
@@ -49,7 +51,9 @@ void App::ModuleCanvas()
     //draw_list->AddRectFilled(canvas_p0, canvas_p1, IM_COL32(50, 50, 50, 255)); // Border
     //draw_list->AddRect(canvas_p0, canvas_p1, IM_COL32(255, 255, 255, 255)); // Background color
 
-    // This will catch our interactions
+    // Using InvisibleButton() as a convenience:
+    // 1) it will advance the layout cursor
+    // 2) allows us to use IsItemHovered()/IsItemActive()
     ImGui::InvisibleButton("canvas", canvas_sz, ImGuiButtonFlags_MouseButtonLeft | ImGuiButtonFlags_MouseButtonRight);
     const bool is_hovered = ImGui::IsItemHovered(); // Hovered (hot item)
     const bool is_active = ImGui::IsItemActive(); // Held
@@ -88,7 +92,7 @@ void App::ModuleCanvas()
                 int x, y;
                 std::istringstream iss(part);
                 iss >> std::quoted(label) >> x >> y;
-                oss << std::format("\"{}\" {} {}\n", label, round(mouse_pos_in_canvas.x), round(mouse_pos_in_canvas.y));
+                oss << std::format("\"{}\" {} {}\n", label, round(mouse_pos_in_canvas.x / zoom_level), round(mouse_pos_in_canvas.y / zoom_level));
             }
             else {
                 oss << part << '\n';
@@ -152,7 +156,8 @@ void App::ModuleCanvas()
     // Draw grid + all lines in the canvas
     draw_list->PushClipRect(canvas_p0, canvas_p1, true);
     if (is_grid_enabled) {
-        const float GRID_STEP = 100.0f;
+        const float GRID_STEP_BASE = 100.0f;
+        float GRID_STEP = GRID_STEP_BASE * zoom_level;
         for (float x = fmodf(scrolling.x, GRID_STEP); x < canvas_sz.x; x += GRID_STEP)
             draw_list->AddLine(ImVec2(canvas_p0.x + x, canvas_p0.y), ImVec2(canvas_p0.x + x, canvas_p1.y), color_grid_line);
         for (float y = fmodf(scrolling.y, GRID_STEP); y < canvas_sz.y; y += GRID_STEP)
@@ -174,13 +179,18 @@ void App::ModuleCanvas()
             continue;
         }
 
+        node_x *= zoom_level;
+        node_y *= zoom_level;
+
         // Draw text
         auto label_c_str = label.c_str();
         auto label_origin = ImVec2(origin.x + node_x, origin.y + node_y);
-        draw_list->AddText(label_origin, color_node, label_c_str);
+        //draw_list->AddText(label_origin, color_node, label_c_str);
+        draw_list->AddText(font_inconsolata_18, 18 * zoom_level, label_origin, color_node, label_c_str);
 
         // Draw rectangle and store its aabr
-        auto label_size = ImGui::CalcTextSize(label_c_str);        
+        //auto label_size = ImGui::CalcTextSize(label_c_str);
+        ImVec2 label_size = font_inconsolata_18->CalcTextSizeA(18 * zoom_level, FLT_MAX, -1.0F, label_c_str, 0, NULL);
         auto upper_left = ImVec2PlusC(label_origin, -border_offset);
         auto lower_right = ImVec2PlusC(ImVec2Plus(label_origin, label_size), border_offset);
         draw_list->AddRect(upper_left, lower_right, color_node);
@@ -197,6 +207,8 @@ void App::ModuleCanvas()
     }
 
     draw_list->PopClipRect();
+    
+    ImGui::SliderFloat("Zoom level", &zoom_level, 0.5f, 2.0f, "%.1f", 0);
 
     ImGui::EndChild();
 }
