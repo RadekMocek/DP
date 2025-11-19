@@ -8,7 +8,7 @@ Change the name of the crate: Choose a good name for your project, and change th
 * `Cargo.toml`
   * Change the `[package] name` from `SampleProject` to `your_crate`.
   * Change the `[package] authors`
-* `main.rs`
+* `src/main.rs`
   * Change `SampleProject::TemplateApp` to `your_crate::TemplateApp` (on two places)
 * `index.html`
   * Change the `<title>eframe template</title>` to `<title>your_crate</title>`. optional.

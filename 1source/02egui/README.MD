@@ -1,8 +1,10 @@
 # egui
 
 * For a description of the different types of projects, see the parent directory README
-* `00SampleProject`
-* `01HelloCounter`
+* Projects that use _egui_, _eframe_, _glow_:
+  * `00SampleProject`
+  * `01HelloCounter`
+  * `02ConceptA`
 
 ## Running egui
 

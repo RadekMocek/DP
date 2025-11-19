@@ -4,20 +4,21 @@
 * Projects that use vcpkg to get _Dear ImGui_, _GLFW_, _GLEW_, _FreeType_:
   * `00SampleProject`
   * `01HelloCounter`
+  * `03ConceptA`
 * Projects that use CMake's FetchContent to get _Dear ImGui_, _GLFW_, _glad_:
   * `02HelloCounter_NoVcpkg`
 
 &nbsp;
 
-* [Running Dear ImGui with FetchContent](#running-dear-imgui-v1919-with-opengl3-glfw-glad)
+* [Running Dear ImGui with FetchContent](#running-dear-imgui-with-opengl3-glfw-glad)
   * [Windows 10 22H2 + Visual Studio 2022](#windows-10-22h2--visual-studio-2022)
   * [Linux Debian 13.1 KDE Plasma](#linux-debian-131-kde-plasma)
-* [Running Dear ImGui with vcpkg](#running-dear-imgui-v1919-with-opengl3-glfw-glew-vcpkg)
+* [Running Dear ImGui with vcpkg](#running-dear-imgui-with-opengl3-glfw-glew-vcpkg)
   * [Windows 10 22H2 + Visual Studio 2022](#windows-10-22h2--visual-studio-2022-via-vcpkg)
   * [Linux Debian 13.1 KDE Plasma](#linux-debian-131-kde-plasma-via-vcpkg)
 * [Resources](#resources)
 
-## Running Dear ImGui [v1.91.9] with OpenGL3, GLFW, glad
+## Running Dear ImGui with OpenGL3, GLFW, glad
 
 ### Windows 10 22H2 + Visual Studio 2022
 
@@ -52,7 +53,7 @@ OpenGL version is set to 3.3 Core, this can be changed in the code on these line
   * `glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);`
   * Comment out other two `glfwWindowHint` lines if your OpenGL version does not support it
 
-## Running Dear ImGui [v1.91.9] with OpenGL3, GLFW, GLEW, vcpkg
+## Running Dear ImGui with OpenGL3, GLFW, GLEW, vcpkg
 
 ### Windows 10 22H2 + Visual Studio 2022 (via vcpkg)
 
