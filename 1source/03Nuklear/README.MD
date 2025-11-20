@@ -6,11 +6,12 @@
   * `01HelloCounter`
 * Projects that use CMake's FetchContent to get everything (_Nuklear_, _GLFW_, _glad_, _stb_):
   * `02HelloCounter_NoVcpkg`
+  * `03ConceptA`
 
-## Running Nuklear with GLFW, glad, FetchContent
+## Running Nuklear with FetchContent
 
-Same steps as with [Dear ImGui](../01DearImGui/README.MD#running-dear-imgui-v1919-with-opengl3-glfw-glad).
+Same steps as with [Dear ImGui](../01DearImGui/README.MD#running-dear-imgui-with-fetchcontent).
 
-## Running Nuklear with GLFW, GLEW, vcpkg
+## Running Nuklear with vcpkg
 
-Same steps as with [Dear ImGui](../01DearImGui/README.MD#running-dear-imgui-v1919-with-opengl3-glfw-glew-vcpkg).
+Same steps as with [Dear ImGui](../01DearImGui/README.MD#running-dear-imgui-with-vcpkg).

@@ -19,6 +19,10 @@ add_executable(ImguiApp
 	${SOURCES}
 )
 
+if(MSVC)
+	target_compile_definitions(ImguiApp PUBLIC _CRT_SECURE_NO_WARNINGS)
+endif()
+
 target_link_libraries(ImguiApp PRIVATE
 	imgui::imgui
 	GLEW::GLEW

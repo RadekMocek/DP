@@ -10,7 +10,8 @@ set(BINARY_NAME "ImGuiApp")
 # Project setup
 project("${PROJECT_NAME}")
 set(CMAKE_BUILD_TYPE Release)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_MSVC_PARALLEL ON CACHE BOOL "" FORCE)
 
 # Build only the necessary parts of GLFW
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)

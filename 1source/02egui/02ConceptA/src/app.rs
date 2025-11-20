@@ -16,7 +16,7 @@ impl MyApp {
     /// Called once before the first frame.
     pub fn new(cc: &eframe::CreationContext<'_>) -> Self {
         cc.egui_ctx.set_visuals(egui::Visuals::light());
-        super::style::configure_text_styles(&cc.egui_ctx);
+        crate::style::configure_text_styles(&cc.egui_ctx);
         Default::default()
     }
 }
