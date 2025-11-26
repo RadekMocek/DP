@@ -6,6 +6,6 @@
   * `01HelloCounter`
   * `02Playground`
 
-## Running microui with SDL2, vcpkg
+## Running microui with vcpkg
 
 Same steps as with [Dear ImGui](../01DearImGui/README.MD#running-dear-imgui-with-vcpkg).

@@ -5,6 +5,6 @@
   * `00SampleProject`
   * `01HelloCounter`
 
-## Running raygui with raylib, vcpkg
+## Running raygui with vcpkg
 
 Same steps as with [Dear ImGui](../01DearImGui/README.MD#running-dear-imgui-with-vcpkg).
