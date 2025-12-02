@@ -7,6 +7,8 @@
   * `03ConceptA`
 * Projects that use CMake's FetchContent to get _Dear ImGui_, _GLFW_, _glad_:
   * `02HelloCounter_NoVcpkg`
+* Projects that don't use vcpkg nor FetchContent and have all their depencensies included locally:
+  * `04HelloCounter_Offline`
 
 &nbsp;
 

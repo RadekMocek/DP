@@ -34,7 +34,7 @@ private:
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
 	const char* window_title = "Dear ImGui :: Hello Counter";
-	const bool is_dark_mode = true;
+	const bool is_dark_mode = false;
 
 	// User state
 
