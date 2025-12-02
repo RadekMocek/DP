@@ -1,8 +1,11 @@
 # Qt
 
 * For a description of the different types of projects, see the parent directory README
-* `00HelloCounter_QtCreator` – project made in Qt Creator, so not very compatible
-* `01HelloCounter_Independent` – this project doesn't need Qt Creator (and defines layout in code instead of an .ui file), local installation of Qt is needed
+* Projects that use _Qt_ via Qt Creator (not very portable):
+  * `00HelloCounter_QtCreator`
+* Projects that use _Qt_ "independently" (no need for Qt Creator, local installation of Qt is needed, layout is defined in code instead of an .ui file):
+  * `01HelloCounter_Independent`
+  * `02ConceptA`
 
 ## Running Qt 6.10.0
 

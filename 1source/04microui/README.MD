@@ -5,6 +5,7 @@
   * `00SampleProject`
   * `01HelloCounter`
   * `02Playground`
+  * `03ConceptA`
 
 ## Running microui with vcpkg
 

@@ -1,8 +1,10 @@
 # Gio
 
 * For a description of the different types of projects, see the parent directory README
-* `00SampleProject`
-* `01HelloCounter`
+* Porjects that use _Gio_:
+  * `00SampleProject`
+  * `01HelloCounter`
+  * `02ConceptA`
 
 ## Running Gio
 

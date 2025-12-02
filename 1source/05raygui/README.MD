@@ -4,6 +4,7 @@
 * Projects that use vcpkg to get raygui, raylib, GLFW:
   * `00SampleProject`
   * `01HelloCounter`
+  * `02ConceptA`
 
 ## Running raygui with vcpkg
 

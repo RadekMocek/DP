@@ -13,7 +13,6 @@
 #include <GLFW/glfw3.h>
 #include <glad/gl.h>
 
-#define NK_PRIVATE
 #define NK_INCLUDE_FIXED_TYPES
 #define NK_INCLUDE_STANDARD_IO
 #define NK_INCLUDE_DEFAULT_ALLOCATOR
@@ -38,22 +37,97 @@
 #define MAX(a,b) ((a) < (b) ? (b) : (a))
 #define LEN(a) (sizeof(a)/sizeof(a)[0])
 
+#ifdef __APPLE__
+#define NK_SHADER_VERSION "#version 150\n"
+#else
 #define NK_SHADER_VERSION "#version 330\n"
+#endif
+
+struct media {
+    struct nk_font* font_14;
+    struct nk_font* font_18;
+    struct nk_font* font_20;
+    struct nk_font* font_22;
+};
+
+/* ===============================================================
+ *
+ *                          GUI
+ *
+ * ===============================================================*/
+static void
+gui_menubar_and_textedit(struct nk_context* ctx, struct media* media, GLFWwindow* win)
+{
+    // State
+    static int show_about_window = 1;
+    static char buf[256] = "0 0 Hello\n40 40 Nuklear!";
+
+    // :: WINDOW 1 :: Main ::
+    nk_style_set_font(ctx, &media->font_22->handle);
+    
+    if (nk_begin(ctx, "ConceptA", nk_rect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT),
+        (NK_WINDOW_NO_SCROLLBAR | NK_WINDOW_NO_INPUT)))
+    {
+        // .: MENUBAR :.
+        nk_menubar_begin(ctx);
+        nk_layout_row(ctx, NK_STATIC, 30, 1, (float[]) { 100 });
+        if (nk_menu_begin_label(ctx, "Help", NK_TEXT_LEFT, nk_vec2(120, 150))) {
+            
+            nk_layout_row_dynamic(ctx, 30, 1);
+
+            // .. Checkbox for showing/hiding about window ..
+            nk_checkbox_label(ctx, "About...", &show_about_window);
+
+            nk_menu_end(ctx);
+        }
+        nk_menubar_end(ctx);
+
+        // .: Text edit; best Nuklear can do (?) :/ :.
+        nk_layout_row_dynamic(ctx, WINDOW_HEIGHT - 60, 2);
+
+        nk_edit_string_zero_terminated(ctx, NK_EDIT_BOX, buf, sizeof(buf) - 1, nk_filter_default);
+    }
+    nk_end(ctx);
+
+    // :: WINDOW 2 :: ABOUT ::
+    if (!show_about_window) {
+
+        const int about_window_width = 300;
+        const int about_window_height = 150;
+
+        nk_style_set_font(ctx, &media->font_20->handle);
+        if (nk_begin(ctx, "About...", nk_rect(WINDOW_WIDTH / 2 - about_window_width / 2, WINDOW_HEIGHT / 2 - about_window_height / 2, about_window_width, about_window_height),
+            NK_WINDOW_TITLE | NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_NO_SCROLLBAR | NK_WINDOW_MINIMIZABLE))
+        {
+            nk_style_set_font(ctx, &media->font_18->handle);
+            nk_layout_row_dynamic(ctx, 30, 1);
+            nk_label(ctx, "https://github.com/RadekMocek/DP", NK_TEXT_LEFT);
+            
+            // .: VERTICAL SPACE :.
+            nk_layout_row_dynamic(ctx, 20, 0);
+
+            nk_layout_row_dynamic(ctx, 30, 1);
+            if (nk_button_text(ctx, "Close", 5)) {
+                show_about_window = 1;
+            }
+
+        }
+        nk_end(ctx);
+    }    
+}
 
 /* ===============================================================
  *
  *                          DEVICE
  *
  * ===============================================================*/
-struct nk_glfw_vertex
-{
+struct nk_glfw_vertex {
     float position[2];
     float uv[2];
     nk_byte col[4];
 };
 
-struct device
-{
+struct device {
     struct nk_buffer cmds;
     struct nk_draw_null_texture tex_null;
     GLuint vbo, vao, ebo;
@@ -68,10 +142,8 @@ struct device
     GLuint font_tex;
 };
 
-/* function icon_load () is not used to build this file but might still be useful :) */
-/*
 static void
-die(const char *fmt, ...)
+die(const char* fmt, ...)
 {
     va_list ap;
     va_start(ap, fmt);
@@ -82,14 +154,14 @@ die(const char *fmt, ...)
 }
 
 static struct nk_image
-icon_load(const char *filename)
+icon_load(const char* filename)
 {
-    int x,y,n;
+    int x, y, n;
     GLuint tex;
-    unsigned char *data = stbi_load(filename, &x, &y, &n, 0);
+    unsigned char* data = stbi_load(filename, &x, &y, &n, 0);
     if (!data) die("[SDL]: failed to load image: %s", filename);
 
-     glGenTextures(1, &tex);
+    glGenTextures(1, &tex);
     glBindTexture(GL_TEXTURE_2D, tex);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_NEAREST);
@@ -100,7 +172,6 @@ icon_load(const char *filename)
     stbi_image_free(data);
     return nk_image_id((int)tex);
 }
-*/
 
 static void
 device_init(struct device* dev)
@@ -211,7 +282,7 @@ device_shutdown(struct device* dev)
 
 static void
 device_draw(struct device* dev, struct nk_context* ctx, int width, int height,
-    enum nk_anti_aliasing AA)
+    struct nk_vec2 scale, enum nk_anti_aliasing AA)
 {
     GLfloat ortho[4][4] = {
         {2.0f, 0.0f, 0.0f, 0.0f},
@@ -290,10 +361,10 @@ device_draw(struct device* dev, struct nk_context* ctx, int width, int height,
             if (!cmd->elem_count) continue;
             glBindTexture(GL_TEXTURE_2D, (GLuint)cmd->texture.id);
             glScissor(
-                (GLint)(cmd->clip_rect.x),
-                (GLint)((height - (GLint)(cmd->clip_rect.y + cmd->clip_rect.h))),
-                (GLint)(cmd->clip_rect.w),
-                (GLint)(cmd->clip_rect.h));
+                (GLint)(cmd->clip_rect.x * scale.x),
+                (GLint)((height - (GLint)(cmd->clip_rect.y + cmd->clip_rect.h)) * scale.y),
+                (GLint)(cmd->clip_rect.w * scale.x),
+                (GLint)(cmd->clip_rect.h * scale.y));
             glDrawElements(GL_TRIANGLES, (GLsizei)cmd->elem_count, GL_UNSIGNED_SHORT, offset);
             offset += cmd->elem_count;
         }
@@ -319,45 +390,6 @@ static void text_input(GLFWwindow* win, unsigned int codepoint)
 static void scroll_input(GLFWwindow* win, double _, double yoff)
 {
     UNUSED(_); nk_input_scroll((struct nk_context*)glfwGetWindowUserPointer(win), nk_vec2(0, (float)yoff));
-}
-
-static void
-pump_input(struct nk_context* ctx, GLFWwindow* win)
-{
-    double x, y;
-    nk_input_begin(ctx);
-    glfwPollEvents();
-
-    nk_input_key(ctx, NK_KEY_DEL, glfwGetKey(win, GLFW_KEY_DELETE) == GLFW_PRESS);
-    nk_input_key(ctx, NK_KEY_ENTER, glfwGetKey(win, GLFW_KEY_ENTER) == GLFW_PRESS);
-    nk_input_key(ctx, NK_KEY_TAB, glfwGetKey(win, GLFW_KEY_TAB) == GLFW_PRESS);
-    nk_input_key(ctx, NK_KEY_BACKSPACE, glfwGetKey(win, GLFW_KEY_BACKSPACE) == GLFW_PRESS);
-    nk_input_key(ctx, NK_KEY_LEFT, glfwGetKey(win, GLFW_KEY_LEFT) == GLFW_PRESS);
-    nk_input_key(ctx, NK_KEY_RIGHT, glfwGetKey(win, GLFW_KEY_RIGHT) == GLFW_PRESS);
-    nk_input_key(ctx, NK_KEY_UP, glfwGetKey(win, GLFW_KEY_UP) == GLFW_PRESS);
-    nk_input_key(ctx, NK_KEY_DOWN, glfwGetKey(win, GLFW_KEY_DOWN) == GLFW_PRESS);
-
-    if (glfwGetKey(win, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS ||
-        glfwGetKey(win, GLFW_KEY_RIGHT_CONTROL) == GLFW_PRESS) {
-        nk_input_key(ctx, NK_KEY_COPY, glfwGetKey(win, GLFW_KEY_C) == GLFW_PRESS);
-        nk_input_key(ctx, NK_KEY_PASTE, glfwGetKey(win, GLFW_KEY_P) == GLFW_PRESS);
-        nk_input_key(ctx, NK_KEY_CUT, glfwGetKey(win, GLFW_KEY_X) == GLFW_PRESS);
-        nk_input_key(ctx, NK_KEY_CUT, glfwGetKey(win, GLFW_KEY_E) == GLFW_PRESS);
-        nk_input_key(ctx, NK_KEY_SHIFT, 1);
-    }
-    else {
-        nk_input_key(ctx, NK_KEY_COPY, 0);
-        nk_input_key(ctx, NK_KEY_PASTE, 0);
-        nk_input_key(ctx, NK_KEY_CUT, 0);
-        nk_input_key(ctx, NK_KEY_SHIFT, 0);
-    }
-
-    glfwGetCursorPos(win, &x, &y);
-    nk_input_motion(ctx, (int)x, (int)y);
-    nk_input_button(ctx, NK_BUTTON_LEFT, (int)x, (int)y, glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS);
-    nk_input_button(ctx, NK_BUTTON_MIDDLE, (int)x, (int)y, glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_MIDDLE) == GLFW_PRESS);
-    nk_input_button(ctx, NK_BUTTON_RIGHT, (int)x, (int)y, glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS);
-    nk_input_end(ctx);
 }
 
 struct nk_canvas
@@ -411,10 +443,12 @@ int main(int argc, char* argv[])
     /* Platform */
     static GLFWwindow* win;
     int width = 0, height = 0;
+    int display_width = 0, display_height = 0;
 
     /* GUI */
     struct device device;
     struct nk_font_atlas atlas;
+    struct media media;
     struct nk_context ctx;
 
     NK_UNUSED(argc);
@@ -429,13 +463,16 @@ int main(int argc, char* argv[])
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+#ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    win = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Demo", NULL, NULL);
+#endif
+    win = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Nuklear :: ConceptA", NULL, NULL);
     glfwMakeContextCurrent(win);
     glfwSetWindowUserPointer(win, &ctx);
     glfwSetCharCallback(win, text_input);
     glfwSetScrollCallback(win, scroll_input);
     glfwGetWindowSize(win, &width, &height);
+    glfwGetFramebufferSize(win, &display_width, &display_height);
 
     /* Try init glad */
     if (!gladLoaderLoadGL()) {
@@ -444,75 +481,122 @@ int main(int argc, char* argv[])
     }
 
     /* OpenGL */
-    glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-    
-    /* GUI */
-    {
+    glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);    
+
+    {/* GUI */
         device_init(&device);
         {
             const void* image; int w, h;
-            struct nk_font* font;
+            struct nk_font_config cfg = nk_font_config(0);
+            cfg.oversample_h = 3; cfg.oversample_v = 2;
+            /* Loading one font with different heights is only required if you want higher
+             * quality text otherwise you can just set the font height directly
+             * e.g.: ctx->style.font.height = 20. */
             nk_font_atlas_init_default(&atlas);
             nk_font_atlas_begin(&atlas);
-            font = nk_font_atlas_add_default(&atlas, 13, 0);
+            media.font_14 = nk_font_atlas_add_from_file(&atlas, "./font/Inconsolata-Medium.ttf", 14.0f, &cfg);
+            media.font_18 = nk_font_atlas_add_from_file(&atlas, "./font/Inconsolata-Medium.ttf", 18.0f, &cfg);
+            media.font_20 = nk_font_atlas_add_from_file(&atlas, "./font/Inconsolata-Medium.ttf", 20.0f, &cfg);
+            media.font_22 = nk_font_atlas_add_from_file(&atlas, "./font/Inconsolata-Medium.ttf", 22.0f, &cfg);
             image = nk_font_atlas_bake(&atlas, &w, &h, NK_FONT_ATLAS_RGBA32);
             device_upload_atlas(&device, image, w, h);
             nk_font_atlas_end(&atlas, nk_handle_id((int)device.font_tex), &device.tex_null);
-            nk_init_default(&ctx, &font->handle);
+        }
+        nk_init_default(&ctx, &media.font_14->handle);
+    }
 
-            glEnable(GL_TEXTURE_2D);
-            while (!glfwWindowShouldClose(win)) {
-                /* input */
-                pump_input(&ctx, win);
+    while (!glfwWindowShouldClose(win))
+    {
+        /* High DPI displays */
+        struct nk_vec2 scale;
+        glfwGetWindowSize(win, &width, &height);
+        glfwGetFramebufferSize(win, &display_width, &display_height);
+        scale.x = (float)display_width / (float)width;
+        scale.y = (float)display_height / (float)height;
 
-                /* draw */
+        /* Input */
+        {
+            double x, y;
+            nk_input_begin(&ctx);
+            glfwPollEvents();
+            nk_input_key(&ctx, NK_KEY_DEL, glfwGetKey(win, GLFW_KEY_DELETE) == GLFW_PRESS);
+            nk_input_key(&ctx, NK_KEY_ENTER, glfwGetKey(win, GLFW_KEY_ENTER) == GLFW_PRESS);
+            nk_input_key(&ctx, NK_KEY_TAB, glfwGetKey(win, GLFW_KEY_TAB) == GLFW_PRESS);
+            nk_input_key(&ctx, NK_KEY_BACKSPACE, glfwGetKey(win, GLFW_KEY_BACKSPACE) == GLFW_PRESS);
+            nk_input_key(&ctx, NK_KEY_LEFT, glfwGetKey(win, GLFW_KEY_LEFT) == GLFW_PRESS);
+            nk_input_key(&ctx, NK_KEY_RIGHT, glfwGetKey(win, GLFW_KEY_RIGHT) == GLFW_PRESS);
+            nk_input_key(&ctx, NK_KEY_UP, glfwGetKey(win, GLFW_KEY_UP) == GLFW_PRESS);
+            nk_input_key(&ctx, NK_KEY_DOWN, glfwGetKey(win, GLFW_KEY_DOWN) == GLFW_PRESS);
+            if (glfwGetKey(win, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS ||
+                glfwGetKey(win, GLFW_KEY_RIGHT_CONTROL) == GLFW_PRESS) {
+                nk_input_key(&ctx, NK_KEY_COPY, glfwGetKey(win, GLFW_KEY_C) == GLFW_PRESS);
+                nk_input_key(&ctx, NK_KEY_PASTE, glfwGetKey(win, GLFW_KEY_P) == GLFW_PRESS);
+                nk_input_key(&ctx, NK_KEY_CUT, glfwGetKey(win, GLFW_KEY_X) == GLFW_PRESS);
+                nk_input_key(&ctx, NK_KEY_CUT, glfwGetKey(win, GLFW_KEY_E) == GLFW_PRESS);
+                nk_input_key(&ctx, NK_KEY_SHIFT, 1);
+            }
+            else {
+                nk_input_key(&ctx, NK_KEY_COPY, 0);
+                nk_input_key(&ctx, NK_KEY_PASTE, 0);
+                nk_input_key(&ctx, NK_KEY_CUT, 0);
+                nk_input_key(&ctx, NK_KEY_SHIFT, 0);
+            }
+            glfwGetCursorPos(win, &x, &y);
+            nk_input_motion(&ctx, (int)x, (int)y);
+            nk_input_button(&ctx, NK_BUTTON_LEFT, (int)x, (int)y, glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS);
+            nk_input_button(&ctx, NK_BUTTON_MIDDLE, (int)x, (int)y, glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_MIDDLE) == GLFW_PRESS);
+            nk_input_button(&ctx, NK_BUTTON_RIGHT, (int)x, (int)y, glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS);
+            nk_input_end(&ctx);
+        }
+
+        /* GUI */
+        gui_menubar_and_textedit(&ctx, &media, win);
+
+        /*
+        {
+            struct nk_canvas canvas;
+            canvas_begin(&ctx, &canvas, 0, WINDOW_WIDTH / 2, 40, WINDOW_WIDTH / 2, WINDOW_HEIGHT - 50, nk_rgb(250, 250, 250));
+            {
+                nk_fill_rect(canvas.painter, nk_rect(15, 15, 210, 210), 5, nk_rgb(247, 230, 154));
+                nk_fill_rect(canvas.painter, nk_rect(20, 20, 200, 200), 5, nk_rgb(188, 174, 118));
+                nk_draw_text(canvas.painter, nk_rect(30, 30, 150, 20), "Text to draw", 12, &media.font_20->handle, nk_rgb(188, 174, 118), nk_rgb(0, 0, 0));
+                nk_fill_rect(canvas.painter, nk_rect(250, 20, 100, 100), 0, nk_rgb(0, 0, 255));
+                nk_fill_circle(canvas.painter, nk_rect(20, 250, 100, 100), nk_rgb(255, 0, 0));
+                nk_fill_triangle(canvas.painter, 250, 250, 350, 250, 300, 350, nk_rgb(0, 255, 0));
+                nk_fill_arc(canvas.painter, 300, 180, 50, 0, 3.141592654f * 3.0f / 4.0f, nk_rgb(255, 255, 0));
+
                 {
-                    struct nk_canvas canvas;
-                    canvas_begin(&ctx, &canvas, 0, 0, 0, width, height, nk_rgb(250, 250, 250));
-                    {
-                        nk_fill_rect(canvas.painter, nk_rect(15, 15, 210, 210), 5, nk_rgb(247, 230, 154));
-                        nk_fill_rect(canvas.painter, nk_rect(20, 20, 200, 200), 5, nk_rgb(188, 174, 118));
-                        nk_draw_text(canvas.painter, nk_rect(30, 30, 150, 20), "Text to draw", 12, &font->handle, nk_rgb(188, 174, 118), nk_rgb(0, 0, 0));
-                        nk_fill_rect(canvas.painter, nk_rect(250, 20, 100, 100), 0, nk_rgb(0, 0, 255));
-                        nk_fill_circle(canvas.painter, nk_rect(20, 250, 100, 100), nk_rgb(255, 0, 0));
-                        nk_fill_triangle(canvas.painter, 250, 250, 350, 250, 300, 350, nk_rgb(0, 255, 0));
-                        nk_fill_arc(canvas.painter, 300, 180, 50, 0, 3.141592654f * 3.0f / 4.0f, nk_rgb(255, 255, 0));
-
-                        {
-                            float points[12];
-                            points[0] = 200; points[1] = 250;
-                            points[2] = 250; points[3] = 350;
-                            points[4] = 225; points[5] = 350;
-                            points[6] = 200; points[7] = 300;
-                            points[8] = 175; points[9] = 350;
-                            points[10] = 150; points[11] = 350;
-                            nk_fill_polygon(canvas.painter, points, 6, nk_rgb(0, 0, 0));
-                        }
-
-                        nk_stroke_line(canvas.painter, 15, 10, 200, 10, 2.0f, nk_rgb(189, 45, 75));
-                        nk_stroke_rect(canvas.painter, nk_rect(370, 20, 100, 100), 10, 3, nk_rgb(0, 0, 255));
-                        nk_stroke_curve(canvas.painter, 380, 200, 405, 270, 455, 120, 480, 200, 2, nk_rgb(0, 150, 220));
-                        nk_stroke_circle(canvas.painter, nk_rect(20, 370, 100, 100), 5, nk_rgb(0, 255, 120));
-                        nk_stroke_triangle(canvas.painter, 370, 250, 470, 250, 420, 350, 6, nk_rgb(255, 0, 143));
-                    }
-                    canvas_end(&ctx, &canvas);
+                    float points[12];
+                    points[0] = 200; points[1] = 250;
+                    points[2] = 250; points[3] = 350;
+                    points[4] = 225; points[5] = 350;
+                    points[6] = 200; points[7] = 300;
+                    points[8] = 175; points[9] = 350;
+                    points[10] = 150; points[11] = 350;
+                    nk_fill_polygon(canvas.painter, points, 6, nk_rgb(0, 0, 0));
                 }
 
-                /* Draw */
-                /* Framebuffer size is used instead of window size because the window size is in screen coordinates instead of pixels.
-                 * See https://www.glfw.org/docs/latest/window_guide.html#window_size for more info
-                 */
-                glfwGetFramebufferSize(win, &width, &height);
-                glViewport(0, 0, width, height);
-                glClear(GL_COLOR_BUFFER_BIT);
-                glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-                device_draw(&device, &ctx, width, height, NK_ANTI_ALIASING_ON);
-                glfwSwapBuffers(win);
+                nk_stroke_line(canvas.painter, 15, 10, 200, 10, 2.0f, nk_rgb(189, 45, 75));
+                nk_stroke_rect(canvas.painter, nk_rect(370, 20, 100, 100), 10, 3, nk_rgb(0, 0, 255));
+                nk_stroke_curve(canvas.painter, 380, 200, 405, 270, 455, 120, 480, 200, 2, nk_rgb(0, 150, 220));
+                nk_stroke_circle(canvas.painter, nk_rect(20, 370, 100, 100), 5, nk_rgb(0, 255, 120));
+                nk_stroke_triangle(canvas.painter, 370, 250, 470, 250, 420, 350, 6, nk_rgb(255, 0, 143));
             }
+            canvas_end(&ctx, &canvas);
         }
+        /**/
+
+        /* Draw */
+        glViewport(0, 0, display_width, display_height);
+        glClear(GL_COLOR_BUFFER_BIT);
+        glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+        device_draw(&device, &ctx, width, height, scale, NK_ANTI_ALIASING_ON);
+        glfwSwapBuffers(win);
     }
+
     nk_font_atlas_clear(&atlas);
     nk_free(&ctx);
+
     device_shutdown(&device);
     glfwTerminate();
     return 0;
