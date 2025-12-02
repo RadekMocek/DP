@@ -24,11 +24,8 @@ class App
 {
 public:
 	App() = default;
-
 	bool Init();
 	void Run();
-
-	~App();
 
 private:
 	// = Members =

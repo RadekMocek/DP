@@ -29,7 +29,7 @@ Other dependencies:
 * [GLFW](https://www.glfw.org/) ([zlib](https://www.glfw.org/license))
 * [GLEW](https://glew.sourceforge.net/) ([Modified BSD](https://github.com/nigels-com/glew/blob/master/LICENSE.txt))
 * [FreeType](https://gitlab.freedesktop.org/freetype/freetype) ([Custom](https://gitlab.freedesktop.org/freetype/freetype/-/blob/master/docs/FTL.TXT))
-* [imgui-glfw-glad-glm](ttps://github.com/cmmw/imgui-glfw-glad-glm) ([MIT](https://github.com/cmmw/imgui-glfw-glad-glm/blob/master/LICENSE.md))
+* [imgui-glfw-glad-glm](https://github.com/cmmw/imgui-glfw-glad-glm) ([MIT](https://github.com/cmmw/imgui-glfw-glad-glm/blob/master/LICENSE.md))
 * [glad](https://github.com/Dav1dde/glad) ([MIT](https://github.com/Dav1dde/glad/blob/glad2/LICENSE))
 * [stb](https://github.com/nothings/stb) ([MIT](https://github.com/nothings/stb/blob/master/LICENSE))
 * [SDL2](https://github.com/libsdl-org/SDL) ([zlib](https://github.com/libsdl-org/SDL/blob/main/LICENSE.txt))
