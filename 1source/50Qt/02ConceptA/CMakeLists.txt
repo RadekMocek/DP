@@ -25,9 +25,9 @@ include_directories(${INCLUDE_DIR})
 include_directories(${SOURCE_DIR})
 
 file(GLOB_RECURSE SOURCES
-    "${INCLUDE_DIR}/*.h"
-    "${INCLUDE_DIR}/*.hpp"
-    "${SOURCE_DIR}/*.cpp"
+        "${INCLUDE_DIR}/*.h"
+        "${INCLUDE_DIR}/*.hpp"
+        "${SOURCE_DIR}/*.cpp"
 )
 
 add_executable(QtProj ${SOURCES})
@@ -38,3 +38,9 @@ target_include_directories(QtProj PRIVATE ${SOURCE_DIR})
 # =================== Link libraries =================== #
 
 target_link_libraries(QtProj Qt6::Widgets)
+
+# =======
+if (MSVC)
+    target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC _CRT_SECURE_NO_WARNINGS)
+    #set_target_properties("${CMAKE_PROJECT_NAME}" PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup") # No console
+endif ()

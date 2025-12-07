@@ -3,62 +3,35 @@
 #include "MainWindow.hpp"
 
 
-MainWindow::MainWindow(QWidget* parent)
-    : QMainWindow(parent)
+MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
 {
-    setWindowTitle("Qt :: Hello Counter");
-    resize(800, 600);
+    setWindowTitle("Qt :: ConceptA");
+    resize(1366, 768);
 
     create_menus();
     create_central_widget();
 
-    on_counter_update();
+    repait_canvas();
 }
 
-
-void MainWindow::on_counter_update()
+void MainWindow::repait_canvas()
 {
-    label_counter_value->setText(QString::number(counter));
-
-    button_counter_decrement->setEnabled(counter != 1);
-    button_counter_increment->setEnabled(counter != 5);
-
-    label_hello->setVisible(counter == 3);
-}
-
-
-void MainWindow::on_button_decrement_clicked()
-{
-    counter--;
-    on_counter_update();
-}
-
-
-void MainWindow::on_button_increment_clicked()
-{
-    counter++;
-    on_counter_update();
-}
-
-
-void MainWindow::on_popup_action_triggered()
-{
-    QMessageBox::information(this, "Pop-up window", "Not much you can do here...");
+    canvas->repaint(text_edit->toPlainText());
 }
 
 
 void MainWindow::create_menus()
 {
     // Create menu bar
-    QMenuBar* menu_bar = new QMenuBar(this);
+    const QPointer menu_bar = new QMenuBar(this);
     setMenuBar(menu_bar);
 
     // File menu
-    QMenu* file_menu = menu_bar->addMenu("File");
-    QAction* popup_action = file_menu->addAction("Pop-up");    
-    connect(popup_action, &QAction::triggered, this, &MainWindow::on_popup_action_triggered); // (sender, signal, context, slot)
-    QAction* exit_action = file_menu->addAction("Exit");
-    connect(exit_action, &QAction::triggered, this, &QWidget::close);
+    const QPointer help_menu = menu_bar->addMenu("Help");
+    const QPointer about_action = help_menu->addAction("About...");
+    connect(about_action, &QAction::triggered, [this] {
+        QMessageBox::about(this, "About...", "https://github.com/RadekMocek/DP");
+    });
 }
 
 
@@ -68,30 +41,31 @@ void MainWindow::create_central_widget()
     setCentralWidget(central_widget);
 
     // Create main layout
-    main_layout = new QVBoxLayout(central_widget);
+    main_layout = new QGridLayout();
 
-    // Create row of buttons with counter label
-    row_counter = new QHBoxLayout();
-    main_layout->addLayout(row_counter);
+    // Row 1
+    text_edit = new QTextEdit();
+    text_edit->setText("10 10 Hello\n120 30 Qt!");
 
-    button_counter_decrement = new QPushButton("-");
-    row_counter->addWidget(button_counter_decrement);
-    connect(button_counter_decrement, &QPushButton::clicked, this,
-        &MainWindow::on_button_decrement_clicked);
+    connect(text_edit, &QTextEdit::textChanged, this, &MainWindow::repait_canvas);
 
-    label_counter_value = new QLabel("?");
-    row_counter->addWidget(label_counter_value);
+    main_layout->addWidget(text_edit, 0, 0, 0, 1);
 
-    button_counter_increment = new QPushButton("+");
-    row_counter->addWidget(button_counter_increment);
-    connect(button_counter_increment, &QPushButton::clicked, this,
-        &MainWindow::on_button_increment_clicked);
+    canvas = new Canvas();
+    main_layout->addWidget(canvas, 0, 1);
 
-    row_counter->addStretch();
+    // Row 2
+    zoom_level = new QSlider(Qt::Horizontal);
+    zoom_level->setMinimum(1);
+    zoom_level->setMaximum(20);
+    zoom_level->setValue(10);
 
-    // Second row has only the 'Hello' label
-    label_hello = new QLabel("Hello!");
-    main_layout->addWidget(label_hello);
+    connect(zoom_level, &QAbstractSlider::valueChanged, [this](const int value) {
+        canvas->change_zoom_level(value);
+    });
 
-    main_layout->addStretch();
+    main_layout->addWidget(zoom_level, 1, 1);
+
+    //
+    central_widget->setLayout(main_layout);
 }

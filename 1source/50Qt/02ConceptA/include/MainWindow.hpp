@@ -1,12 +1,15 @@
 #pragma once
 
-#include <QMainWindow>
-#include <QWidget>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QPushButton>
+#include <QGridLayout>
 #include <QLabel>
+#include <QMainWindow>
 #include <QMenuBar>
+#include <QPointer>
+#include <QSlider>
+#include <QTextEdit>
+#include <QWidget>
+
+#include "Canvas.hpp"
 
 class MainWindow : public QMainWindow
 {
@@ -17,29 +20,21 @@ public:
     ~MainWindow() = default;
 
 private slots:
-    void on_button_decrement_clicked();
-    void on_button_increment_clicked();
-    void on_popup_action_triggered();
 
 private:
     // My state
-    int counter = 1;
 
-    // My functions
-    void on_counter_update();    
+    // My methods
+    void repait_canvas();
 
     // UI Creation methods
     void create_menus();
     void create_central_widget();
 
     // UI Widgets
-    QWidget* central_widget;
-    QVBoxLayout* main_layout;
-    
-    QHBoxLayout* row_counter;
-
-    QPushButton* button_counter_decrement;
-    QPushButton* button_counter_increment;
-    QLabel* label_counter_value;
-    QLabel* label_hello;
+    QPointer<QWidget> central_widget;
+    QPointer<QGridLayout> main_layout;
+    QPointer<QTextEdit> text_edit;
+    QPointer<Canvas> canvas;
+    QPointer<QSlider> zoom_level;
 };

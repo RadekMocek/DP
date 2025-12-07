@@ -20,7 +20,7 @@ Project type|Description
 `SampleProject`|Empty project for a given library ready for tinkering.
 `Playground`|Project for testing given library features as part of the research.
 `HelloCounter`|Simple project for understanding the basic principles of the IMGUI paradigm. Contains label that shows counter value. The counter can count from 1 to 5 by pushing buttons `+` and `-`. "Hello" label is displayed when counter==3. Buttons are disabled appropriately. Also contains menu bar with option to show pop-up window. [Screenshot](../2thesis/img/imgui_qt_win10_plasma.png).
-`ConceptA`|...
+`ConceptA`|The final example app for this project should be a WYSIWYM diagram editor, where half of the window is a text editor and the other half shows the resulting diagram. This project, `ConceptA`, attempts to make a simple "sketch" in this direction so that the properties of individual libraries that will be useful in the final application, such as multi-line text fields or 2D primitive rendering, can be tested.
 
 <br>
 
