@@ -25,7 +25,7 @@ private:
     // My state
 
     // My methods
-    void repait_canvas();
+    void repaint_canvas();
 
     // UI Creation methods
     void create_menus();

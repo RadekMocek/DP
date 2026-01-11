@@ -11,10 +11,10 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
     create_menus();
     create_central_widget();
 
-    repait_canvas();
+    repaint_canvas();
 }
 
-void MainWindow::repait_canvas()
+void MainWindow::repaint_canvas()
 {
     canvas->repaint(text_edit->toPlainText());
 }
@@ -47,7 +47,7 @@ void MainWindow::create_central_widget()
     text_edit = new QTextEdit();
     text_edit->setText("10 10 Hello\n120 30 Qt!");
 
-    connect(text_edit, &QTextEdit::textChanged, this, &MainWindow::repait_canvas);
+    connect(text_edit, &QTextEdit::textChanged, this, &MainWindow::repaint_canvas);
 
     main_layout->addWidget(text_edit, 0, 0, 0, 1);
 
