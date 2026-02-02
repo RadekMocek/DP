@@ -1,7 +1,7 @@
 use crate::MyApp;
 
 impl MyApp {
-    pub(crate) fn canvas_logic(&mut self, ui: &mut egui::Ui) -> egui::Response {
+    pub fn gui_canvas(&mut self, ui: &mut egui::Ui) -> egui::Response {
         const COLOR_BLACK: egui::Color32 = egui::Color32::BLACK;
         const BORDER_OFFSET_BASE: f32 = 10.0;
 

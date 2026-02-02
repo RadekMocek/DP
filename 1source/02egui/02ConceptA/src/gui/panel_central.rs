@@ -1,7 +1,7 @@
 use crate::MyApp;
 
 impl MyApp {
-    pub(crate) fn panel_central(&mut self, ctx: &egui::Context) {
+    pub fn gui_panel_central(&mut self, ctx: &egui::Context) {
         egui::CentralPanel::default().show(ctx, |mut ui| {
             // The central panel the region left after adding TopPanel's and SidePanel's
 
@@ -17,11 +17,11 @@ impl MyApp {
                     });
 
                 egui::Frame::canvas(&columns[1].style()).show(&mut columns[1], |ui| {
-                    self.canvas_logic(ui);
+                    self.gui_canvas(ui);
                 });
             });
 
-            self.modals(&mut ui);
+            self.gui_modal(&mut ui);
         });
     }
 }

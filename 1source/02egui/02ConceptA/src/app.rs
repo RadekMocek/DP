@@ -31,8 +31,8 @@ impl eframe::App for MyApp {
     /// Called each time the UI needs repainting, which may be many times per second.
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         // Put your widgets into a `SidePanel`, `TopBottomPanel`, `CentralPanel`, `Window` or `Area`.
-        self.panel_top(&ctx);
-        self.panel_bottom(&ctx);
-        self.panel_central(&ctx);
+        self.gui_panel_top(&ctx);
+        self.gui_panel_bottom(&ctx);
+        self.gui_panel_central(&ctx);
     }
 }

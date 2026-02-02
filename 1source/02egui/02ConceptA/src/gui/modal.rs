@@ -1,7 +1,7 @@
 use crate::MyApp;
 
 impl MyApp {
-    pub(crate) fn modals(&mut self, ui: &mut egui::Ui) {
+    pub fn gui_modal(&mut self, ui: &mut egui::Ui) {
         if self.do_open_modal_about {
             let modal = egui::Modal::new(egui::Id::new("Modal about...")).show(ui.ctx(), |ui| {
                 ui.heading("About...");
