@@ -3,4 +3,5 @@
 mod app;
 pub use app::MyApp;
 
+mod gui;
 mod style;
