@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
     repaint_canvas();
 }
 
-void MainWindow::repaint_canvas()
+void MainWindow::repaint_canvas() const
 {
     canvas->repaint(text_edit->toPlainText());
 }
@@ -26,7 +26,7 @@ void MainWindow::create_menus()
     const QPointer menu_bar = new QMenuBar(this);
     setMenuBar(menu_bar);
 
-    // File menu
+    // Help menu
     const QPointer help_menu = menu_bar->addMenu("Help");
     const QPointer about_action = help_menu->addAction("About...");
     connect(about_action, &QAction::triggered, [this] {

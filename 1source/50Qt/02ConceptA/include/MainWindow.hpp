@@ -16,8 +16,8 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget* parent = nullptr);
-    ~MainWindow() = default;
+    explicit MainWindow(QWidget* parent = nullptr);
+    ~MainWindow() override = default;
 
 private slots:
 
@@ -25,7 +25,7 @@ private:
     // My state
 
     // My methods
-    void repaint_canvas();
+    void repaint_canvas() const;
 
     // UI Creation methods
     void create_menus();

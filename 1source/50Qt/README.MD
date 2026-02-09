@@ -6,6 +6,7 @@
 * Projects that use _Qt_ "independently" (no need for Qt Creator, local installation of Qt is needed, layout is defined in code instead of an .ui file):
   * `01HelloCounter_Independent`
   * `02ConceptA`
+  * `03Playground`
 
 ## Running Qt 6.10.0
 

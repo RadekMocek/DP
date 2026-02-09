@@ -6,9 +6,11 @@ __This repository contains everything except the main sample program (the diagra
 
 ## Table of contents
 
-* [`1source/`](./1source/) 🇺🇳 – all the source code I wrote/used while researching the IMGUI paradigm
+* [`1source/`](./1source/) 🇺🇳 – all the source code I wrote/used while researching the IMGUI paradigm (except for the main projects, see above)
 
 * [`2thesis/`](./2thesis/) 🇨🇿 – document presenting my research
+
+* [`3slideshow/`](./3slideshow/) 🇨🇿 – slideshows presenting my research
 
 ## License
 

@@ -33,7 +33,7 @@ void Canvas::repaint(const QString& str)
 
 void Canvas::change_zoom_level(const int new_zoom_level)
 {
-    zoom_level = new_zoom_level / 10.0f;
+    zoom_level = static_cast<float>(new_zoom_level) / 10.0f;
 
     font.setPointSizeF(22 * zoom_level);
     font_metrics = QFontMetrics(font);
