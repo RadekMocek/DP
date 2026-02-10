@@ -15,7 +15,7 @@ class QGraphicsTextItem;
 class QColor;
 QT_END_NAMESPACE
 
-// DiagramScene inherits QGraphicsDiagramScene
+// DiagramScene inherits QGraphicsScene
 // and provides support for DiagramItem, Arrow and DiagramTextItem (In addition to the support already handled by QGraphicsScene).
 
 /*
@@ -37,9 +37,9 @@ public:
 
     explicit DiagramScene(QMenu* itemMenu, QObject* parent = nullptr);
     //QFont font() const { return myFont; }
-    QColor textColor() const { return myTextColor; }
-    QColor itemColor() const { return myItemColor; }
-    QColor lineColor() const { return myLineColor; }
+    [[nodiscard]] QColor textColor() const { return myTextColor; }
+    [[nodiscard]] QColor itemColor() const { return myItemColor; }
+    [[nodiscard]] QColor lineColor() const { return myLineColor; }
     void setLineColor(const QColor& color);
     void setTextColor(const QColor& color);
     void setItemColor(const QColor& color);
@@ -62,7 +62,7 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
 
 private:
-    bool isItemChange(int type) const;
+    [[nodiscard]] bool isItemChange(int type) const;
 
     DiagramItem::DiagramType myItemType;
     QMenu* myItemMenu;

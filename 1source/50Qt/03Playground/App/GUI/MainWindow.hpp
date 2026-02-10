@@ -56,51 +56,51 @@ private:
     void createActions();
     void createMenus();
     void createToolbars();
-    QWidget* createBackgroundCellWidget(const QString& text, const QString& image) const;
-    QWidget* createCellWidget(const QString& text, DiagramItem::DiagramType type) const;
+    [[nodiscard]] QWidget* createBackgroundCellWidget(const QString& text, const QString& image) const;
+    [[nodiscard]] QWidget* createCellWidget(const QString& text, DiagramItem::DiagramType type) const;
 
     template <typename PointerToMemberFunction>
     QMenu* createColorMenu(const PointerToMemberFunction& slot, QColor defaultColor);
     static QIcon createColorToolButtonIcon(const QString& imageFile, QColor color);
     static QIcon createColorIcon(QColor color);
 
-    DiagramScene* scene;
-    QGraphicsView* view;
+    DiagramScene* scene{};
+    QGraphicsView* view{};
 
-    QAction* exitAction;
-    QAction* addAction;
-    QAction* deleteAction;
+    QAction* exitAction{};
+    QAction* addAction{};
+    QAction* deleteAction{};
 
-    QAction* toFrontAction;
-    QAction* sendBackAction;
-    QAction* aboutAction;
+    QAction* toFrontAction{};
+    QAction* sendBackAction{};
+    QAction* aboutAction{};
 
-    QMenu* fileMenu;
+    QMenu* fileMenu{};
     QMenu* itemMenu{};
-    QMenu* aboutMenu;
+    QMenu* aboutMenu{};
 
-    QToolBar* textToolBar;
-    QToolBar* editToolBar;
-    QToolBar* colorToolBar;
-    QToolBar* pointerToolbar;
+    QToolBar* textToolBar{};
+    QToolBar* editToolBar{};
+    QToolBar* colorToolBar{};
+    QToolBar* pointerToolbar{};
 
-    QComboBox* sceneScaleCombo;
-    QComboBox* itemColorCombo;
-    QComboBox* textColorCombo;
-    QComboBox* fontSizeCombo;
-    QFontComboBox* fontCombo;
+    QComboBox* sceneScaleCombo{};
+    QComboBox* itemColorCombo{};
+    QComboBox* textColorCombo{};
+    QComboBox* fontSizeCombo{};
+    QFontComboBox* fontCombo{};
 
-    QToolBox* toolBox;
-    QButtonGroup* buttonGroup;
-    QButtonGroup* pointerTypeGroup;
-    QButtonGroup* backgroundButtonGroup;
-    QToolButton* fontColorToolButton;
-    QToolButton* fillColorToolButton;
-    QToolButton* lineColorToolButton;
-    QAction* boldAction;
-    QAction* underlineAction;
-    QAction* italicAction;
-    QAction* textAction;
-    QAction* fillAction;
-    QAction* lineAction;
+    QToolBox* toolBox{};
+    QButtonGroup* buttonGroup{};
+    QButtonGroup* pointerTypeGroup{};
+    QButtonGroup* backgroundButtonGroup{};
+    QToolButton* fontColorToolButton{};
+    QToolButton* fillColorToolButton{};
+    QToolButton* lineColorToolButton{};
+    QAction* boldAction{};
+    QAction* underlineAction{};
+    QAction* italicAction{};
+    QAction* textAction{};
+    QAction* fillAction{};
+    QAction* lineAction{};
 };

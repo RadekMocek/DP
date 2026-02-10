@@ -31,6 +31,8 @@
 * __2.5.__ Select _Build_ → _Build All_ &ensp;(or press Ctrl + Shift + B)
 * __2.6.__ Select _SampleProject.exe_ next to the green arrow &ensp;(or press F5)
 
+To run this working VS project in CLion, a _Visual Studio toolchain_ must be set up. See [Tutorial: Configure CLion on Windows](https://www.jetbrains.com/help/clion/quick-tutorial-on-configuring-clion-on-windows.html).
+
 ### Linux Debian 13.1 KDE Plasma
 
 * Install Qt (<https://www.qt.io/>)
@@ -40,7 +42,7 @@ sudo apt install libxcb-cursor0 libxcb-cursor-dev
 
 cd "<path_to_this_repository>/1source/50Qt/01HelloCounter_Independent"
 
-export QTDIR=<path_to_qt_installation>/6.10.0/gcc_64/
+export QTDIR=<path_to_qt_installation>/6.10.0/gcc_64/  # Add this line to ~/.bashrc for auto export
 
 cmake -S . -B build
 
@@ -48,3 +50,10 @@ cmake --build build
 
 ./build/QtProj
 ```
+
+To make it work in CLion on Linux:
+
+1. Open the folder with the project in CLion
+2. Click on the CMake icon at the bottom left corner
+3. Click on the cogwheel icon → _CMake settings_
+4. In the _Cache variables_ section of the settings, change _Value_ of _Name_ `Qt6_DIR` to `<path_to_qt_installation>/6.10.0/gcc_64/lib/cmake/Qt6`

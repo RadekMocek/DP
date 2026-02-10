@@ -34,11 +34,11 @@ public:
 
     void removeArrow(Arrow* arrow);
     void removeArrows() const;
-    DiagramType diagramType() const { return myDiagramType; }
-    QPolygonF getMyPolygon() const { return myPolygon; }
+    [[nodiscard]] DiagramType diagramType() const { return myDiagramType; }
+    [[nodiscard]] QPolygonF getMyPolygon() const { return myPolygon; }
     void addArrow(Arrow* arrow);
-    QPixmap image() const;
-    int type() const override { return Type; }
+    [[nodiscard]] QPixmap image() const;
+    [[nodiscard]] int type() const override { return Type; }
 
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent* event) override;

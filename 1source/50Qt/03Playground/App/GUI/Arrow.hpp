@@ -19,20 +19,20 @@ public:
 
     Arrow(DiagramItem* startItem, DiagramItem* endItem, QGraphicsItem* parent = nullptr);
 
-    int type() const override { return Type; }
+    [[nodiscard]] int type() const override { return Type; }
     // boundingRect() and shape() are reimplemented from QGraphicsLineItem and are used by the scene to check for collisions and selections.
-    QRectF boundingRect() const override;
-    QPainterPath shape() const override;
+    [[nodiscard]] QRectF boundingRect() const override;
+    [[nodiscard]] QPainterPath shape() const override;
     // The item's color can be set with setColor().
     void setColor(const QColor& color) { myColor = color; }
-    DiagramItem* startItem() const { return myStartItem; }
-    DiagramItem* endItem() const { return myEndItem; }
+    [[nodiscard]] DiagramItem* startItem() const { return myStartItem; }
+    [[nodiscard]] DiagramItem* endItem() const { return myEndItem; }
     // Calling updatePosition() causes the arrow to recalculate its position and arrow head angle.
     void updatePosition();
 
 protected:
     // paint() is reimplemented so that we can paint an arrow rather than just a line between items.
-    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr) override;
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 
 private:
     // myStartItem and myEndItem are the diagram items that the arrow connects. The arrow is drawn with its head to the end item.

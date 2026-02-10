@@ -24,7 +24,7 @@ public:
 
     explicit DiagramTextItem(QGraphicsItem* parent = nullptr);
 
-    int type() const override { return Type; }
+    [[nodiscard]] int type() const override { return Type; }
 
 signals:
     void lostFocus(DiagramTextItem* item);

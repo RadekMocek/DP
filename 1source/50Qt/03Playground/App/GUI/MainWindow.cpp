@@ -68,7 +68,7 @@ void MainWindow::backgroundButtonGroupClicked(QAbstractButton* button) const
     view->update();
 }
 
-// This slot is called when a button in buttonGroup is checked. When a button is checked the user can click on the graphics view and a DiagramItem of the selected type
+// This slot is called when a button in buttonGroup is checked. When a button is checked, the user can click on the graphics view and a DiagramItem of the selected type
 // will be inserted into the DiagramScene. We must loop through the buttons in the group to uncheck other buttons as only one button is allowed to be checked at a time.
 // QButtonGroup assigns an id to each button. We have set the id of each button to the diagram type,
 // as given by DiagramItem::DiagramType that will be inserted into the scene when it is clicked.
@@ -293,16 +293,15 @@ void MainWindow::about()
                        tr("The <b>Diagram Scene</b> example shows use of the graphics framework."));
 }
 
-// The createToolBox() function creates and lays out the widgets of the toolBox QToolBox.
 void MainWindow::createToolBox()
 {
     // This part of the function sets up the tabbed widget item that contains the flowchart shapes.
     // An exclusive QButtonGroup always keeps one button checked; we want the group to allow all buttons to be unchecked.
-    // We still use a button group since we can associate user data, which we use to store the diagram type, with each button.
-    // The createCellWidget() function sets up the buttons in the tabbed widget item and is examined later.
     buttonGroup = new QButtonGroup(this);
     buttonGroup->setExclusive(false);
 
+    // We still use a button group since we can associate user data, which we use to store the diagram type, with each button.
+    // The createCellWidget() function sets up the buttons in the tabbed widget item.
     connect(buttonGroup, QOverload<QAbstractButton*>::of(&QButtonGroup::buttonClicked),
             this, &MainWindow::buttonGroupClicked);
 
@@ -590,7 +589,7 @@ QIcon MainWindow::createColorToolButtonIcon(const QString& imageFile, const QCol
     painter.fillRect(QRect(0, 60, 50, 80), color);
     painter.drawPixmap(target, image, source);
 
-    return QIcon(pixmap);
+    return {pixmap};
 }
 
 // This function creates an icon with a filled rectangle in the color of color.
@@ -602,5 +601,5 @@ QIcon MainWindow::createColorIcon(const QColor color)
     painter.setPen(Qt::NoPen);
     painter.fillRect(QRect(0, 0, 20, 20), color);
 
-    return QIcon(pixmap);
+    return {pixmap};
 }
