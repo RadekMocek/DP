@@ -1,0 +1,4 @@
+fn update():
+    static value = 0
+    if btn(str(value)):
+        value += 1

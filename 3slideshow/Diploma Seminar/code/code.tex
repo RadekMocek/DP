@@ -1,0 +1,21 @@
+\usepackage{listings}
+\definecolor{color_gray}{rgb}{0.5294117647058824, 0.5803921568627451, 0.5764705882352941}
+\definecolor{color_violet}{rgb}{0.403921568627451, 0.4196078431372549, 0.7607843137254902}
+\definecolor{color_blue}{rgb}{0.13725490196078433, 0.49019607843137253, 0.7450980392156863}
+\definecolor{color_green}{rgb}{0.4549019607843137, 0.5215686274509804, 0.00784313725490196}
+\lstset{
+    , basicstyle = \ttfamily\bfseries
+    , breaklines = false
+    , frame = none
+    , commentstyle = \color{color_gray}
+    , keywordstyle = \color{color_violet}
+    , ndkeywordstyle = \color{color_blue}
+    , stringstyle = \color{color_green}
+    , showstringspaces = false
+    , prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}}
+}
+
+\lstdefinelanguage{pseudo}{
+  , keywords={fn, new, if, static}
+  , ndkeywords={init, str, add_widget, connect, clicked, button_clicked, set_text, update, btn}
+}

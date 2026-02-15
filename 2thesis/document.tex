@@ -111,6 +111,7 @@
 		\textbf{MVVM} & model–view–viewmodel, architektonický vzor \\
 		\textbf{RMGUI} & retained mode graphical user interface, grafické uživatelské rozhraní v režimu soběstačného vykreslování \\
 		\textbf{WPF} & Windows Presentation Foundation, knihovna umožňující tvorbu GUI aplikací pro operační systém Windows \\
+		\textbf{WYSIWYM} & What You See Is What You Mean, přístup k tvorbě strukturovaných dokumentů
 	\end{abbrList2}
 	
 	% Jádro zprávy
@@ -222,13 +223,18 @@
 		\label{_tag_table_libraries}
 	\end{table}
 	
-	\subsection{Dear ImGui}
+	Protože ukázkovou aplikací této práce je editor diagramů inspirovaný přístupem WYSIWYM, zaměřuje se rešerše knihoven více na ty aspekty, které budou při tvorbě této aplikace určitě potřeba. Je pravděpodobné, že všechny knihovny budou disponovat ovládacími prvky jako tlačítko nebo textové pole, otázkou ale je, jaké mají tyto prvky funkce. U textového pole se např. hodí zvýrazňování syntaxe, hledání v textu, našeptávání, klávesové zkratky pro kopírování a vkládání apod. Druhou důležitou částí vedle textového editoru je kreslící plátno, které obsahuje vykreslený diagram odpovídající danému textu. Pro jeho realizaci by knihovna měla poskytovat funkce pro kreslení grafických primitiv.
+	
+	\subsection{Knihovna Dear ImGui}
 	
 	Dear ImGui \cite{online_imguiwiki} je knihovna pro tvorbu GUI s přístupem IMGUI napsaná v jazyce C++. Její kód splňuje standard \textit{C++11} a nepoužívá žádné standardní knihovny. Dear ImGui se často využívá ve videoherním průmyslu k tvorbě dynamických nástrojů pro ladění. Knihovna je psaná tak, aby šla snadno integrovat do existujícího projektu s libovolným backendem. Základním stavebním prvkem je tedy nemodální dialogové okno, knihovna ale umožňuje vytvořit takové okno, které nemá žádné dekorace, zůstává na pozadí a zabírá celý prostor okna hostitelského.
 	
+	Knihovna nemá žádnou oficiální dokumentaci, ale poskytuje funkci pro zobrazení ukázkového okna, které obsahuje všechny dostupné ovládací prvky v různých nastaveních. Nastavením ovládacího prvku se v tomto případě myslí dodání proměnné s určitými příznaky (\textit{flags}). U textového pole existují např. příznaky typu „pouze pro čtení“ nebo „zalamuj dlouhé řádky“. Najde-li programátor v ukázkovém okně chtěnou funkci, její implementaci pak snadno dohledá ve zdrojovém kódu tohoto okna. Pomoci mohou také občasné komentáře ve zdrojovém kódu samotné knihovny, nebo dokumentace některého z jejích wrapperů. I přes absenci oficiální dokumentace nebývá díky relativně velké komunitě problém najít odpovědi na základní problémy.
+
+	Velká komunita okolo knihovny Dear ImGui se projevuje i existencí řady doplňků.
+	
 	\dots\ \dots\ \dots\ \dots\ \dots\ \dots	
 	
-	% * neexistuje proper dokumentace, ale example je slušný
 	% * extensions jako implot
 	
 	% * Mrknout na hello imgui a imgui toolkit
@@ -236,12 +242,12 @@
 	
 	% * Umí měnit kurzor? (myšleno nativní druhy kurzoru, nikoliv vlastní obrázek)
 		
-	\subsection{egui}
+	\subsection{Knihovna egui}
 	
 	% CtrlF v textu ?
 	% CtrlZ v textu ?
 	
-	\subsection{Nuklear}
+	\subsection{Knihovna Nuklear}
 	
 	% Dříve "zahnrad.h"
 	% https://github.com/Immediate-Mode-UI/Nuklear/wiki
@@ -251,22 +257,44 @@
 	%                       https://github.com/Immediate-Mode-UI/Nuklear/issues/251
 	%                       https://github.com/zecruel/CadZinho
 	
-	\subsection{microui}
+	\subsection{Knihovna microui}
 	
 	% COMMUNITY FORK?: https://github.com/rxi/microui/issues/79
 	%                  https://github.com/microui-community/microui
 	% POST YOUR SCREENSHOT: https://github.com/rxi/microui/issues/35
 	
-	\subsection{raygui}
+	\subsection{Knihovna raygui}
 	
 	% * https://github.com/raysan5/rguilayout
 	% Editable multiline textbox not supported
 	
-	\subsection{Gio}
+	\subsection{Knihovna Gio}
 	
 	% * https://github.com/oligo/gioview
 	
-	\subsection{dvui}
+	\subsection{Knihovna dvui}
+	
+	\section{Knihovna Qt}
+	
+	(Pár slov o Qt, protože je to jedna z použitých knihoven?)
+	
+	\chapter{Návrh}
+	
+	\begin{itemize}
+		\item Návrh obecně: nodes + paths, relative position
+		\item JSON/XML/YAML/TOML/custom
+		\item kromě TOML→diagram také návrh zbylého GUI
+	\end{itemize}
+	
+	\chapter{Implementace}
+	
+	\section{Implementace v knihovně Dear ImGui}
+	
+	% * backend zvolen glfw3, problémy s verzemi
+	
+	\section{Implementace v knihovně egui}
+	
+	\section{Implementace v knihovně Qt}
 	
 	% Zdroje
 	\chapter*{Seznam použité literatury}

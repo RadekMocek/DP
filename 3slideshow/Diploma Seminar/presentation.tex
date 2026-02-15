@@ -1,5 +1,6 @@
 % !TEX TS-program = xelatex
 \documentclass[FM]{tulpresentation} % https://github.com/RadekMocek/tulpresentation
+\input{code/code}
 \title{Grafické uživatelské rozhraní v režimu okamžitého vykreslování}
 \titlesub{Radek Mocek}{}{Jiří Jeníček, Ph.D.}{}
 \begin{document}
@@ -15,6 +16,68 @@
 			\item Ve vybraných knihovnách implementujte a otestujte aplikaci.
 			\item Zhodnoťte výsledky.
 		\end{enumerate}
+	\end{frame}
+
+	% "teoretický úvod – popis řešené problematiky"
+	\begin{frame}
+		\subheader{RMGUI – Retained Mode GUI}
+		\begin{itemize}
+			\item „Režim soběstačného vykreslování“
+			\item V inicializační fázi se definují jednotlivé ovládací prvky a na ně se navěšují callback metody
+			\item Hlavní smyčka pak řeší vykreslování prvků a reakce na události, před programátorem je skryta
+			\item Knihovny \textit{Qt}, \textit{wxWidgets}, \textit{WPF}, \dots
+		\end{itemize}
+		\subheader{\\IMGUI – Immediate Mode GUI}
+		\begin{itemize}
+			\item „Režim okamžitého vykreslování“
+			\item Žádná inicializační fáze ani callback metody, pouze hlavní smyčka
+			\item Definice zmiňuje pouze tento rozdíl z pohledu programátora koncové aplikace, implementace knihoven mohou být různé
+			\item Knihovny \textit{Dear ImGui}, \textit{egui}, \textit{Nuklear}, \dots
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}[fragile]
+	\subheader{RMGUI}
+	\lstinputlisting[language=pseudo]{code/rmgui.txt}
+	\subheader{IMGUI}
+	\lstinputlisting[language=pseudo]{code/imgui.txt}
+	\end{frame}
+	
+	\begin{frame}
+		\frametitle{IMGUI v praxi}
+		\begin{itemize}
+			\item Využití grafického API pro vykreslování ovládacích prvků (\textit{OpenGL}, \textit{DirectX}, \dots)
+			\item Časté použití pro přidání ovládacích prvků do existující interaktivní aplikace
+			\item Spíše GUI pro ladění vývojářem, než user-facing GUI
+			\item Chaos
+			\begin{itemize}
+				\item Nepříliš striktní definice, různé interpretace
+				\item Přívlastek „okamžitý“ vybrán z důvodu určité podobnosti k \textit{immediate-mode graphics API}, není to ale totéž
+				\item Název knihovny \textit{Dear ImGui} se často zkracuje na \textit{ImGui},\\ ale \textit{ImGui} $\neq$ \textit{IMGUI}
+			\end{itemize}
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}
+		\subheader{Motivace}
+		\begin{itemize}
+			\item Jak jsou IMGUI knihovny použitelné pro psaní „běžných“ user-facing aplikací?
+			\item Jaký je dopad na výkon oproti RMGUI knihovnám?
+			\item IMGUI knihovny jsou v aktivním vývoji
+			\item Vnést do chaosu trochu řádu
+		\end{itemize}
+		\subheader{Ukázková aplikace}
+		\begin{itemize}
+			\item WYSIWYM diagram editor
+			\item Implementováno v \textit{Dear ImGui}, \textit{egui} a \textit{Qt}
+			\item Momentálně: Obdélníky s textem, které lze spojovat šipkami
+			\item TODO: Spíše než zlepšovat editor diagramů se soustředit na schopnosti daných knihoven: syntax highlight, pás tlačítek s nástroji, klávesové zkratky, systémové dialogy, nastavení vzhledu, \dots
+		\end{itemize}
+	\end{frame}
+	
+	% "představa vlastního obsahu práce"
+	\begin{frame}
+		\includegraphics[width=.95\paperwidth]{img/dp_dear_imgui}
 	\end{frame}
 	
 	% Děkuji
