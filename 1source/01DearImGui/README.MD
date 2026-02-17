@@ -7,6 +7,7 @@
   * `03ConceptA`
 * Projects that use CMake's FetchContent to get _Dear ImGui_, _GLFW_, _glad_:
   * `02HelloCounter_NoVcpkg`
+  * `05Playground`
 * Projects that don't use vcpkg nor FetchContent and have all their dependencies (_Dear ImGui_, _GLFW_, _glad_, _FreeType_) included locally:
   * `04HelloCounter_Offline`
 
@@ -75,7 +76,7 @@ cd vcpkg
 ```
 
 * __1.1.__ Create new user environment variable called `VCPKG_ROOT` and set it to vcpkg's root directory
-* __1.2.__ Add `%VCPKG_ROOT%` to `Path`
+* __1.2.__ Add `%VCPKG_ROOT%` to `Path` (EDIT: not sure if this step is actually needed)
 
 #### 2. Run the sample project
 
@@ -103,7 +104,7 @@ cd vcpkg
 
 cd "<path_to_this_repository>/1source/01DearImGui/00SampleProject"
 
-export VCPKG_ROOT=<path_to_bootstrapped_vcpkg> && export PATH=$VCPKG_ROOT:$PATH
+export VCPKG_ROOT=<path_to_bootstrapped_vcpkg>
 
 cmake --preset=vcpkg
 
