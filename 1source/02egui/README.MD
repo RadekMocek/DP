@@ -5,6 +5,7 @@
   * `00SampleProject`
   * `01HelloCounter`
   * `02ConceptA`
+  * `03Playground`
 
 ## Running egui
 
