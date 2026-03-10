@@ -139,8 +139,6 @@
 	
 	Kód \ref{_tag_code_HelloCounterImGui} představuje přístup IMGUI v knihovně \textit{Dear ImGui}. Metoda \texttt{update} obsahuje logiku hlavní smyčky, která je obvykle volána se stejnou frekvencí, jako je obnovovací frekvence zobrazovacího zařízení. Nejprve je čítač nastaven na svou výchozí hodnotu, kterou si díky klíčovému slovu \texttt{static} drží i při opakovaném volání metody. Vybraná knihovna se chová jako stavový automat, což je vidět na kódu, který následuje: po zavolání metody \texttt{Begin($x$)} je vytvořeno okno s názvem $x$ a všechny další příkazy se provádí relativně k tomuto oknu, dokud není zavolána metoda \texttt{End}. To samé platí pro dvojici metod \texttt{BeginDisabled($p$)} a \texttt{EndDisabled}. Je-li  splněna podmínka $p$, pak jsou veškeré ovládací prvky, jejichž vykreslení je definováno mezi voláními těchto dvou metod, označeny jako neaktivní. Metoda \texttt{Button} říká, že má být vykresleno dané tlačítko, a zároveň vrací pravdivostní hodnotu, která vyjadřuje, zdali bylo tlačítko stisknuto. Metoda \texttt{Text} pak vykresluje textové popisky. Oproti přístupu RMGUI, kde se u objektu pod správou knihovny Qt, který reprezentuje textové pole s pozdravem, přepíná parametr viditelnosti, je v přístupu IMGUI vykreslení textu jednoduše podmíněno.
 	
-	% [? Obrázek HelloCounter ?]
-	
 	% <? Zde by mohla být přidána sekce nastiňující jak to funguje pod kapotou (IMGUI vs RMGUI) ?>
 	
 	Z rozdílů mezi řešeními pomocí RMGUI a IMGUI, které byly představeny v této ukázce, vyplývají některé přednosti a úskalí obou přístupů. Nejprve je ale třeba zmínit, že problematika není takto černobílá. Jednotlivé architektury a knihovny se mohou lišit v drobných detailech, kombinovat oba přístupy, nebo problém řešit přístupem zcela odlišným. Např., oproti zde představenému řešení v knihovně Qt, by v architektuře MVVM mohla být hodnota textového popisku svázána přímo s proměnnou reprezentující hodnotu čítače. Při jakékoliv změně proměnné \texttt{counter} by se pak hodnota popisku \texttt{label\_counter\_value} aktualizovala automaticky.
@@ -266,7 +264,7 @@
 	\subsection{Knihovna raygui}
 	
 	% * https://github.com/raysan5/rguilayout
-	% Editable multiline textbox not supported
+	% * Editable multiline textbox not supported
 	
 	\subsection{Knihovna Gio}
 	
@@ -276,15 +274,7 @@
 	
 	\section{Knihovna Qt}
 	
-	(Pár slov o Qt, protože je to jedna z použitých knihoven?)
-	
 	\chapter{Návrh}
-	
-	\begin{itemize}
-		\item Návrh obecně: nodes + paths, relative position
-		\item JSON/XML/YAML/TOML/custom
-		\item kromě TOML→diagram také návrh zbylého GUI
-	\end{itemize}
 	
 	\chapter{Implementace}
 	

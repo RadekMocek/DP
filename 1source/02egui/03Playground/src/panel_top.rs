@@ -7,6 +7,7 @@ impl MyApp {
             egui::MenuBar::new().ui(ui, |ui| {
                 ui.menu_button("Menu", |ui| {
                     ui.checkbox(&mut self.do_show_win_input_tests, "Input tests");
+                    ui.checkbox(&mut self.do_show_win_canvas, "Canvas");
                 });
             });
         });

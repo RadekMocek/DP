@@ -21,7 +21,7 @@ impl MyApp {
                 );
 
                 let textedit = egui::TextEdit::singleline(&mut self.test_text);
-                let output = textedit.show(ui);
+                let _output = textedit.show(ui);
             });
     }
 }

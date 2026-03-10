@@ -6,6 +6,8 @@ impl MyApp {
             
             self.input_test(&mut ui);
 
+            self.canvas(&mut ui);
+
         });
     }
 }
