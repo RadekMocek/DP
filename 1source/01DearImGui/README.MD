@@ -11,7 +11,7 @@
 * Projects that don't use vcpkg nor FetchContent and have all their dependencies (_Dear ImGui_, _GLFW_, _glad_, _FreeType_) included locally:
   * `04HelloCounter_Offline`
 
-&nbsp;
+<br>
 
 * [Running Dear ImGui with FetchContent](#running-dear-imgui-with-fetchcontent)
   * [Windows 10 22H2 + Visual Studio 2022](#windows-10-22h2--visual-studio-2022)

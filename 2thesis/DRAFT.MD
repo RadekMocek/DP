@@ -32,6 +32,7 @@
   * Dodatečné přidané funkce by se měly zaměřovat na prohloubení poznání dané knihovny → použití různých ovládacích prvků → menu, button, radio, checkbox, DropDownList, ...
   * Přidávat funkce, které známe z „běžných“ aplikací → dialog pro uložení/otevření souboru, změna vzhledu light/dark mode, ...
   * Aplikace (krom toho, že se jedná o prostředek pro ukázky a provnání knihoven) by se měla blížit k reálně použitelnému programu pro tvorbu SVG diagramů, proto je na místě export do SVG
+  * Měla by běžet na Windows a Linux
 
 * Popis diagramu pomocí strukturovaného textu:
   * Inspirováno přístupem wysiwyM. Zde se ale nepopisuje, co má diagram znamenat, ale jak má přesně vypadat.
@@ -65,6 +66,8 @@ Ukázkové aplikace byly dělány v pořadí Dear ImGui→egui→Qt (se záchytn
 
 ### Implementace v Dear ImGui
 
+* Založení projektu: vcpkg neobsahuje nejnovější verzi Dear ImGui 1.92, která se mi hodí, protože _Fonts may be rendered at any size. Glyphs are loaded and rasterized dynamically. No need to specify ranges, prebake etc._ Byly zváženy alternativní možnosti jako Conan, Build2, nebo CMake's FetchContent, nakonec mám zdrojové kódy všech závislostí u sebe.
+
 * Backend OpenGL GLFW+Glad; GLFW – verze 3.4 problém se zátěží CPU na mém PC, proto používám 3.3.10.
   * Knihovna Dear ImGui neřeší vše, něco nechává na starost právě backendu (změna vzhledu kurzoru, app icon, callbacky), o nějaké typy kurzorů přicházím, protože nejedu GLFW 3.4
 * Používám Freetype, kvalitnější vykreslování písma než stb?
@@ -75,6 +78,12 @@ Ukázkové aplikace byly dělány v pořadí Dear ImGui→egui→Qt (se záchytn
     * Metody z App rozděleny do souborů podle toho čím se zabývají → může být přehlednější, ale při změně hpp dlouhá kompilace
   * C++ umožňuje static proměnné uvnitř metody, vhodné pro lokální data (konkrétně v přístupu imgui, kdy funkce běží každý frame) → není nutné mít všechna data v class App (jen ta, ke kterým chceme přistupovat z více funkcí)
   * Zvláštní třídy pro TOML parse (bude znovupoužit v Qt projektu, psán aby byl nezávislý na Dear ImGui) a pro SVG exporter
+
+* Tvorba layoutu, práce s knihovnou
+  * Knihovna je stavový automat – logika se snadno rozděluje do více funkcí; když dám `PushStyleVar`, nesmím zapomenout na `PopStyleVar`
+  * Tzv. kurzor postupně vykresluje jednotlivé ovládací prvky a posouvá se
+  * Tvorba layoutu spočívá ve volání `GetCursorScreenPos`, `SetCursorScreenPos`, `SameLine`, `GetContentRegionAvail` a jednoduché matematiky
+  * Scrolling – i když si člověk vypne u hlavního okna scrollbary, pokud je umístěno něco „mimo viewport“, pak lze pomocí MW s celou app posunout – uvnitř hl. okna se vše posune a my doskrolujeme k out-of-bounds prvku. Toto je potřeba si hlídat, platí to např. i u moc loudhého textu, který přeteče → horizontal scroll.
 
 * TOML:
   * Každá node musí mít svou ID, pak lze `[node.rodič]↵xy=[x,y]` a `[node.potomek]↵xy=["rodič",x,y]`
@@ -95,6 +104,7 @@ Ukázkové aplikace byly dělány v pořadí Dear ImGui→egui→Qt (se záchytn
   * "Font size based zooming", MW scroll nad canvasem celočíselně přičítá/odečítá velikosti písma v canvasu, ze kterého se pak odvodí celkový _canvas zoom level_; protože neceločíselná velikost písma v Dear ImGui produkuje mírně rozmazaný text (i po updatu na 1.92.6)
     * Také když MW měnil přímo float zoom_level, tak se poměr velikosti písma a obdélníku v node mírně měnil, (velikost vykreslovaného písma je zaručena asi jen do určité přesnosti, která je nižší než pro vykreslování obdélníku)
   * Kreslení pomocí ImDrawList hned po tom, co si zpracuji informace od TOML parseru
+  * ImDrawList má funkce pro obdélník, elipsu, čáru; kosočtverec a šipku jsem si „doimplementoval“.
   * ImDrawList umí přepínat vrstvy, takže lze snadno implementovat Z souřadnici
 
 * Textový editor
@@ -105,7 +115,12 @@ Ukázkové aplikace byly dělány v pořadí Dear ImGui→egui→Qt (se záchytn
 
 * SVG export
   * Problémy: multiline text, rgba (webový prohlížeč to umí, ale můj inkscape a qView ne, dělám SVG aby to vypadalo správně i v těchto programech)
-  * //TODO
+  * Používám mírně upravenou header only knihovnu simple-svg
+  * Po kliknutí na export se pro příští frame nastaví proměnná typu _is\_svg\_requested_ na true, a v tomto průchodu smyčkou se kromě vykreslování buduje i SVG dokument. Moje logikam která volá simple-svg, se chová jako stavový automat.
+  * Pro usnadnění před exportem resetuji canvas scrolling a zoom level.
+  * Pro správné pořadí vykreslování (tedy aby i v SVG fungovala Z souřadnice), řadím jednotlivé svg::Shapes do prioritní fronty. Jedná se o absktraktní classu, takže zabaleno do unique_ptr.
+  * Knihovnu jsem si upravil, aby podporovala průhlednost, není to ale ideální a podporuji pouze fill opacity. Stroke opacity už neumím, to by vyžadovalo větší zásah do knihovny, nebo možná lépe napsat si vlastní.
+  * Uživatelův diagram může klidně začínat až na souřadnicích 1000,1000; u SVG chci, aby SVG plátno obsahovalo diagram bez prázdného místa. Proto při přidávání tvarů počítám bounding box, který se pak použije k posunutí všech tvarů.
   * SVG export má svůj modal, modaly v Dear ImGui jsou krapet zvláštní (z pohledu psaní jejich kódu)
   * Možnost show in explorer → na Windows se mi podařilo udělat, že se neotevře explorer znovu, pokud již existuje instance exploreru s tímto adresářem, Zároveň je soubor v exploreru zvýrazněn. Na Linuxu je toto problémovější, tam pouze „hloupě“ otevírám explorer.
 
@@ -128,16 +143,18 @@ Ukázkové aplikace byly dělány v pořadí Dear ImGui→egui→Qt (se záchytn
   * Benchmark?
 
 * Dodatečné poznámky:
+  * Nastavil jsem, aby přesouvání oken bylo možné pouze LMB tahem jejich headeru, nelze tedy tahat za tělo okna
   * Dear ImGui má flag ResizeX pro měnění poměru šířek mezi textedit a canvas (LMB drag). To ale není ideální: při změně velikosti okna se nezachovává poměr, interně totiž knihovna neřeší poměr, ale šířku texteditu v pixelech, kterou zachovává. Proto byl napsán vlastní _splitter_ pomocí invisible button.
   * Dear ImGui slider neumí step size..., otrava.
   * Má nějakou implicitní navigaci pomocí šipek, tabulátoru atd. Moc to nefunguje, nebo s tím neumím (?). Klávesové zkratky by to ještě chtělo prozkoumat.
   * U dark theme jsem vypnul průhlednost dodatečných oken → čitelnější.
+  * U ComboBoxu paduju položky mezerama, aby se neměnila šířka comboboxu při změně položky.
 
 * Jak se tedy píše „běžná“ aplikace v Dear ImGui?
   * Tohle bude oříšek napsat nějak objektivně..., nezabarveně; momentálně mě ještě čeká kus práce v Qt, takže tyto myšlenky budu ještě formovat.
   * Každopádně:
     * MultiLineTextEdit je problematický widget, rozhodně od žádné existující IMGUI knihovny nemůžeme čekat widget s "VS Code user experience", alespoň zatím ne.
-    * Layoutování je problematičtější, není zde žádný responzivní grid/flexbox (TODO: ověřit, např. egui má nějaký 3rd party doplněk)
+    * Layoutování je problematičtější, není zde žádný responzivní grid/flexbox (neberu-li v potaz 3rd party doplňky, ale jen oficiální widgety out-of-the-box)
     * Odpadá synchronizace stavů mezi daty na straně aplikace a daty co si drží knihovna. Zde máme všechna důležitá data u sebe, a IMGUI knihovně říkáme, jak se má na základě těchto dat vykreslit GUI. Widgety mhou případně pomocí referencí naše hodnoty měnit.
     * Jedna velká smyčka:
       * Umožňuje snadno dělat UI, které se mění v čase
@@ -147,12 +164,19 @@ Ukázkové aplikace byly dělány v pořadí Dear ImGui→egui→Qt (se záchytn
 ### Implementace v egui
 
 * Prozatím jen nesetříděné poznámky:
+  * Oproti no dependency Dear ImGui má egui určitě nějaké závislosti
   * Vycházím z egui project template, která je od stejného autora, jako je samotná knihovna
     * Template už zde má připravenou struct App, glow renderer, ...
     * Dear ImGui je děláno primárně pro přidání debug okýnek do existující aplikace (zjednodušeně řečeno). Tady to spíše vypadá, že je prioritou tvorba samostatných „běžných, user-facing“ desktop/wev aplikací. Běží na tom Rerun.io od stejného autora.
   * Moje struktura projektu asi není úplně Rust idiomatická, snažím se to mít stejné jako v Cpp projektu
-  * Rust nemá klíčové slovo static, takže buď musí být všechny hodnoty součástí struct App, nebo musím přijít s modulárnějším přístupem.
+  * Klíčové slovo static v Rustu nelze použít uvnitř funkce jako v C++, takže buď musí být všechny hodnoty součástí struct App, nebo musím přijít s modulárnějším přístupem.
   * Defaultní light theme mělo šedý text na bílém pozadí → změněno na černý text pro lepší čitelnost.
+  * Podporuje přes 30 druhů kurzoru (GLFW 3.3.10 umí 10), všechny ale asi fungují jen na webu? Alespoň na Windows je grabbing stejný jako move (čtyřsměrná šipka namísto ruky).
+  * Defaultní font podporuje řadu emoji, a to monochrome, takže lze použít jako ikonky. Toto funguje, i když přepíši defaultní font na Inconsolata, který emoji nepodporuje (pracuje se s prioritou). Každopádně symboly nemají konzistentní vizuální identitu a neexistuje emoji např. pro elipsu, nebo odlišení _save_ od _save as_, prostě jen disketa. Takže může se hodit, ale na seriózní ikony raději použít alternativu.
+  * Vypadá to, že abych zprovoznil horizontal scroll u default text editoru, [musím použít syntax highlighting](https://github.com/emilk/egui/discussions/4871); a u něj nelze z kódu nastavit barevné schéma, takže opět máme světlé barvy na světlém pozadí, -_-
+  * Nemá připraveno funkci tlačítka click and hold? Např. změna velikosti fontu text editoru, že bych držel + a ono to postupně přičítalo.
+  * Error highlight na texteditoru nemusí řešit scroll, je to celé uvnitř scrollarea.
+  * 3rd party text editor neumí error highlight, ale umí našeptávat ♥.
 
 ### Implementace v Qt
 
@@ -167,4 +191,6 @@ Ukázkové aplikace byly dělány v pořadí Dear ImGui→egui→Qt (se záchytn
   * => Návrh vlastního jazyka
 * Co se týče porovnání knihoven:
   * Porovnat pomocné programy pro návrh GUI (Qt Creator, [ImRAD](https://github.com/tpecholt/imrad))
+  * Export do WebAssembly (EMSCRIPTEN apod.)
+  * Možnosti přístupnosti jako screen reader
   * To, co nestihnu, sem napíšu ☺

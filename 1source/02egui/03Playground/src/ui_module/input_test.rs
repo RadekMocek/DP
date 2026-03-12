@@ -1,7 +1,7 @@
 use crate::MyApp;
 
 impl MyApp {
-    pub fn input_test(&mut self, ui: &mut egui::Ui) {
+    pub fn win_input_test(&mut self, ui: &mut egui::Ui) {
         egui::Window::new("Input tests")
             .collapsible(false)
             .open(&mut self.do_show_win_input_tests)

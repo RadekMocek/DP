@@ -2,7 +2,7 @@ use crate::MyApp;
 use egui::{pos2, vec2};
 
 impl MyApp {
-    pub fn canvas(&mut self, ui: &mut egui::Ui) {
+    pub fn win_canvas(&mut self, ui: &mut egui::Ui) {
         egui::Window::new("Canvas")
             .collapsible(false)
             .open(&mut self.do_show_win_canvas)
