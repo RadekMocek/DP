@@ -9,6 +9,7 @@ impl MyApp {
                     ui.checkbox(&mut self.do_show_win_input_tests, "Input tests");
                     ui.checkbox(&mut self.do_show_win_canvas, "Canvas");
                     ui.checkbox(&mut self.do_show_win_textedit, "Textedit");
+                    ui.checkbox(&mut self.do_show_win_textedit2, "Textedit2");
                 });
             });
         });

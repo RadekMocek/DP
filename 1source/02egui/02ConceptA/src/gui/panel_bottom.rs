@@ -9,7 +9,7 @@ impl MyApp {
                         .suffix("x zoom")
                         .max_decimals(1),
                 );
-            })
+            });
         });
     }
 }

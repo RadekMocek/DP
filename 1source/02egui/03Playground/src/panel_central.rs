@@ -9,6 +9,8 @@ impl MyApp {
             self.win_canvas(&mut ui);
 
             self.win_textedit(&mut ui);
+
+            self.win_textedit2(&mut ui);
         });
     }
 }

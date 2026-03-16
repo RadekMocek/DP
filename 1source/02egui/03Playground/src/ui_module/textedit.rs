@@ -3,7 +3,7 @@ use egui_extras::syntax_highlighting::CodeTheme;
 
 impl MyApp {
     pub fn win_textedit(&mut self, ui: &mut egui::Ui) {
-        egui::Window::new("Textedit")
+        egui::Window::new("Textedit layouter & font size")
             .collapsible(false)
             .open(&mut self.do_show_win_textedit)
             .show(ui.ctx(), |ui| {
@@ -12,7 +12,7 @@ impl MyApp {
                 //
 
                 let font_size = 22.0;
-                let mut text = "ABCD";
+                let mut text = "0ABCD\n1DEFG\n2HIJK\n4MNOP\n5QRST\n6UVWX\n7YZŽ";
 
                 ui.scope(|ui| {
                     // In this UI scope we overwrite the font size

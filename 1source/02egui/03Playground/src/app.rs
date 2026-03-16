@@ -2,6 +2,7 @@ pub struct MyApp {
     pub do_show_win_input_tests: bool,
     pub do_show_win_canvas: bool,
     pub do_show_win_textedit: bool,
+    pub do_show_win_textedit2: bool,
     pub test_text: String,
 }
 
@@ -9,8 +10,9 @@ impl Default for MyApp {
     fn default() -> Self {
         Self {
             do_show_win_input_tests: false,
-            do_show_win_canvas: false,
+            do_show_win_canvas: true,
             do_show_win_textedit: true,
+            do_show_win_textedit2: true,
             test_text: String::from("aabbccddeeffgghhiijjkkllmmnnooqqpprrssttuuvvwwxxyyzz"),
         }
     }

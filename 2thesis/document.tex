@@ -202,24 +202,26 @@
 	\begin{table}[ht]
 		\centering
 		\caption{Přehled knihoven pro tvorbu GUI aplikací s přístupem IMGUI}
-		\begin{NiceTabular}{ l l l c r }[cell-space-limits=3pt]
+		\begin{NiceTabular}{ l l l c r r }[cell-space-limits=3pt]
 			\CodeBefore
 				\rowcolors[gray]{2}{0.95}{}
 			\Body
 				\RowStyle{\bfseries}
-					Název & Jazyk & Licence & Vznik & Popularita\tabularnote[$\star$]{počet hvězd na platformě GitHub ke dni 12. 11. 2025} \\
+					Název & Jazyk & Licence & Vznik & Popularita\tabularnote[$\star$]{počet hvězd na platformě GitHub ke dni 12. 11. 2025} & Nedávná\tabularnote[$\star\star$]{nárůst počtu hvězd na platformě GitHub mezi dny 12. 11. 2025 a 12. 3. 2026} \\
 				\hline
-					Dear ImGui  & C++  & MIT             & 2014 & 69 315 \\
-					egui        & Rust & MIT, Apache-2.0 & 2018 & 27 111 \\
-					Nuklear     & C    & MIT, Unlicense  & 2015 & 10 554 \\
-					microui     & C    & MIT             & 2018 &  5 140 \\
-					raygui      & C    & Zlib            & 2014 &  4 437 \\
-					Gio         & Go   & MIT, Unlicense  & 2019 &  2 059 \\\RowStyle[cell-space-bottom-limit=1pt]{}
-					dvui		& Zig  & MIT			 & 2022 &    993 \\
+					Dear ImGui  & C++  & MIT             & 2014 & 69 315 & 2 582 \\
+					egui        & Rust & MIT, Apache-2.0 & 2018 & 27 111 & 1 253 \\
+					Nuklear     & C    & MIT, Unlicense  & 2015 & 10 554 &   376 \\
+					microui     & C    & MIT             & 2018 &  5 140 &   507 \\
+					raygui      & C    & Zlib            & 2014 &  4 437 &   296 \\
+					Gio         & Go   & MIT, Unlicense  & 2019 &  2 059 &    79 \\\RowStyle[cell-space-bottom-limit=1pt]{}
+					dvui		& Zig  & MIT			 & 2022 &    993 &   273 \\
 				\hline
 		\end{NiceTabular}
 		\label{_tag_table_libraries}
 	\end{table}
+	
+	%TODO zmínit že gioui primírně nesídlí na githubu ale na sourcehut
 	
 	Protože ukázkovou aplikací této práce je editor diagramů inspirovaný přístupem WYSIWYM, zaměřuje se rešerše knihoven více na ty aspekty, které budou při tvorbě této aplikace určitě potřeba. Je pravděpodobné, že všechny knihovny budou disponovat ovládacími prvky jako tlačítko nebo textové pole, otázkou ale je, jaké mají tyto prvky funkce. U textového pole se např. hodí zvýrazňování syntaxe, hledání v textu, našeptávání, klávesové zkratky pro kopírování a vkládání apod. Druhou důležitou částí vedle textového editoru je kreslící plátno, které obsahuje vykreslený diagram odpovídající danému textu. Pro jeho realizaci by knihovna měla poskytovat funkce pro kreslení grafických primitiv.
 	
@@ -237,13 +239,10 @@
 	
 	% * Mrknout na hello imgui a imgui toolkit
 	% * Zmínit docking branch
-	
-	% * Umí měnit kurzor? (myšleno nativní druhy kurzoru, nikoliv vlastní obrázek)
 		
 	\subsection{Knihovna egui}
 	
-	% CtrlF v textu ?
-	% CtrlZ v textu ?
+	% https://github.com/PxlSyl/egui-desktop
 	
 	\subsection{Knihovna Nuklear}
 	
@@ -274,17 +273,53 @@
 	
 	\section{Knihovna Qt}
 	
-	\chapter{Návrh}
+	\begin{itemize}
+		\item Pár slov o Qt, protože je to jedna z použitých knihoven.
+		\item U všech použitých knihoven bude GUI definováno z aplikačního kódu, nebude tedy použit Qt Creator.
+	\end{itemize}
 	
-	\chapter{Implementace}
+	\chapter{Návrh ukázkové aplikace}
+	
+	\begin{itemize}
+		\item Editor diagramů, který na základě dodaného textového popisu vykreslí odpovídající diagram.
+		\item $\implies$ Dvě hlavní části: víceřádkové textové pole pro popis diagramu a plátno pro jeho vykreslení.
+		\item $\implies$ Otestování komplexnějšího widgetu a funkcí pro vykreslování 2D primitiv.
+		\item Dále přidávat funkce, které využijí dalších dostupných ovládacích prvků a tím prohloubí poznání dané knihovny. Nebo funkce, které jsou od desktopových GUI aplikací tohoto typu očekávané. Tyto funkce explicitně vypsat.
+		\item Nemělo by se jednat pouze o „widget gallery“. Krom toho, že by měla aplikace sloužit jako ukázka a prostředek pro porovnání daných knihoven, by se měla také blížit k reálně použitelnému programu pro tvorbu diagramů. Proto je na místě export do SVG a kompatibilita s OS Windows i Linux.
+	\end{itemize}
+	
+	\section{Princip popisu diagramu pomocí textu}
+	
+	\begin{itemize}
+		\item Pokus o unikátní přístup, kde se nepopisuje, co má diagram znamenat, ale jak má přesně vypadat.
+		\item Proč byl zvolen TOML.
+		\item Dva stavební prvky \textit{node} a \textit{path}. Jaké jsou na ně požadavky.
+	\end{itemize}
+	
+	\chapter{Implementace ukázkové aplikace}
+	
+	\begin{itemize}
+		\item Ukázkové aplikace byly dělány v pořadí Dear ImGui→egui→Qt, proto sekce Dear ImGui popisuje i řešení problematiky společné pro všechny knihovny, a sekce zbylých dvou knihoven se již zabývají odlišnostmi a specifickými problémy v daných knihovnách.
+	\end{itemize}
 	
 	\section{Implementace v knihovně Dear ImGui}
 	
-	% * backend zvolen glfw3, problémy s verzemi
+	\subsection{Dodatečné použité technologie a závislosti}	
+	\subsection{Struktura projektu}
+	\subsection{Tvorba uživatelského rozhraní}
+	\subsection{Problematika popisu diagramu pomocí textu}
+	\subsection{Vykreslení diagramu}
+	\subsection{Víceřádkové textové pole}
+	\subsection{Export diagramu do formátu SVG}
+	\subsection{Další přidané funkce}
 	
 	\section{Implementace v knihovně egui}
 	
 	\section{Implementace v knihovně Qt}
+	
+	\chapter{Porovnání výsledků}
+	
+	\chapter{Závěr}
 	
 	% Zdroje
 	\chapter*{Seznam použité literatury}
