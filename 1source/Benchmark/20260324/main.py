@@ -37,7 +37,7 @@ class BenchRun:
 
 
 def main():
-    path = PATH / "20260324_initial"
+    path = PATH / "csv"
     filenames = [f for f in listdir(path) if isfile(join(path, f))]
     runs: dict[str, BenchRun] = {}
     for filename in filenames:

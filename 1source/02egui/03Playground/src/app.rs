@@ -1,19 +1,27 @@
 pub struct MyApp {
     pub do_show_win_input_tests: bool,
+    pub do_show_win_input_problem: bool,
     pub do_show_win_canvas: bool,
     pub do_show_win_textedit: bool,
     pub do_show_win_textedit2: bool,
     pub test_text: String,
+
+    pub big_text:String,
+    pub do_fill_big_text:bool
 }
 
 impl Default for MyApp {
     fn default() -> Self {
         Self {
             do_show_win_input_tests: false,
-            do_show_win_canvas: true,
-            do_show_win_textedit: true,
-            do_show_win_textedit2: true,
+            do_show_win_input_problem: true,
+            do_show_win_canvas: false,
+            do_show_win_textedit: false,
+            do_show_win_textedit2: false,
             test_text: String::from("aabbccddeeffgghhiijjkkllmmnnooqqpprrssttuuvvwwxxyyzz"),
+
+            big_text: String::with_capacity(2_000_000),
+            do_fill_big_text:false
         }
     }
 }
@@ -29,10 +37,10 @@ impl MyApp {
 
 impl eframe::App for MyApp {
     /// Called each time the UI needs repainting, which may be many times per second.
-    fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+    fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
         // Put your widgets into a `SidePanel`, `TopBottomPanel`, `CentralPanel`, `Window` or `Area`.
-        self.panel_top(&ctx);
-        self.panel_bottom(&ctx);
-        self.panel_central(&ctx);
+        self.panel_top(ui);
+        self.panel_bottom(ui);
+        self.panel_central(ui);
     }
 }

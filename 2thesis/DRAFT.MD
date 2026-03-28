@@ -87,6 +87,7 @@ Ukázkové aplikace byly dělány v pořadí Dear ImGui→egui→Qt (se záchytn
 * Knihovna je stavový automat – logika se snadno rozděluje do více funkcí; když dám `PushStyleVar`, nesmím zapomenout na `PopStyleVar`
 * Tzv. kurzor postupně vykresluje jednotlivé ovládací prvky a posouvá se
 * Tvorba layoutu spočívá ve volání `GetCursorScreenPos`, `SetCursorScreenPos`, `SameLine`, `GetContentRegionAvail` a jednoduché matematiky
+* Inetraktivní prvky musí mít unikátní ID, případné použití `##`/`PushID`
 * Scrolling – i když si člověk vypne u hlavního okna scrollbary, pokud je umístěno něco „mimo viewport“, pak lze pomocí MW s celou app posunout – uvnitř hl. okna se vše posune a my doskrolujeme k out-of-bounds prvku. Toto je potřeba si hlídat, platí to např. i u moc dlouhého textu, který přeteče → horizontal scroll.
 * Dear ImGui má flag ResizeX pro měnění poměru šířek mezi textedit a canvas (LMB drag). To ale není ideální: při změně velikosti okna se nezachovává poměr, interně totiž knihovna neřeší poměr, ale šířku texteditu v pixelech, kterou zachovává. Proto byl napsán vlastní _splitter_ pomocí invisible button.
 
