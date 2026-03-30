@@ -24,6 +24,8 @@ eframe = { version = "0.34.1", default-features = false, features = [
 egui_extras = "0.34.1"
 memory-stats = "1.2.0"
 
+num-format = "0.4.4"
+
 # You only need serde if you want app persistence:
 #serde = { version = "1.0.219", features = ["derive"] }
 

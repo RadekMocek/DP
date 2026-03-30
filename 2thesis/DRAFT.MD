@@ -1,12 +1,5 @@
 # DP draft
 
-* Zeptat se:
-  * Ukázková aplikace takhle OK?
-  * Textová zpráva:
-    * Rámcový obsah takhle OK?
-    * Styl psaní: trpný rod / první osoba?
-    * Počet stran 40–50?
-
 * Poznámka: Používám zde nějaké dočasné termíny, které nejsou úplně korektní. Ta správná jména budu muset ještě domyslet:
   * Několikrát zde používám termíny wysiwyg a wysiwym, i když to asi není zcela přesné. Prozatím to ale poslouží pro odlišení funkcí programu (jak se program ovládá z pohledu koncového uživatele), kdy _wysiwym_ beru jako psaní textu, podle kterého se vykreslí diagram, a _wysiwyg_ jako jakékoliv jiné editování diagramu pomocí GUI prvků.
   * Dále procesu získání potřebných dat z TOML zdrojového kódu zatím říkám TOML parsing. Parsing se ale děje jen v prvním kroce a dělá jej knihovna toml++, já pak z již rozparsovaného TOMLu „jen“ získávám data a reaguji na jejich obsah.
@@ -158,6 +151,7 @@ Ukázkové aplikace byly dělány v pořadí Dear ImGui→egui→Qt (se záchytn
   * Dear ImGui slider neumí step size..., otrava.
   * Má nějakou implicitní navigaci pomocí šipek, tabulátoru atd. Moc to nefunguje, nebo s tím neumím (?). Klávesové zkratky by to ještě chtělo prozkoumat.
   * U ComboBoxu paduju položky mezerama, aby se neměnila šířka comboboxu při změně položky.
+  * Zkusil jsem neparsovat TOML každý frame, ale jen, když je potřeba; na výkonu se to nepodepsalo
 
 * Jak se tedy píše „běžná“ aplikace v Dear ImGui?
   * Tohle bude oříšek napsat nějak objektivně..., nezabarveně; momentálně mě ještě čeká kus práce v Qt, takže tyto myšlenky budu ještě formovat.

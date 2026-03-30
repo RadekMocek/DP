@@ -19,6 +19,7 @@ class QFont;
 class QToolButton;
 class QAbstractButton;
 class QGraphicsView;
+class QPushButton;
 QT_END_NAMESPACE
 
 // MainWindow creates the widgets and displays them in a QMainWindow. It also manages the interaction between the widgets and the graphics scene, view and items.
@@ -52,6 +53,9 @@ private slots:
     void about();
 
 private:
+    QPushButton* m_temp_btn;
+    int m_counter_val = 0;
+
     void createToolBox();
     void createActions();
     void createMenus();

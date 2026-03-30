@@ -21,6 +21,16 @@ class Lib(StrEnum):
     EGUI = "egui"
     QT = "Qt"
 
+def lib_str_short(lib:Lib):
+    match lib:
+        case Lib.DEAR:
+            return "Dear"
+        case Lib.DEAROPT:
+            return "Dear"
+        case Lib.EGUI:
+            return "egui"
+        case Lib.QT:
+            return "Qt  "
 
 class Mod(StrEnum):
     SHON = "shon"
@@ -104,8 +114,8 @@ def main():
                 run.append_csv_row(row)
             runs[filename[8:-15]] = run
 
-    for key, run in runs.items():
-        print(f"{key.ljust(26)}{run.get_duration_str()}")
+    # for key, run in runs.items():
+    #    print(f"{key.ljust(26)}{run.get_duration_str()}")
 
     device = "lin"
 
@@ -114,31 +124,65 @@ def main():
 
     mods = [Mod.SHON, Mod.TXOFF]
 
-    for metric in METRICS:
-        fig, axs = plt.subplots(len(mods), 1)
-        plt.suptitle(f"{str(metric)}", fontsize=16, fontweight="bold")
+    for (img_idx, metric) in enumerate(METRICS):
+        fig = plt.figure(figsize=(11, 9), dpi=200)
+        axs = fig.subplots(len(mods), 1)
+
+        # plt.suptitle(f"{str(metric)}", fontsize=16, fontweight="bold")
         for lib in libs:
             key = f"{str(lib)}_{device}_b3_"
             for (i, mod) in enumerate(mods):
-                axs[i].set_title(mod_desc(mod))
+
+                axs[i].text(
+                    0.01, 0.97,           # x, y in axes coords (0–1)
+                    mod_desc(mod),
+                    transform=axs[i].transAxes,
+                    fontsize=10,
+                    verticalalignment='top',
+                    horizontalalignment='left',
+                    bbox=dict(
+                        boxstyle='round,pad=0.3',
+                        facecolor='white',
+                        alpha=0.7,
+                        edgecolor='none'
+                    )
+                )
 
                 arr = runs[key + str(mod)].get_metric(metric)[1:]
                 min_ = int(min(arr))
                 max_ = int(max(arr))
                 axs[i].plot(range(len(arr)), arr, color=f"{lib_color(lib)}",
-                            label=f"{str(lib).ljust(9)} [{min_}–{max_}]")
+                            label=f"{lib_str_short(lib)} [{min_}–{max_}]")
 
-                x_axis = runs[key + str(mod)].n_nodes[1:]
                 step = 8
-                axs[i].set_xticks(range(0, len(x_axis), step))
-                axs[i].set_xticklabels([max(x_axis[i], 1) for i in range(0, len(x_axis), step)],
-                                       rotation=40, ha="right")
+                x_axis = runs[key + str(mod)].n_nodes[1:]
+                if i == 0:
+                    axs[i].set_xticks(range(0, len(x_axis), step))
+                    axs[i].set_xticklabels([max(x_axis[i], 1) for i in range(0, len(x_axis), step)],
+                                           rotation=40, ha="right")
+                    axs[i].set_xlabel("Number of rendered diagram nodes")
+                    axs[i].xaxis.set_label_coords(1.14, -0.08)
+                else:
+                    axs[i].set_xticks(range(0, len(x_axis), step))
+                    axs[i].set_xticklabels([])
+                    axs[i].tick_params(top=True,bottom=False)
+
+                axs[i].yaxis.tick_right()
+                axs[i].set_ylabel(str(metric))
+                axs[i].yaxis.set_label_position("right")
 
                 axs[i].axvline(x=64, color="black", lw=0.4)
                 axs[i].axvline(x=128, color="black", lw=0.4)
-                axs[i].legend(prop={"family": "monospace"})
+                axs[i].legend(prop={"family": "monospace", "size": 20}, loc="center left", bbox_to_anchor=(1.065, 0.5))
+
+                axs[i].margins(0, 0.05)
+
         # fig.tight_layout()
-    plt.show()
+        # fig.text(.9, .9, str(metric), size=22, color="#ea7603", fontweight="bold")
+
+        fig.savefig(f"figs/z_b_0_{img_idx}.png", bbox_inches="tight", pad_inches=0)
+        print(metric)
+    # plt.show()
 
 
 if __name__ == "__main__":

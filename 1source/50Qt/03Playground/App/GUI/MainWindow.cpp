@@ -500,9 +500,20 @@ void MainWindow::createToolbars()
     connect(sceneScaleCombo, &QComboBox::currentTextChanged, this, &MainWindow::sceneScaleChanged);
 
     pointerToolbar = addToolBar(tr("Pointer type"));
+    //*
     pointerToolbar->addWidget(pointerButton);
     pointerToolbar->addWidget(linePointerButton);
     pointerToolbar->addWidget(sceneScaleCombo);
+    //*/
+
+    /*
+    m_temp_btn = new QPushButton(QString::number(m_counter_val));
+    connect(m_temp_btn, &QPushButton::clicked, [this] {
+        m_counter_val++;
+        m_temp_btn->setText(QString::number(m_counter_val));
+    });
+    pointerToolbar->addWidget(m_temp_btn);
+    //*/
 }
 
 // This function creates QWidgets containing a tool button and a label.

@@ -106,7 +106,7 @@ def main_plot(runs):
 
     device = "win"
 
-    libs = [Lib.DEAR, Lib.EGUI, Lib.QT]
+    #libs = [Lib.DEAR, Lib.EGUI, Lib.QT]
     libs = [Lib.DEAR, Lib.DEAROPT, Lib.EGUI, Lib.QT]
 
     for metric in METRICS:
@@ -125,21 +125,23 @@ def main_table(runs):
     qtxx = runs[f"Qt_{dev}"]
     max_n_batches = dimg.second_max_n_batches  # Real max is the last row of CSV (over 15 secs)
 
-    result = "\\begin{tabular}{r r r r r r r}\n"
-    result += "nbatches & durdearimgui & duregui & durqt & ramdearimgui & ramegui & ramqt\\\\\n"
+    result = "\\begin{table}\\rowcolors{2}{gray!10}{}\\begin{tabular}{|r||r|r|r||r|r|r|}\\hline\n"
+    result += "&\\multicolumn{3}{c||}{Doba trvání [ms]}&\\multicolumn{3}{c|}{Využití RAM [MiB]}\\\\\n"
+    result += "Pčt. widgetů & Dear & egui & Qt & Dear & egui & Qt\\\\\\hline\n"
 
     i = 1
     while True:
-        result += f"{i * 172} & "
+        result += "{:,} &".format(i * 172).replace(",", " ")
 
         dimg_vals = dimg.get_medians(i)
         egui_vals = egui.get_medians(i)
         qtxx_vals = qtxx.get_medians(i)
 
         for j in [0, 1]:
-            result += f"{dimg_vals[j] if dimg_vals else "–"} & "
-            result += f"{egui_vals[j] if egui_vals else "–"} & "
-            result += f"{qtxx_vals[j] if qtxx_vals else "–"}"
+
+            result += f"{"{:,}".format(int(dimg_vals[j])).replace(",", " ") if dimg_vals else "—"} & "
+            result += f"{"{:,}".format(int(egui_vals[j])).replace(",", " ") if egui_vals else "—"} & "
+            result += f"{"{:,}".format(int(qtxx_vals[j])).replace(",", " ") if qtxx_vals else "—"}"
             if j == 0:
                 result += " & "
 
@@ -148,7 +150,7 @@ def main_table(runs):
         if i > max_n_batches:
             break
 
-    result += "\\end{tabular}"
+    result += "\\end{tabular}\\end{table}"
     print(result)
 
 
