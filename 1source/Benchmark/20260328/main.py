@@ -1,10 +1,14 @@
-import csv
 import pathlib
 from enum import StrEnum
 from os import listdir
 from os.path import isfile, join
 
+import matplotlib
 import matplotlib.pyplot as plt
+
+import csv
+
+matplotlib.use("TkAgg")
 
 PATH = pathlib.Path(__file__).parent
 
@@ -21,7 +25,8 @@ class Lib(StrEnum):
     EGUI = "egui"
     QT = "Qt"
 
-def lib_str_short(lib:Lib):
+
+def lib_str_short(lib: Lib):
     match lib:
         case Lib.DEAR:
             return "Dear"
@@ -31,6 +36,7 @@ def lib_str_short(lib:Lib):
             return "egui"
         case Lib.QT:
             return "Qt  "
+
 
 class Mod(StrEnum):
     SHON = "shon"
@@ -134,17 +140,17 @@ def main():
             for (i, mod) in enumerate(mods):
 
                 axs[i].text(
-                    0.01, 0.97,           # x, y in axes coords (0–1)
+                    0.01, 0.97,  # x, y in axes coords (0–1)
                     mod_desc(mod),
                     transform=axs[i].transAxes,
                     fontsize=10,
-                    verticalalignment='top',
-                    horizontalalignment='left',
+                    verticalalignment="top",
+                    horizontalalignment="left",
                     bbox=dict(
-                        boxstyle='round,pad=0.3',
-                        facecolor='white',
+                        boxstyle="round,pad=0.3",
+                        facecolor="white",
                         alpha=0.7,
-                        edgecolor='none'
+                        edgecolor="none"
                     )
                 )
 
@@ -165,7 +171,7 @@ def main():
                 else:
                     axs[i].set_xticks(range(0, len(x_axis), step))
                     axs[i].set_xticklabels([])
-                    axs[i].tick_params(top=True,bottom=False)
+                    axs[i].tick_params(top=True, bottom=False)
 
                 axs[i].yaxis.tick_right()
                 axs[i].set_ylabel(str(metric))

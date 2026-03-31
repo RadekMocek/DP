@@ -15,7 +15,7 @@
   * Pak se zaměřit na MultiLineTextEdit a kreslení grafických primitiv, protože to je hlavní část mé ukázkové aplikace
 * Qt
   * Pár slov o Qt, protože je to jedna z použitých knihoven
-  * Zmínit, že nebudu používat Qt creator... u všech knihoven definuji GUI v kódu. Kromě Qt Creator narážím na fórech i na lidi pracující v QML.
+  * Zmínit, že nebudu používat Qt creator... u všech knihoven definuji GUI v kódu. Kromě Qt Creator narážím na fórech i na lidi pracující v&nbsp;QML.
 
 ## Návrh
 

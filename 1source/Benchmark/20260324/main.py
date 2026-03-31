@@ -1,8 +1,13 @@
-import csv
 import pathlib
 from os import listdir
 from os.path import isfile, join
+
+import matplotlib
 import matplotlib.pyplot as plt
+
+import csv
+
+matplotlib.use("TkAgg")
 
 PATH = pathlib.Path(__file__).parent
 
@@ -88,7 +93,7 @@ def main():
             plt.plot(x, run_qt_shoff.time_diff, color="green", linestyle="--", label="Qt SH OFF")
             plt.legend()
             plt.savefig(f"figs/{d}_{b_i}.png")
-    #plt.show()
+    # plt.show()
 
 
 if __name__ == "__main__":

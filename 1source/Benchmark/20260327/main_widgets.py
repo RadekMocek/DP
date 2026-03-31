@@ -5,7 +5,10 @@ from os import listdir
 from os.path import isfile, join
 from statistics import median
 
+import matplotlib
 import matplotlib.pyplot as plt
+
+matplotlib.use("TkAgg")
 
 PATH = pathlib.Path(__file__).parent
 
@@ -106,7 +109,7 @@ def main_plot(runs):
 
     device = "win"
 
-    #libs = [Lib.DEAR, Lib.EGUI, Lib.QT]
+    # libs = [Lib.DEAR, Lib.EGUI, Lib.QT]
     libs = [Lib.DEAR, Lib.DEAROPT, Lib.EGUI, Lib.QT]
 
     for metric in METRICS:

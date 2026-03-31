@@ -3,8 +3,12 @@ import pathlib
 from enum import StrEnum
 from os import listdir
 from os.path import isfile, join
+from typing import Tuple
 
+import matplotlib
 import matplotlib.pyplot as plt
+
+matplotlib.use("TkAgg")
 
 PATH = pathlib.Path(__file__).parent
 
@@ -101,18 +105,25 @@ def all_(runs, devices, info):
     plt.show()
 
 
-def alt_(runs, devices, bench_id):
+def alt_(runs, devices, bench_id, versus_mod: Tuple[str, str]):
     for metric in METRICS:
-        fig, axs = plt.subplots(len(devices), len(MODS))
+        fig, axs = plt.subplots(len(devices), 3)
         plt.suptitle(f"{bench_id} :: {str(metric)}")
         for (row, device) in enumerate(devices):
             for lib in LIBS:
-                key_shon = f"{lib}_{device[0]}_{bench_id}_shon"
-                key_txoff = f"{lib}_{device[0]}_{bench_id}_txoff"
+                key0 = f"{lib}_{device[0]}_{bench_id}_{versus_mod[0]}"
+                key1 = f"{lib}_{device[0]}_{bench_id}_{versus_mod[1]}"
                 for i in [0, 1]:
-                    axs[row, i].plot(runs[key_shon].get_metric(metric)[2:], color=lib_color(lib))
+                    axs[row, i].plot(runs[key0].get_metric(metric)[2:], color=lib_color(lib))
                 for i in [0, 2]:
-                    axs[row, i].plot(runs[key_txoff].get_metric(metric)[2:], color=lib_color(lib), linestyle="dashed")
+                    axs[row, i].plot(runs[key1].get_metric(metric)[2:], color=lib_color(lib), linestyle="dashed")
+
+        # Add row and col headers
+        for ax, col in zip(axs[0], ["both", versus_mod[0], versus_mod[1]]):
+            ax.set_title(col)
+
+        for ax, row in zip(axs[:,0], devices):
+            ax.set_ylabel(row[1], size="large")
 
     plt.show()
 
@@ -140,14 +151,14 @@ def main():
                    ("lin", "Mint laptop, integrated GPU"),
                    ("ling", "Mint laptop, dedicated GPU")]
 
-    dev_linux_both = devices_all[1:]
+    # dev_linux_both = devices_all[1:]
     dev_lini_win = [devices_all[1], devices_all[0]]
 
     # all_(runs, dev_linux_both, "on Mint laptop\nROW1: integrated GPU\nROW2: dedicated GPU")
 
     # all_(runs, dev_lini_win, "\nROW1: Mint laptop integrated GPU\nROW2: Win10 desktop dedicated GPU")
 
-    alt_(runs, dev_lini_win, BENCHES[0][0])
+    alt_(runs, dev_lini_win, BENCHES[0][0], ("shon", "shoff"))
 
 
 if __name__ == "__main__":
