@@ -1,12 +1,9 @@
 # DP draft
 
 * Poznámka: Používám zde nějaké dočasné termíny, které nejsou úplně korektní. Ta správná jména budu muset ještě domyslet:
-  * Několikrát zde používám termíny wysiwyg a wysiwym, i když to asi není zcela přesné. Prozatím to ale poslouží pro odlišení funkcí programu (jak se program ovládá z pohledu koncového uživatele), kdy _wysiwym_ beru jako psaní textu, podle kterého se vykreslí diagram, a _wysiwyg_ jako jakékoliv jiné editování diagramu pomocí GUI prvků.
-  * Dále procesu získání potřebných dat z TOML zdrojového kódu zatím říkám TOML parsing. Parsing se ale děje jen v prvním kroce a dělá jej knihovna toml++, já pak z již rozparsovaného TOMLu „jen“ získávám data a reaguji na jejich obsah.
+  * Procesu získání potřebných dat z TOML zdrojového kódu zatím říkám TOML parsing. Parsing se ale děje jen v prvním kroce a dělá jej knihovna toml++, já pak z již rozparsovaného TOMLu „jen“ získávám data a reaguji na jejich obsah.
   * TOML musí odpovídat mému schématu a pro náhodný TOML dokument se pravděpodobně nic nevykreslí. V XML světě se tomu říká schéma, jestli to je i zde v pořádku, jsem zatím nezkoumal.
-  * Diagram může být leccos (alespoň [dle wiki](https://cs.wikipedia.org/wiki/Diagram)), chtělo by to být přesnější?
   * Node bude uzel/symbol, path bude čára/cesta?
-* (LMB – left mouse button, MW – mousewheel)
 
 ## Rešerše
 
@@ -29,9 +26,6 @@
   * Měla by běžet na Windows a Linux
 
 * Popis diagramu pomocí strukturovaného textu:
-  * Inspirováno přístupem wysiwyM. Zde se ale nepopisuje, co má diagram znamenat, ale jak má přesně vypadat.
-    * Grafických wysiwyG editorů je dost; wysiwyM je třeba graphwiz nebo mermaid, zde ale nemáme kontrolu nad přesným vzhledem (?)
-    * => pokus o unikátní přístup
   * Zvolen byl TOML, síla na podobné úrovni jako JSON, ale je člověkem čitelnější a lépe se píše (např. klíče nemusí být stringy, tables to hodně usnadňují)
     * XML má výhodu snadné validace, případný převod na SVG; ale pro člověka méně přehledné a více psaní
     * YAML jsem uvažoval než jsem si uvědomil existenci TOMLu, příjemné na psaní; chybí tables, řízené whitespace znaky
@@ -185,6 +179,7 @@ Ukázkové aplikace byly dělány v pořadí Dear ImGui→egui→Qt (se záchytn
   * Ctrl+Z funguje i po zásahu do source stringu ("toolbar canvas interaction").
   * V Cpp od TOML knihovny dostávám umístění v kódu jako row+char_in_row, což se hodí pro Error Highlight, zde dostávám char_total, což se hodí při toolbar canvas interaction.
   * Egui painter neumí přepínat Z, pouze malířův algoritmus → implementována prioritní fronta draw commands.
+  * PROBLÉM: Obecně se knihovny liší ve výšce řádku textu (projevuje se u nodes s víceřádkovým textem), zde to ale navíc vypadá, že to není konzistentní při zoomování (tedy výška řádku se mění s velikostí vykreslovaného písma?)
 
 ### Implementace v Qt
 

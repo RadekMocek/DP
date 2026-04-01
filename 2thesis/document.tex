@@ -110,8 +110,11 @@
 		\textbf{IMGUI} & immediate mode graphical user interface, grafické uživatelské rozhraní v režimu okamžitého vykreslování \\
 		\textbf{MVVM} & model–view–viewmodel, architektonický vzor \\
 		\textbf{RMGUI} & retained mode graphical user interface, grafické uživatelské rozhraní v režimu soběstačného vykreslování \\
+		\textbf{SVG} & Scalable Vector Graphics, standard pro popis vektorové grafiky \\
 		\textbf{WPF} & Windows Presentation Foundation, knihovna umožňující tvorbu GUI aplikací pro operační systém Windows \\
-		%\textbf{WYSIWYM} & What You See Is What You Mean, přístup k tvorbě strukturovaných dokumentů
+		\textbf{WYSIWYG} & What You See Is What You Get; typ programu, kde má editovaný dokument stejnou podobu jako výsledný dokument \\
+		\textbf{WYSIWYM} & What You See Is What You Mean; typ programu, kde je výsledný dokument vygenerován z editovaného dokumentu podle určitých pravidel \\
+		\textbf{XML} & Extensible Markup Language, jazyk popisující strukturu dat
 	\end{abbrList2}
 	
 	% Jádro zprávy
@@ -174,7 +177,7 @@
 	
 	To, že bude výsledná aplikace vypadat na všech platformách stejně, platí až na tzv. dekorace okna, jejichž vzhled je ovlivněn operačním systémem a desktopovým prostředím. Knihovny s přístupem IMGUI často vykreslují všechny ovládací prvky do jednoho „hostitelského“ okna, které jim poskytuje vybraný backend, a to včetně dialogových oken. Dodatečná okna jsou v tomto případě vykreslována a spravována samotnou knihovnou jako součást hostitelského okna, ze kterého je nelze přesunout „ven“. Nemodální dialogové okno bývá základním stavebním blokem IMGUI knihoven s tím, že pro simulaci hlavního okna aplikace se vytvoří dialogové okno o takové velikosti, aby zabralo celý prostor okna hostitelského. U tohoto hlavního okna je nastaveno, aby bylo vždy na pozadí, nevykreslovalo své záhlaví apod.
 	
-	Obrázek \ref{_tag_img_HelloCounterImguiQtWinLin} ukazuje čtyři instance demonstrační aplikace popsané v sekci \ref{Chapter2SectionHelloCounter} (čítač s pozdravem), která zde navíc zobrazuje dialogové okno. U instancí implementovaných v knihovně Qt (sloupec vpravo) není dialogové okno součástí okna hlavního, a proto jej lze přesunout na libovolné místo. Zároveň je ale vzhled okna závislý na vybrané platformě \footnote{Zde je třeba zmínit, že knihovna Qt již od verze 5 nabízí multiplatformní styl \textit{Fusion} \cite{online_qtfusion}. Lze tedy docílit stejného vzhledu aplikace na všech platformách. Ne vždy je ovšem tento styl výchozí.}.
+	Obrázek \ref{_tag_img_HelloCounterImguiQtWinLin} ukazuje čtyři instance demonstrační aplikace popsané v sekci \ref{Chapter2SectionHelloCounter} (čítač s pozdravem), která zde navíc zobrazuje dialogové okno. U instancí implementovaných v knihovně Qt (sloupec vpravo) není dialogové okno součástí okna hlavního, a proto jej lze přesunout na libovolné místo. Zároveň je ale vzhled okna závislý na vybrané platformě\footnote{Zde je třeba zmínit, že knihovna Qt již od verze 5 nabízí multiplatformní styl \textit{Fusion} \cite{online_qtfusion}. Lze tedy docílit stejného vzhledu aplikace na všech platformách. Ne vždy je ovšem tento styl výchozí.}.
 	
 	\begin{figure}[ht]
 		\centering
@@ -280,24 +283,32 @@
 	
 	\chapter{Návrh ukázkové aplikace}
 	
-	Ukázkovou aplikací této práce je editor diagramů, který na základě zadaného textového popisu vykreslí odpovídající diagram. Aplikace se tedy dělí na dvě hlavní části: víceřádkové textové pole a kreslicí plátno. Textové pole je jeden ze základních ovládacích prvků, který je ale relativně komplexní, a proto je vhodné jej použít jako jeden z hlavních stavebních kamenů aplikace. Plátno pak pomůže prozkoumat schopnost knihoven vykreslovat programátorem definované objekty.
+	Navrhovanou ukázkovou aplikací této práce je program pro tvorbu a editaci diagramů. Diagram je celkem obecný pojem, v kontextu této práce se ale myslí především vývojový diagram, nebo blokové schéma.
 	
-	*
+	Navrhovaná aplikace na základě zadaného textového popisu vykreslí odpovídající diagram. Dělí se tedy na dvě hlavní části: víceřádkové textové pole a kreslicí plátno. Textové pole je základní ovládací prvek, který je ale relativně komplexní, a proto je vhodné jej použít jako jeden z hlavních stavebních kamenů aplikace. Plátno pak pomůže prozkoumat schopnost knihoven vykreslovat programátorem definované objekty. Tedy vykreslování i něčeho jiného, než jsou základní ovládací prvky, které knihovna poskytuje.
 	
-	* vývoj je GUI však převážně o widgetech, nechceme widget gallery, ale chceme widgety
+	Při programování GUI aplikací se ale často pracuje právě se základními ovládacími prvky, a proto by je ukázková aplikace měla využívat. Nemělo by se však jednat o „galerii ovládacích prvků“, kterou lze často najít jako příklad v dokumentaci dané knihovny. Použité ovládací prvky by měly dávat smysl v kontextu editoru diagramů. Proto navrhovaná aplikace obsahuje např. celočíselné vstupní pole pro změnu velikosti písma, slider pro změnu přiblížení pohledu na diagram, nebo výběr barvy (\textit{color picker}) pro změnu barvy uzlu bez nutnosti zásahu do zdrojového textu daného diagramu.
 	
-	\begin{itemize}
-		\item Editor diagramů, který na základě dodaného textového popisu vykreslí odpovídající diagram.
-		\item $\implies$ Dvě hlavní části: víceřádkové textové pole pro popis diagramu a plátno pro jeho vykreslení.
-		\item $\implies$ Otestování komplexnějšího widgetu a funkcí pro vykreslování 2D primitiv.
-		\item Dále přidávat funkce, které využijí dalších dostupných ovládacích prvků a tím prohloubí poznání dané knihovny. Nebo funkce, které jsou od desktopových GUI aplikací tohoto typu očekávané. Tyto funkce explicitně vypsat.
-		\item Nemělo by se jednat pouze o „widget gallery“. Krom toho, že by měla aplikace sloužit jako ukázka a prostředek pro porovnání daných knihoven, by se měla také blížit k reálně použitelnému programu pro tvorbu diagramů. Proto je na místě export do SVG a kompatibilita s OS Windows i Linux.
-	\end{itemize}
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=.94\textwidth]{img/diag/wireframe.pdf}
+		\caption{Drátěný model navrhované ukázkové aplikace}
+	\end{figure}
+	
+	Navrhovaná aplikace dále disponuje funkcemi, které by uživatel od programu tohoto typu mohl očekávat. Tvorba diagramu zde spočívá v editaci textového řetězce a je na místě, aby měl uživatel možnost jej uložit nebo nahrát ze souboru. Proto je k dispozici lišta nabídek obsahující akce, které pro tento účel vyvolají nativní dialogové okno. Záhlaví hlavního okna pak obsahuje cestu k právě editovanému souboru a zároveň indikuje neuložené změny pomocí znaku hvězdičky. Při pokusu o zavření aplikace nebo nahrání jiného souboru je v případě neuložených změn uživatel vyzván k potvrzení, zdali chce změny uložit nebo zahodit. Další akcí v liště nabídek je vyvolání okna pro nastavení. Zde lze především přepnout vzhled aplikace do tmavého režimu, což je mezi uživateli často žádanou funkcí \cite{inpro_darkmode}. Aplikace by také měla bez kompromisů podporovat operační systémy Windows a Linux.
+	
+	Krom toho, že aplikace poslouží pro porovnání vybraných knihoven a disponuje očekávanými funkcemi, by se měla blížit k reálně použitelnému programu pro tvorbu diagramů. Proto je k dispozici funkce, která popsaný diagram exportuje do formátu SVG. Dále je potřeba navrhnout, jak bude diagram pomocí textu přesně popisován.
 	
 	\section{Princip popisu diagramu pomocí textu}
 	
+	Existující aplikace, které umožňují tvorbu diagramů, lze rozdělit do dvou kategorií. První jsou programy využívající přístup WYSIWYG, kde uživatel interaguje přímo s objekty diagramu vykreslenými na plátně. Do této kategorie se řadí např. program \textit{draw.io}. Druhou kategorií je přístup WYSIWYM. V něm uživatel píše kód, který popisuje, co by měl daný diagram vyobrazovat. Do této kategorie patří např. program \textit{Mermaid}. Jelikož kód popisuje především význam daného diagramu, nemá uživatel velkou kontrolu nad jeho vzhledem. Kód může např. popisovat vztahy mezi jednotlivými uzly, jejich přesné umístění v diagramu už ale určuje samotný program.
+	
+	Ukázková aplikace této práce se snaží o unikátní přístup k tomuto problému. Diagram je také generován na základě dodaného kódu, tento kód ovšem popisuje, jak by měl diagram přesně vypadat. Formát SVG v podstatě také popisuje přesný vzhled a export do tohoto formátu je jediný způsob, jak může uživatel vykreslit svůj diagram mimo navrhovaný program. Přímé použití formátu SVG pro popis diagramu je ale nevhodné. Z důvodu své všestrannosti a syntaxi jazyka XML má tento formát vyšší  režijní náklady ve smyslu délky kódu, který je potřeba pro popsání libovolného diagramu.
+	
+	Nejideálnější by bylo použít doménově specifický jazyk, který by byl od začátku navržen pro účely této aplikace.
+	
 	\begin{itemize}
-		\item Pokus o unikátní přístup, kde se nepopisuje, co má diagram znamenat, ale jak má přesně vypadat.
+		\item Nejideálnější by bylo navrhnout DSL, proč se tak nestalo.
 		\item Proč byl zvolen TOML.
 		\item Dva stavební prvky \textit{node} a \textit{path}. Jaké jsou na ně požadavky.
 	\end{itemize}
@@ -305,7 +316,7 @@
 	\chapter{Implementace ukázkové aplikace}
 	
 	\begin{itemize}
-		\item byly zvoleny knihovny Dear ImGui, egui, Qt
+		\item Byly zvoleny knihovny Dear ImGui, egui, Qt
 		\item Ukázkové aplikace byly dělány v pořadí Dear ImGui→egui→Qt, proto sekce Dear ImGui popisuje i řešení problematiky společné pro všechny knihovny, a sekce zbylých dvou knihoven se již zabývají odlišnostmi a specifickými problémy v daných knihovnách.
 	\end{itemize}
 	
