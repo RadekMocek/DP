@@ -105,16 +105,20 @@
 		\clearpage}
 	
 	\begin{abbrList2}
-		\textbf{API} & application programming interface, rozhraní pro programování aplikací \\
-		\textbf{GUI} & graphical user interface, grafické uživatelské rozhraní \\
-		\textbf{IMGUI} & immediate mode graphical user interface, grafické uživatelské rozhraní v režimu okamžitého vykreslování \\
-		\textbf{MVVM} & model–view–viewmodel, architektonický vzor \\
-		\textbf{RMGUI} & retained mode graphical user interface, grafické uživatelské rozhraní v režimu soběstačného vykreslování \\
-		\textbf{SVG} & Scalable Vector Graphics, standard pro popis vektorové grafiky \\
-		\textbf{WPF} & Windows Presentation Foundation, knihovna umožňující tvorbu GUI aplikací pro operační systém Windows \\
-		\textbf{WYSIWYG} & What You See Is What You Get; typ programu, kde má editovaný dokument stejnou podobu jako výsledný dokument \\
-		\textbf{WYSIWYM} & What You See Is What You Mean; typ programu, kde je výsledný dokument vygenerován z editovaného dokumentu podle určitých pravidel \\
-		\textbf{XML} & Extensible Markup Language, jazyk popisující strukturu dat
+		\textbf{ANTLR} & \textit{ANother Tool for Language Recognition}, nástroj pro generaci překladačů \\
+		\textbf{API} & \textit{application programming interface}, rozhraní pro programování aplikací \\
+		\textbf{GUI} & \textit{graphical user interface}, grafické uživatelské rozhraní \\
+		\textbf{IMGUI} & \textit{immediate mode graphical user interface}, grafické uživatelské rozhraní v režimu okamžitého vykreslování \\
+		\textbf{JSON} & \textit{JavaScript Object Notation}, jazyk pro popis struktury dat \\
+		\textbf{MVVM} & \textit{model–view–viewmodel}, architektonický vzor \\
+		\textbf{RMGUI} & \textit{retained mode graphical user interface}, grafické uživatelské rozhraní v režimu soběstačného vykreslování \\
+		\textbf{SVG} & \textit{Scalable Vector Graphics}, standard pro popis vektorové grafiky \\
+		\textbf{TOML} & \textit{Tom's Obvious Minimal Language}, jazyk pro popis struktury dat \\
+		\textbf{WPF} & \textit{Windows Presentation Foundation}, knihovna umožňující tvorbu GUI aplikací pro operační systém Windows \\
+		\textbf{WYSIWYG} & \textit{what you see is what you get}; typ programu, kde má editovaný dokument stejnou podobu jako výsledný dokument \\
+		\textbf{WYSIWYM} & \textit{what you see is what you mean}; typ programu, kde je výsledný dokument vygenerován z editovaného textového dokumentu \\
+		\textbf{XML} & \textit{Extensible Markup Language}, jazyk pro popis struktury dat \\
+		\textbf{YAML} & \textit{Yet Another Markup Language}, jazyk pro popis struktury dat
 	\end{abbrList2}
 	
 	% Jádro zprávy
@@ -283,11 +287,11 @@
 	
 	\chapter{Návrh ukázkové aplikace}
 	
-	Navrhovanou ukázkovou aplikací této práce je program pro tvorbu a editaci diagramů. Diagram je celkem obecný pojem, v kontextu této práce se ale myslí především vývojový diagram, nebo blokové schéma.
+	Navrhovanou ukázkovou aplikací této práce je program pro tvorbu a editaci diagramů. Diagram je celkem obecný pojem a v kontextu této práce se myslí především vývojový diagram, nebo blokové schéma.
 	
 	Navrhovaná aplikace na základě zadaného textového popisu vykreslí odpovídající diagram. Dělí se tedy na dvě hlavní části: víceřádkové textové pole a kreslicí plátno. Textové pole je základní ovládací prvek, který je ale relativně komplexní, a proto je vhodné jej použít jako jeden z hlavních stavebních kamenů aplikace. Plátno pak pomůže prozkoumat schopnost knihoven vykreslovat programátorem definované objekty. Tedy vykreslování i něčeho jiného, než jsou základní ovládací prvky, které knihovna poskytuje.
 	
-	Při programování GUI aplikací se ale často pracuje právě se základními ovládacími prvky, a proto by je ukázková aplikace měla využívat. Nemělo by se však jednat o „galerii ovládacích prvků“, kterou lze často najít jako příklad v dokumentaci dané knihovny. Použité ovládací prvky by měly dávat smysl v kontextu editoru diagramů. Proto navrhovaná aplikace obsahuje např. celočíselné vstupní pole pro změnu velikosti písma, slider pro změnu přiblížení pohledu na diagram, nebo výběr barvy (\textit{color picker}) pro změnu barvy uzlu bez nutnosti zásahu do zdrojového textu daného diagramu.
+	Při programování GUI aplikací se ale často pracuje právě se základními ovládacími prvky, a proto by je ukázková aplikace měla využívat. Nemělo by se však jednat pouze o „galerii ovládacích prvků“, kterou lze často najít jako příklad v dokumentaci dané knihovny. Použité ovládací prvky by měly dávat smysl v kontextu editoru diagramů. Proto navrhovaná aplikace obsahuje např. celočíselné vstupní pole pro změnu velikosti písma, posuvník (\textit{slider}) pro změnu přiblížení pohledu na diagram, nebo výběr barvy (\textit{color picker}) pro změnu barvy uzlu bez nutnosti zásahu do zdrojového textu daného diagramu.
 	
 	\begin{figure}[ht]
 		\centering
@@ -295,23 +299,60 @@
 		\caption{Drátěný model navrhované ukázkové aplikace}
 	\end{figure}
 	
-	Navrhovaná aplikace dále disponuje funkcemi, které by uživatel od programu tohoto typu mohl očekávat. Tvorba diagramu zde spočívá v editaci textového řetězce a je na místě, aby měl uživatel možnost jej uložit nebo nahrát ze souboru. Proto je k dispozici lišta nabídek obsahující akce, které pro tento účel vyvolají nativní dialogové okno. Záhlaví hlavního okna pak obsahuje cestu k právě editovanému souboru a zároveň indikuje neuložené změny pomocí znaku hvězdičky. Při pokusu o zavření aplikace nebo nahrání jiného souboru je v případě neuložených změn uživatel vyzván k potvrzení, zdali chce změny uložit nebo zahodit. Další akcí v liště nabídek je vyvolání okna pro nastavení. Zde lze především přepnout vzhled aplikace do tmavého režimu, což je mezi uživateli často žádanou funkcí \cite{inpro_darkmode}. Aplikace by také měla bez kompromisů podporovat operační systémy Windows a Linux.
+	Navrhovaná aplikace dále disponuje funkcemi, které by uživatel od programu tohoto typu mohl očekávat. Tvorba diagramu zde spočívá v editaci textového řetězce, a je tedy na místě, aby měl uživatel možnost jej uložit nebo nahrát ze souboru. Proto je k dispozici lišta nabídek obsahující akce, které pro tento účel vyvolají nativní dialogové okno. Záhlaví hlavního okna pak obsahuje cestu k právě editovanému souboru a zároveň indikuje neuložené změny pomocí znaku hvězdičky. Při pokusu o zavření aplikace je v případě neuložených změn uživatel vyzván k potvrzení, zdali chce změny uložit nebo zahodit. Další akcí v liště nabídek je vyvolání okna pro nastavení. Zde lze především přepnout vzhled aplikace do tmavého režimu, což je mezi uživateli často žádanou funkcí \cite{inpro_darkmode}. Aplikace by také měla bez kompromisů podporovat operační systémy Windows a Linux.
 	
 	Krom toho, že aplikace poslouží pro porovnání vybraných knihoven a disponuje očekávanými funkcemi, by se měla blížit k reálně použitelnému programu pro tvorbu diagramů. Proto je k dispozici funkce, která popsaný diagram exportuje do formátu SVG. Dále je potřeba navrhnout, jak bude diagram pomocí textu přesně popisován.
 	
 	\section{Princip popisu diagramu pomocí textu}
 	
-	Existující aplikace, které umožňují tvorbu diagramů, lze rozdělit do dvou kategorií. První jsou programy využívající přístup WYSIWYG, kde uživatel interaguje přímo s objekty diagramu vykreslenými na plátně. Do této kategorie se řadí např. program \textit{draw.io}. Druhou kategorií je přístup WYSIWYM. V něm uživatel píše kód, který popisuje, co by měl daný diagram vyobrazovat. Do této kategorie patří např. program \textit{Mermaid}. Jelikož kód popisuje především význam daného diagramu, nemá uživatel velkou kontrolu nad jeho vzhledem. Kód může např. popisovat vztahy mezi jednotlivými uzly, jejich přesné umístění v diagramu už ale určuje samotný program.
+	Existující aplikace, které umožňují tvorbu diagramů, lze rozdělit do dvou kategorií. První jsou programy využívající přístup WYSIWYG, kde uživatel interaguje přímo s objekty diagramu vykreslenými na plátně. Do této kategorie se řadí např. programy \textit{draw.io} nebo \textit{yEd}. Druhou kategorií je přístup WYSIWYM. V něm uživatel píše kód, který popisuje, co by měl daný diagram vyobrazovat. Do této kategorie patří např. programy \textit{Mermaid} nebo \textit{Graphviz}. Jelikož kód popisuje především význam daného diagramu, nemá uživatel velkou kontrolu nad jeho vzhledem. Kód může např. popisovat vztahy mezi jednotlivými uzly. Přesné umístění těchto uzlů v diagramu už ale určuje samotný program.
 	
 	Ukázková aplikace této práce se snaží o unikátní přístup k tomuto problému. Diagram je také generován na základě dodaného kódu, tento kód ovšem popisuje, jak by měl diagram přesně vypadat. Formát SVG v podstatě také popisuje přesný vzhled a export do tohoto formátu je jediný způsob, jak může uživatel vykreslit svůj diagram mimo navrhovaný program. Přímé použití formátu SVG pro popis diagramu je ale nevhodné. Z důvodu své všestrannosti a syntaxi jazyka XML má tento formát vyšší  režijní náklady ve smyslu délky kódu, který je potřeba pro popsání libovolného diagramu.
 	
-	Nejideálnější by bylo použít doménově specifický jazyk, který by byl od začátku navržen pro účely této aplikace.
+	Nejideálnější by bylo použít doménově specifický jazyk, který by byl od začátku navržen pro účely této aplikace. Tuto myšlenku jsem ale v rané fázi vývoje opustil. Důvodem byla těžko odhadnutelná časová náročnost návrhu a implementace takového jazyka. Nástroj ANTLR, který bych pravděpodobně použil, navíc nemá v ekosystému jazyka Rust velkou podporu. Proto jsem se rozhodl pro použití existujícího jazyka.
 	
-	\begin{itemize}
-		\item Nejideálnější by bylo navrhnout DSL, proč se tak nestalo.
-		\item Proč byl zvolen TOML.
-		\item Dva stavební prvky \textit{node} a \textit{path}. Jaké jsou na ně požadavky.
-	\end{itemize}
+	Jelikož se jedná o unikátní přístup k popisu diagramů a návrh vlastního jazyka se neuvažuje, dává smysl použít existující jazyk pro popis struktury dat. Tyto jazyky jsou strojově čitelné, je zde ovšem nutné klást důraz i na to, jak přívětivé bude pro uživatele zdrojový text číst a editovat. Jazyk XML je robustní a umožňuje tvorbu vlastního schématu, které pak lze snadno validovat. Navíc by bylo možné definovat šablonu pro transformaci dokumentu do formátu SVG. Jak již ale bylo zmíněno, ruční psaní tohoto jazyka je bez větší podpory od textového editoru relativně pomalé.
+	
+	Formát JSON je z pohledu počtu znaků stručnější, ale stále obsahuje určité režijní náklady. Tím je myšlena např. povinnost umisťovat názvy klíčů do dvojitých uvozovek. U složitějších struktur navíc dochází k vnořování objektů, kdy je pro zpřehlednění obvykle používáno odsazení. To buď aplikuje textový editor automaticky, nebo si jej musí hlídat uživatel. Není-li odsazení použito, může se čtenář snadno „ztratit“ ve velkém množství uzavírajících složených závorek.
+	
+	Nejprve jsem zvažoval použití formátu YAML, nakonec jsem se ale rozhodl pro formát TOML. Ten se pro definici struktur nespoléhá na bílé znaky a poskytuje typ zvaný tabulka (\textit{table}) \cite{online_tomlspec}. Pomocí tabulek lze dokument rozdělit do sekcí poměrně čitelným a stručným způsobem. Každá sekce pak může např. popisovat vlastní uzel diagramu, toto je naznačeno v kódu \ref{_tag_code_TOMLxJSON}.
+	
+	\begin{code}
+		\lstinputlisting[language=TOMLxJSON]{code/toml_vs_json.txt}
+		\caption{Demostrace rozdílu mezi formáty TOML a JSON}
+		\label{_tag_code_TOMLxJSON}
+	\end{code}
+	
+	Po zvolení jazyka TOML následoval návrh schématu. Je třeba zmínit, že pro jazyk TOML neexistují zavedené nástroje pro definici a validaci schémat, jako je tomu např. u jazyka XML. Schématem se zde myslí tedy pouze to, jaké tabulky jsou na vstupu očekávány. Pro každý možný typ tabulky se pak očekávají určité názvy klíčů a datové typy jejich hodnot. Validace schématu tak musí probíhat až v aplikačním kódu při procházení stromu, který poskytne knihovna pro parsování jazyka TOML.
+	
+	\subsection{Návrh schématu pro popis diagramu v jazyce TOML}
+	
+	Diagram v navrhované aplikaci se skládá z objektů dvou typů: uzel (\textit{node}) a cesta (\textit{path}). Tyto objekty jsou součástí příslušné kolekce tabulek a ve zdrojovém textu začíná jejich definice řádkem \texttt{[[node]]} nebo \texttt{[[path]]}. Popis diagramu by měl být „agilní“, tedy pozdější zásah do jeho struktury by neměl vyžadovat velké množství přepisování již existujícího kódu. Proto jsou na objekty kladeny určité požadavky.
+	
+	Uzel je ve své základní podobě obdélník obsahující text. Pro tvorbu jednoduchého blokového schématu je potřeba mít pro každý uzel možnost specifikovat jeho umístění, velikost a textový obsah. Pro snadnější editaci existujících diagramů je zde požadavek, aby bylo možné definovat pozici uzlu relativně k jinému uzlu. Tím vznikají vztahy typu \textit{rodič-potomek} a při změně pozice rodičovského uzlu se změní pozice i všech jeho potomků. Další požadavek je, aby bylo možné uzly definovat v libovolném pořadí, tedy aby mohl být ve zdrojovém textu potomek definován dříve než jeho rodič.
+	
+	Pozice uzlu je určena nastavením hodnot pro klíče \textit{x} a \textit{y}, které odpovídají souřadnicím kreslicího plátna. Co ale přesně souřadnice pro daný uzel znamenají? Mohl by zde být umístěn jeho střed, nebo také některý z rohů vykresleného obdélníka. Proto jsem přidal klíč \textit{pivot}, kde lze toto chování pro každý uzel nastavit. Hodnotou tohoto klíče je řetězec, např. \texttt{"center"} nebo \texttt{"top-left"}. V doménově specifickém jazyce by bylo možné mít pro tento účel dedikovaná klíčová slova, pak by byl neplatný \textit{pivot} zachycen již během parsování. V tomto případě je nutné kontrolovat správnost argumentu až v pozdější fázi.
+	
+	Otázka ohledně přesného umístění vykreslených uzlů nastává také u relativních souřadnic. Pokud by souřadnice potomka byly relativní např. ke středu rodiče, byla by vyřešena problematika přesunů, ale ne změn velikosti. Příkladem je diagram s dvěma uzly ve vztahu rodič-potomek, kde je rodičův pivot nastaven na střed. Uživatel si přeje, aby byl potomek umístěn pět jednotek pod svým rodičem. Změna pozice rodiče by toto zachovala, ale po změně jeho výšky by bylo nutné zvýšit ypsilonovou souřadnici potomka, protože se střed rodiče nijak neposunul. Proto jsem přidal možnost definovat pivota rodiče, ke kterému jsou souřadnice potomka relativní. Obrázek \ref{_tag_img_TOMLSchema} ukazuje popsaný scénář a také prozrazuje další vlastnosti navrženého schématu.
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{img/toml_schema}
+		\caption{Schéma pro popis diagramu v jazyce TOML}
+		\label{_tag_img_TOMLSchema}
+	\end{figure}
+
+	Definice vztahů rodič-potomek fungují na bázi identifikátorů typu textového řetězce. Potomek uvádí identifikátor a pivot rodiče, který se tak stává počátkem pro jeho souřadnice. Dále je vidět, že pokud není pro uzel nastavena velikost explicitně, použije se velikost implicitní, která je určená textovým popiskem uzlu.
+	
+	* Po testech byla navržena verze 2, protože\dots
+	
+	* Pak se také ukázalo, že by bylo vhodné mít pro každou osu rodiče zvlášť, ale\dots
+	
+	* Jaké další [NODE] atributy máme
+	
+	* [[PATH]]
+	
+	* [VARIABLES]
 	
 	\chapter{Implementace ukázkové aplikace}
 	

@@ -1,10 +1,5 @@
 # DP draft
 
-* Poznámka: Používám zde nějaké dočasné termíny, které nejsou úplně korektní. Ta správná jména budu muset ještě domyslet:
-  * Procesu získání potřebných dat z TOML zdrojového kódu zatím říkám TOML parsing. Parsing se ale děje jen v prvním kroce a dělá jej knihovna toml++, já pak z již rozparsovaného TOMLu „jen“ získávám data a reaguji na jejich obsah.
-  * TOML musí odpovídat mému schématu a pro náhodný TOML dokument se pravděpodobně nic nevykreslí. V XML světě se tomu říká schéma, jestli to je i zde v pořádku, jsem zatím nezkoumal.
-  * Node bude uzel/symbol, path bude čára/cesta?
-
 ## Rešerše
 
 * Pro každou IMGUI knihovnu
@@ -50,7 +45,7 @@
 
 ## Implementace
 
-Ukázkové aplikace byly dělány v pořadí Dear ImGui→egui→Qt (se záchytnými body: vykreslování blokového diagramu → export do SVG → hotovo?), proto sekce Dear ImGui popisuje i řešení problematiky společné pro všechny knihovny (např. konkrétní řešení TOML parsing), a sekce zbylých dvou knihoven se již zabývají odlišnostmi od první implementace a specifickými problémy v daných knihovnách.
+Ukázkové aplikace byly dělány v pořadí Dear ImGui→egui→Qt (se záchytnými body: vykreslování blokového diagramu → export do SVG → hotovo), proto sekce Dear ImGui popisuje i řešení problematiky společné pro všechny knihovny (např. konkrétní řešení TOML parsing), a sekce zbylých dvou knihoven se již zabývají odlišnostmi od první implementace a specifickými problémy v daných knihovnách.
 
 ### Implementace v Dear ImGui
 

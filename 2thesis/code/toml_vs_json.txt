@@ -1,0 +1,14 @@
+# Dva uzly diagramu odlišného typu, formát TOML:
+[[Uzel]]
+typ = "obdélník"
+
+[[Uzel]]
+typ = "elipsa"
+
+# Dva uzly diagramu odlišného typu, formát JSON:
+{
+    "Uzel": [
+        {"typ": "obdélník"},
+        {"typ": "elipsa"}
+    ]
+}

@@ -17,15 +17,24 @@
 }
 
 
+% TOML and JSON comparison
+\lstdefinelanguage{TOMLxJSON}{
+    , string = [b]"
+    , keywords = {Uzel}    
+    , ndkeywords = {typ}
+    , comment = [l]\#
+}
+
+
 % HelloCounter Qt
 \lstdefinelanguage{CppQt}[]{C++}{
-    , morendkeywords={init, QHBoxLayout, QPushButton, addWidget, connect, QLabel, number, on_button_decrement_clicked, on_button_increment_clicked, on_counter_update, setEnabled, setVisible}
+    , morendkeywords = {init, QHBoxLayout, QPushButton, addWidget, connect, QLabel, number, on_button_decrement_clicked, on_button_increment_clicked, on_counter_update, setEnabled, setVisible}
 }
 
 
 % HelloCounter ImGUI
 \lstdefinelanguage{CppImGui}[]{C++}{
-    , morendkeywords={update, Begin, BeginDisabled, Button, EndDisabled, Text, End}
+    , morendkeywords = {update, Begin, BeginDisabled, Button, EndDisabled, Text, End}
 }
 
 

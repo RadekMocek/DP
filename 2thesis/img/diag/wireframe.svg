@@ -75,7 +75,7 @@ font-family="Inconsolata" font-size="18" font-weight="400" font-style="normal"
 >
 <rect x="0" y="21" width="850" height="22"/>
 <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="18" y="38" font-family="Inconsolata" font-size="18" font-weight="400" font-style="normal" 
- >(lišta nabídek) File | View | Help</text>
+ >(lišta nabídek) Soubor | Zobrazení | Nápověda</text>
 </g>
 
 <g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
