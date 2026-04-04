@@ -1,15 +1,15 @@
-\#|"Paradigm"|Name/link|Lang|License|nStars <sup>1</sup>|nStars <sup>2</sup>|diff|Created|Bindings/abstractions
+\#|"Paradigm"|Name+Link|Lang|License|nStars<sup>1</sup>|nStars<sup>2</sup>|<sup>2 - 1</sup>|Created|Bindings
 :--|---|---|---|:--|--:|--:|--:|:-:|---
 01|_immediate_|[__Dear ImGui__](https://github.com/ocornut/imgui)|C++|[MIT](https://github.com/ocornut/imgui/blob/master/LICENSE.txt)|69 315|71 897|2 582|2014|[_many_](https://github.com/ocornut/imgui/wiki/Bindings#language-bindings)
-02|_immediate_|[__egui__](https://github.com/emilk/egui)|Rust|[MIT](https://github.com/emilk/egui/blob/main/LICENSE-MIT) or Apache-2.0|27 111|28 364|1 253|2018|[.NET](https://github.com/DouglasDwyer/Egui.NET)
-03|_immediate_|[__Nuklear__](https://github.com/Immediate-Mode-UI/Nuklear)|C|[MIT](https://github.com/Immediate-Mode-UI/Nuklear/blob/master/LICENSE) or Unlicense|10 554|10 930|376|2015|[_few_](https://github.com/Immediate-Mode-UI/Nuklear?tab=readme-ov-file#bindings)
+02|_immediate_|[__egui__](https://github.com/emilk/egui)|Rust|[MIT](https://github.com/emilk/egui/blob/main/LICENSE-MIT)/Apache-2.0|27 111|28 364|1 253|2018|[.NET](https://github.com/DouglasDwyer/Egui.NET)
+03|_immediate_|[__Nuklear__](https://github.com/Immediate-Mode-UI/Nuklear)|C|[MIT](https://github.com/Immediate-Mode-UI/Nuklear/blob/master/LICENSE)/Unlicense|10 554|10 930|376|2015|[_few_](https://github.com/Immediate-Mode-UI/Nuklear?tab=readme-ov-file#bindings)
 04|_immediate_|[__microui__](https://github.com/rxi/microui)|C|[MIT](https://github.com/rxi/microui/blob/master/LICENSE)|5 140|5 647|507|2018|[Go](https://github.com/gabstv/microui-go), [Python](https://github.com/shakfu/pymui)
 05|_immediate_|[__raygui__](https://github.com/raysan5/raygui)|C|[Zlib](https://github.com/raysan5/raygui/blob/master/LICENSE)|4 437|4 733|296|2014|[C++](https://github.com/scastd/raygui-cpp), [Raku](https://github.com/vushu/raygui-raku)
-06|_immediate_|[__Gio__](https://github.com/gioui/gio)|Go|[MIT](https://github.com/gioui/gio/blob/main/LICENSE) or Unlicense|2 059|2 138|79|2019|—
+06|_immediate_|[__Gio__](https://github.com/gioui/gio)|Go|[MIT](https://github.com/gioui/gio/blob/main/LICENSE)/Unlicense|2 059|2 138|79|2019|—
 😬|_immediate_|[__dvui__](https://github.com/david-vanderson/dvui)|Zig|[MIT](https://github.com/david-vanderson/dvui/blob/main/LICENSE)|993|1 266|273|2022|—
 &nbsp;|||||||||&nbsp;
-50|_retained_|[__Qt__](https://www.qt.io/product/framework)|C++|GPL, [LGPL](https://doc.qt.io/qt-6/lgpl.html) or commercial|—|—|—|1995|[_many_](https://wiki.qt.io/Language_Bindings)
-51|_retained_|[__Avalonia__](https://github.com/AvaloniaUI/Avalonia)|C\#|[MIT](https://github.com/AvaloniaUI/Avalonia/blob/master/licence.md)|29 284|30 228|944|2013|(_any .NET language_)
+50|_retained_|[__Qt__](https://www.qt.io/product/framework)|C++|GPL/[LGPL](https://doc.qt.io/qt-6/lgpl.html)/commercial|—|—|—|1995|[_many_](https://wiki.qt.io/Language_Bindings)
+51|_retained_|[__Avalonia__](https://github.com/AvaloniaUI/Avalonia)|C\#|[MIT](https://github.com/AvaloniaUI/Avalonia/blob/master/licence.md)|29 284|30 228|944|2013|_any .NET language_
 
 <sup>1</sup> GitHub repository stars on 2025-11-12<br>
 <sup>2</sup> GitHub repository stars on 2025-03-12
@@ -35,3 +35,5 @@ Other dependencies:
 * [stb](https://github.com/nothings/stb) ([MIT](https://github.com/nothings/stb/blob/master/LICENSE))
 * [SDL2](https://github.com/libsdl-org/SDL) ([zlib](https://github.com/libsdl-org/SDL/blob/main/LICENSE.txt))
 * [raylib](https://github.com/raysan5/raylib) ([zlib](https://github.com/raysan5/raylib/blob/master/LICENSE))
+* [memory-stats](https://github.com/Arc-blroth/memory-stats) ([MIT](https://github.com/Arc-blroth/memory-stats/blob/main/LICENSE-MIT))
+* [num-format](https://github.com/bcmyers/num-format) ([MIT](https://github.com/bcmyers/num-format/blob/main/LICENSE-MIT))

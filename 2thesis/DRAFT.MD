@@ -141,6 +141,8 @@ Ukázkové aplikace byly dělány v pořadí Dear ImGui→egui→Qt (se záchytn
   * Má nějakou implicitní navigaci pomocí šipek, tabulátoru atd. Moc to nefunguje, nebo s tím neumím (?). Klávesové zkratky by to ještě chtělo prozkoumat.
   * U ComboBoxu paduju položky mezerama, aby se neměnila šířka comboboxu při změně položky.
   * Zkusil jsem neparsovat TOML každý frame, ale jen, když je potřeba; na výkonu se to nepodepsalo
+  * Upgradoval jsem z 1.92.5 na 1.92.6, protože...
+  * <https://github.com/goossens/ImGuiColorTextEdit>
 
 * Jak se tedy píše „běžná“ aplikace v Dear ImGui?
   * Tohle bude oříšek napsat nějak objektivně..., nezabarveně; momentálně mě ještě čeká kus práce v Qt, takže tyto myšlenky budu ještě formovat.

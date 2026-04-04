@@ -287,9 +287,9 @@
 	
 	\chapter{Návrh ukázkové aplikace}
 	
-	Navrhovanou ukázkovou aplikací této práce je program pro tvorbu a editaci diagramů. Diagram je celkem obecný pojem a v kontextu této práce se myslí především vývojový diagram, nebo blokové schéma.
+	Navrhovanou ukázkovou aplikací této práce je program pro tvorbu a editaci diagramů. Diagram je vcelku obecný pojem a cílem není pokrýt všechny jeho možné varianty. V kontextu práce se tímto pojmem myslí především vývojový diagram nebo blokové schéma.
 	
-	Navrhovaná aplikace na základě zadaného textového popisu vykreslí odpovídající diagram. Dělí se tedy na dvě hlavní části: víceřádkové textové pole a kreslicí plátno. Textové pole je základní ovládací prvek, který je ale relativně komplexní, a proto je vhodné jej použít jako jeden z hlavních stavebních kamenů aplikace. Plátno pak pomůže prozkoumat schopnost knihoven vykreslovat programátorem definované objekty. Tedy vykreslování i něčeho jiného, než jsou základní ovládací prvky, které knihovna poskytuje.
+	Navrhovaná aplikace na základě zadaného textového popisu vykreslí odpovídající diagram. Dělí se tedy na dvě hlavní části: víceřádkové textové pole a kreslicí plátno. Textové pole je základní ovládací prvek, který je ale relativně komplexní, a proto je vhodné jej použít jako jeden z hlavních stavebních kamenů ukázkové aplikace. Plátno pak pomůže prozkoumat schopnost knihoven vykreslovat programátorem definované objekty. Tedy vykreslování i něčeho jiného, než jsou základní ovládací prvky, které knihovna poskytuje.
 	
 	Při programování GUI aplikací se ale často pracuje právě se základními ovládacími prvky, a proto by je ukázková aplikace měla využívat. Nemělo by se však jednat pouze o „galerii ovládacích prvků“, kterou lze často najít jako příklad v dokumentaci dané knihovny. Použité ovládací prvky by měly dávat smysl v kontextu editoru diagramů. Proto navrhovaná aplikace obsahuje např. celočíselné vstupní pole pro změnu velikosti písma, posuvník (\textit{slider}) pro změnu přiblížení pohledu na diagram, nebo výběr barvy (\textit{color picker}) pro změnu barvy uzlu bez nutnosti zásahu do zdrojového textu daného diagramu.
 	
@@ -307,11 +307,11 @@
 	
 	Existující aplikace, které umožňují tvorbu diagramů, lze rozdělit do dvou kategorií. První jsou programy využívající přístup WYSIWYG, kde uživatel interaguje přímo s objekty diagramu vykreslenými na plátně. Do této kategorie se řadí např. programy \textit{draw.io} nebo \textit{yEd}. Druhou kategorií je přístup WYSIWYM. V něm uživatel píše kód, který popisuje, co by měl daný diagram vyobrazovat. Do této kategorie patří např. programy \textit{Mermaid} nebo \textit{Graphviz}. Jelikož kód popisuje především význam daného diagramu, nemá uživatel velkou kontrolu nad jeho vzhledem. Kód může např. popisovat vztahy mezi jednotlivými uzly. Přesné umístění těchto uzlů v diagramu už ale určuje samotný program.
 	
-	Ukázková aplikace této práce se snaží o unikátní přístup k tomuto problému. Diagram je také generován na základě dodaného kódu, tento kód ovšem popisuje, jak by měl diagram přesně vypadat. Formát SVG v podstatě také popisuje přesný vzhled a export do tohoto formátu je jediný způsob, jak může uživatel vykreslit svůj diagram mimo navrhovaný program. Přímé použití formátu SVG pro popis diagramu je ale nevhodné. Z důvodu své všestrannosti a syntaxi jazyka XML má tento formát vyšší  režijní náklady ve smyslu délky kódu, který je potřeba pro popsání libovolného diagramu.
+	Ukázková aplikace této práce se snaží o unikátní přístup k tomuto problému. Diagram je také generován na základě dodaného kódu, tento kód ovšem popisuje, jak by měl diagram přesně vypadat. Popis přesného vzhledu v podstatě probíhá i při použití formátu SVG. Export do tohoto formátu je navíc dle návrhu jediný způsob, jak může uživatel vykreslit svůj diagram mimo  program. Přímé použití formátu SVG pro popis diagramu je ale nevhodné. Z důvodu své všestrannosti a syntaxi jazyka XML má tento formát vyšší  režijní náklady ve smyslu délky kódu, který je potřeba pro popsání libovolného diagramu.
 	
 	Nejideálnější by bylo použít doménově specifický jazyk, který by byl od začátku navržen pro účely této aplikace. Tuto myšlenku jsem ale v rané fázi vývoje opustil. Důvodem byla těžko odhadnutelná časová náročnost návrhu a implementace takového jazyka. Nástroj ANTLR, který bych pravděpodobně použil, navíc nemá v ekosystému jazyka Rust velkou podporu. Proto jsem se rozhodl pro použití existujícího jazyka.
 	
-	Jelikož se jedná o unikátní přístup k popisu diagramů a návrh vlastního jazyka se neuvažuje, dává smysl použít existující jazyk pro popis struktury dat. Tyto jazyky jsou strojově čitelné, je zde ovšem nutné klást důraz i na to, jak přívětivé bude pro uživatele zdrojový text číst a editovat. Jazyk XML je robustní a umožňuje tvorbu vlastního schématu, které pak lze snadno validovat. Navíc by bylo možné definovat šablonu pro transformaci dokumentu do formátu SVG. Jak již ale bylo zmíněno, ruční psaní tohoto jazyka je bez větší podpory od textového editoru relativně pomalé.
+	Jelikož se jedná o unikátní přístup k popisu diagramů a návrh vlastního jazyka neuvažuji, dává smysl použít existující jazyk pro popis struktury dat. Tyto jazyky jsou strojově čitelné, je zde ovšem nutné klást důraz i na to, jak přívětivé bude pro uživatele zdrojový text číst a editovat. Jazyk XML je robustní a umožňuje tvorbu vlastního schématu, které pak lze snadno validovat. Navíc by bylo možné definovat šablonu pro transformaci dokumentu do formátu SVG. Jak již ale bylo zmíněno, ruční psaní tohoto jazyka je bez větší podpory od textového editoru relativně pomalé.
 	
 	Formát JSON je z pohledu počtu znaků stručnější, ale stále obsahuje určité režijní náklady. Tím je myšlena např. povinnost umisťovat názvy klíčů do dvojitých uvozovek. U složitějších struktur navíc dochází k vnořování objektů, kdy je pro zpřehlednění obvykle používáno odsazení. To buď aplikuje textový editor automaticky, nebo si jej musí hlídat uživatel. Není-li odsazení použito, může se čtenář snadno „ztratit“ ve velkém množství uzavírajících složených závorek.
 	
@@ -319,40 +319,57 @@
 	
 	\begin{code}
 		\lstinputlisting[language=TOMLxJSON]{code/toml_vs_json.txt}
-		\caption{Demostrace rozdílu mezi formáty TOML a JSON}
+		\caption{Rozdíl mezi formáty TOML a JSON}
 		\label{_tag_code_TOMLxJSON}
 	\end{code}
 	
-	Po zvolení jazyka TOML následoval návrh schématu. Je třeba zmínit, že pro jazyk TOML neexistují zavedené nástroje pro definici a validaci schémat, jako je tomu např. u jazyka XML. Schématem se zde myslí tedy pouze to, jaké tabulky jsou na vstupu očekávány. Pro každý možný typ tabulky se pak očekávají určité názvy klíčů a datové typy jejich hodnot. Validace schématu tak musí probíhat až v aplikačním kódu při procházení stromu, který poskytne knihovna pro parsování jazyka TOML.
+	Po zvolení jazyka TOML následoval návrh schématu. Je třeba zmínit, že pro jazyk TOML neexistují zavedené nástroje pro definici a validaci schémat, jako je tomu např. u jazyka XML. Schématem se zde myslí tedy pouze to, jaké tabulky jsou na vstupu očekávány. Pro každý možný typ tabulky se pak očekávají určité názvy klíčů a datové typy jejich hodnot. Validace schématu tak musí probíhat až v aplikačním kódu při procházení stromu, který poskytne knihovna pro překlad jazyka TOML.
 	
 	\subsection{Návrh schématu pro popis diagramu v jazyce TOML}
 	
 	Diagram v navrhované aplikaci se skládá z objektů dvou typů: uzel (\textit{node}) a cesta (\textit{path}). Tyto objekty jsou součástí příslušné kolekce tabulek a ve zdrojovém textu začíná jejich definice řádkem \texttt{[[node]]} nebo \texttt{[[path]]}. Popis diagramu by měl být „agilní“, tedy pozdější zásah do jeho struktury by neměl vyžadovat velké množství přepisování již existujícího kódu. Proto jsou na objekty kladeny určité požadavky.
 	
-	Uzel je ve své základní podobě obdélník obsahující text. Pro tvorbu jednoduchého blokového schématu je potřeba mít pro každý uzel možnost specifikovat jeho umístění, velikost a textový obsah. Pro snadnější editaci existujících diagramů je zde požadavek, aby bylo možné definovat pozici uzlu relativně k jinému uzlu. Tím vznikají vztahy typu \textit{rodič-potomek} a při změně pozice rodičovského uzlu se změní pozice i všech jeho potomků. Další požadavek je, aby bylo možné uzly definovat v libovolném pořadí, tedy aby mohl být ve zdrojovém textu potomek definován dříve než jeho rodič.
+	Uzel je ve své základní podobě obdélník obsahující text. Pro tvorbu jednoduchého blokového schématu je potřeba mít pro každý uzel možnost specifikovat jeho umístění, velikost a textový obsah. Pro snadnější editaci existujících diagramů je zde požadavek, aby bylo možné definovat pozici uzlu relativně k jinému uzlu. Tím vznikají vztahy typu \textit{rodič-potomek} a při změně pozice rodičovského uzlu se změní i pozice všech jeho potomků. Další požadavek je, aby bylo možné uzly definovat v libovolném pořadí, tedy aby mohl být ve zdrojovém textu potomek definován dříve než jeho rodič.
 	
-	Pozice uzlu je určena nastavením hodnot pro klíče \textit{x} a \textit{y}, které odpovídají souřadnicím kreslicího plátna. Co ale přesně souřadnice pro daný uzel znamenají? Mohl by zde být umístěn jeho střed, nebo také některý z rohů vykresleného obdélníka. Proto jsem přidal klíč \textit{pivot}, kde lze toto chování pro každý uzel nastavit. Hodnotou tohoto klíče je řetězec, např. \texttt{"center"} nebo \texttt{"top-left"}. V doménově specifickém jazyce by bylo možné mít pro tento účel dedikovaná klíčová slova, pak by byl neplatný \textit{pivot} zachycen již během parsování. V tomto případě je nutné kontrolovat správnost argumentu až v pozdější fázi.
+	Pozice uzlu je určena nastavením hodnot pro klíče \textit{x} a \textit{y}, které odpovídají souřadnicím kreslicího plátna. Co ale přesně souřadnice pro daný uzel znamenají? Mohl by zde být umístěn jeho střed, nebo také některý z rohů vykresleného obdélníka. Proto jsem přidal klíč \textit{pivot}, kde lze toto chování pro každý uzel nastavit. Hodnotou tohoto klíče je řetězec, např. \texttt{"center"} nebo \texttt{"top-left"}. V doménově specifickém jazyce by bylo možné mít pro tento účel dedikovaná klíčová slova, pak by byl neplatný \textit{pivot} zachycen již během překladu. V tomto případě je nutné kontrolovat správnost argumentu až v pozdější fázi.
 	
-	Otázka ohledně přesného umístění vykreslených uzlů nastává také u relativních souřadnic. Pokud by souřadnice potomka byly relativní např. ke středu rodiče, byla by vyřešena problematika přesunů, ale ne změn velikosti. Příkladem je diagram s dvěma uzly ve vztahu rodič-potomek, kde je rodičův pivot nastaven na střed. Uživatel si přeje, aby byl potomek umístěn pět jednotek pod svým rodičem. Změna pozice rodiče by toto zachovala, ale po změně jeho výšky by bylo nutné zvýšit ypsilonovou souřadnici potomka, protože se střed rodiče nijak neposunul. Proto jsem přidal možnost definovat pivota rodiče, ke kterému jsou souřadnice potomka relativní. Obrázek \ref{_tag_img_TOMLSchema} ukazuje popsaný scénář a také prozrazuje další vlastnosti navrženého schématu.
+	Otázka ohledně přesného umístění vykreslených uzlů nastává také u relativních souřadnic. Pokud by souřadnice potomka byly relativní např. ke středu rodiče, byla by vyřešena problematika přesunů, ale ne změn velikosti. Příkladem je diagram se dvěma uzly ve vztahu rodič-potomek, kde je rodičův pivot nastaven na střed. Uživatel si přeje, aby byl potomek umístěn pět jednotek pod svým rodičem. Změna pozice rodiče by toto zachovala, ale po změně jeho výšky by bylo nutné zvýšit ypsilonovou souřadnici potomka, protože se střed rodiče nijak neposunul. Proto jsem přidal možnost definovat pivota rodiče, ke kterému jsou souřadnice potomka relativní. Obrázek \ref{_tag_img_TOMLSchemaNode} ukazuje popsaný scénář a také prozrazuje další vlastnosti navrženého schématu.
 	
 	\begin{figure}[ht]
 		\centering
-		\includegraphics[width=\textwidth]{img/toml_schema}
-		\caption{Schéma pro popis diagramu v jazyce TOML}
-		\label{_tag_img_TOMLSchema}
+		\includegraphics[width=\textwidth]{img/toml_schema_node}
+		\caption{Schéma pro popis uzlů diagramu v jazyce TOML}
+		\label{_tag_img_TOMLSchemaNode}
 	\end{figure}
 
-	Definice vztahů rodič-potomek fungují na bázi identifikátorů typu textového řetězce. Potomek uvádí identifikátor a pivot rodiče, který se tak stává počátkem pro jeho souřadnice. Dále je vidět, že pokud není pro uzel nastavena velikost explicitně, použije se velikost implicitní, která je určená textovým popiskem uzlu.
+	Definice vztahů rodič-potomek fungují na bázi identifikátorů typu textového řetězce. Potomek uvádí identifikátor a pivota svého rodiče, který se tak stává počátkem pro jeho souřadnice. Dále je vidět, že pokud není pro uzel nastavena velikost explicitně, použije se velikost implicitní, která je určena textovým popiskem uzlu. K dispozici jsou pak další parametry pro úpravu vzhledu uzlu. Je možné např. změnit jeho tvar nebo barvu výplně.
 	
-	* Po testech byla navržena verze 2, protože\dots
+	Po navržení první verze schématu pro popis uzlů diagramu jsem jej otestoval. Zkusil jsem v něm popsat vybrané blokové schéma a došel k několika závěrům. Z testování vyšlo najevo, že je potřeba vyřešit situace, kdy se více uzlů překrývá. Pořadí vykreslování překrývajících se uzlů by šlo určit např. ze zdrojového textu, kdy uzel, jež je definován dříve, je také vykreslen dříve. Rozhodl jsem se ale pro nový parametr \textit{z}, který toto určí explicitně. Uzel s vyšší hodnotou parametru překryje uzly, které mají hodnotu nižší. Díky tomu lze snadno přepínat „hloubku“ uzlů bez nutnosti přesouvat větší množství řádků ve zdrojovém textu. Pokud ale hodnota parametru \textit{z} není nastavena, pak pořadí vykreslování není nijak definováno a může být závislé na konkrétní implementaci.
 	
-	* Pak se také ukázalo, že by bylo vhodné mít pro každou osu rodiče zvlášť, ale\dots
+	Z testu také vyšlo najevo, že popis diagramu je sice relativně stručný a přehledný, ale zabírá velké množství řádků. Pro danou výšku textového pole tedy nebylo najednou zobrazeno příliš mnoho informací. Proto jsem navrhl druhou verzi schématu, která shlukuje některé parametry dohromady a tím snižuje nutnost posouvat řádky (\textit{scrollovat}). Např. místo parametrů \textit{x}, \textit{y} a \textit{base} je zde jeden parametr \textit{xy}, který očekává buď dvouprvkové pole se souřadnicemi, nebo čtyřprvkové, které navíc obsahuje informace o rodičovském uzlu. Uzel má v této verzi na prvním řádku své definice uveden i svůj identifikátor, ze kterého se proto stává povinný údaj. Rozdíl mezi dvěma verzemi návrhu je vidět na obrázku \ref{_tag_img_TOMLSchemaNode}.
 	
-	* Jaké další [NODE] atributy máme
+	Poslední poznatek z testování je ten, že by bylo vhodnější mít možnost nastavit dva různé rodičovské uzly, kdy jeden pro své potomky určuje umístění na ose x a druhý na ose y. Tím by se zjednodušila tvorba a úprava diagramů, kde mají být uzly rozmístěny v pravidelné mřížce. Tento problém jsem vyhodnotil jako nepříliš zásadní a pokračoval na návrh popisu cest.
 	
-	* [[PATH]]
+	Cesty v diagramu jsou definovány svými body. Pro validní cestu je nutné definovat její startovní a cílový bod. Mezi nimi pak může být definován libovolný počet mezilehlých bodů. Cesta je vykreslena jednoduše postupným propojením bodů od toho startovního, přes případné mezilehlé body, až do bodu cílového. Jsou tedy podporovány pouze rovné čáry bez možnosti definovat křivky.
 	
-	* [VARIABLES]
+	Startovní a cílový bod jsou definovány stejným způsobem jako souřadnice uzlu. Tedy buď dvěma, nebo čtyřmi hodnotami. Dvě hodnoty určují absolutní pozici bodu a čtyři hodnoty určují pozici bodu relativně k pivotu nějakého uzlu. Cesty se obvykle používají k propojování uzlů, a tak bude pravděpodobně nejčastější použití druhé varianty s nulovým relativním posunem.
+	
+	Pro mezilehlé body je již možné definovat jejich umístění tak, že na každé ose referují pivot jiného uzlu. Implementace by zde měla být jednodušší, protože fáze zpracování cest bude následovat až po kompletním zpracování všech uzlů. Dále mohou jednotlivé body referovat start, cíl, nebo předchozí bod své cesty. Nakonec může být umístění mezilehlého bodu určeno i pomocí absolutních souřadnic. Pro snazší zpracování na straně aplikačního kódu je každý mezilehlý bod definován šestiprvkovou kolekcí, kdy první tři prvky odpovídají umístění na ose x a zbylé tři prvky umístění na ose y. Všechny tři prvky jsou potřeba definovat pouze při referenci pivota, v ostatních případech jsou nevyužité prvky nastaveny na prázdný řetězec.
+	
+	Obrázek \ref{_tag_img_TOMLSchemaPath} představuje další nástroje pro popis cest: Pro jednu cestu je možné definovat více koncových bodů. To znamená, že je pomocí jedné společné definice v podstatě vykresleno více cest. Díky tomu, že mezilehlé body se mohou odkazovat na koncový bod, lze v takovéto definici popsat rozvětvení. Dále je k dispozici parametr \textit{shift}, který definuje „odskok“ startovního a cílových bodů od svých uzlů. Tento parametr pak dokáže nahradit krajní mezilehlé body.
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{img/toml_schema_path}
+		\caption{Schéma pro popis cest diagramu v jazyce TOML}
+		\label{_tag_img_TOMLSchemaPath}
+	\end{figure}
+	
+	Cesty mají také nastavitelný parametr \textit{z}. Je zaručeno, že se cesta vykreslí nad uzly, které mají hodnotu \textit{z} nižší nebo rovnou. Uzly s vyšší hodnotou tohoto parametru pak danou cestu překryjí. Nakonec lze u cest nastavit jejich barvu, textový popisek a zdali mají končit či začínat šipkou.
+	
+	Poslední typ tabulky, který navrhované schéma podporuje, jsou proměnné. Uživatel může přidat sekci začínající řádkem \texttt{[variables]} a v ní definovat klíče s přiřazenými číselnými hodnotami. Na určitých místech v kódu, kde je očekávána číselná hodnota, je pak možné místo čísla zadat název proměnné v podobě řetězce. Je možné tak např. nastavit jednotnou šířku pro všechny uzly v diagramu, kterou lze měnit editací jednoho čísla ve zdrojovém textu.
+	
+	Velkým omezením je, že s proměnnými nelze provádět žádné aritmetické operace. Při popisu diagramu by se jistě hodilo mít možnost definovat, že např. uzel \textit{a} je třikrát širší než uzel \textit{b}. Zakomponovat takovéto funkce do schématu by sice bylo možné, ale jednalo by se o kompromis mezi všestranností a stručností zápisu. Navíc by se tím dále zkomplikoval aplikační kód, který by musel vše kontrolovat. Tento požadavek zkrátka přesahuje záměr a možnosti jazyka TOML.
 	
 	\chapter{Implementace ukázkové aplikace}
 	
