@@ -16,7 +16,7 @@ void App::Update()
             show_popup_window = !show_popup_window;
         }
         if (ImGui::MenuItem("Exit", "Alt+F4")) {
-            glfwSetWindowShouldClose(window, GLFW_TRUE);
+            glfwSetWindowShouldClose(m_window, GLFW_TRUE);
         }
         ImGui::EndMenu();
     }

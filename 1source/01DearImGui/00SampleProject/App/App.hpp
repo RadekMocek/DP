@@ -27,24 +27,24 @@ public:
 
 private:
 	// = Members =
-	GLFWwindow* window{};
-	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+	GLFWwindow* m_window{};
+	ImVec4 m_clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-	const char* window_title = "Dear ImGui GLFW+OpenGL3 example";
-	const bool is_dark_mode = false;
+	const char* m_window_title = "Dear ImGui GLFW+OpenGL3 example";
+	const bool m_is_dark_mode = false;
 
-	ImFont* font_inconsolata_medium = nullptr;
+	ImFont* m_font_inconsolata = nullptr;
+	ImFont* m_font_proggyclean = nullptr;
+	ImFont* m_font_proggyforever = nullptr;
 
 	// User state
-	bool show_demo_window{};
-	bool show_hello_window{};
-	bool show_another_window{};
-	bool show_testing_window{};
+	bool m_show_demo_window{};
+	bool m_show_hello_window{};
+	bool m_show_another_window{};
+	bool m_show_testing_window{};
 
 	// = Functions =
 	static void GLFWErrorCallback(int error, const char* description);
 	void Start();
 	void Update();
-
-	// User functions
 };

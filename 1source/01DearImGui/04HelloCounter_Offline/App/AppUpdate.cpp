@@ -19,7 +19,7 @@ void App::Update()
         }
         if (ImGui::MenuItem("Exit", "Alt+F4"))
         {
-            glfwSetWindowShouldClose(window, GLFW_TRUE);
+            glfwSetWindowShouldClose(m_window, GLFW_TRUE);
         }
         ImGui::EndMenu();
     }

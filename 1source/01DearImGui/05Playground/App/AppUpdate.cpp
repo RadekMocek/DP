@@ -12,8 +12,9 @@ void App::Update()
 
     // State
     static bool show_popup_window = false;
-    static bool show_demo_window = false;
+    static bool show_demo_window = true;
     static bool show_issue_window = false;
+    static bool show_radio_window = false;
 
     // Main menu bar
     ImGui::BeginMainMenuBar();
@@ -27,8 +28,11 @@ void App::Update()
         if (ImGui::MenuItem("Issue demonstration (#9249)", nullptr, show_issue_window)) {
             show_issue_window = !show_issue_window;
         }
+        if (ImGui::MenuItem("Radio button test", nullptr, show_radio_window)) {
+            show_radio_window = !show_radio_window;
+        }
         if (ImGui::MenuItem("Exit", "Alt+F4")) {
-            glfwSetWindowShouldClose(window, GLFW_TRUE);
+            glfwSetWindowShouldClose(m_window, GLFW_TRUE);
         }
         ImGui::EndMenu();
     }
@@ -87,13 +91,15 @@ void App::Update()
         ImGui::End();
     }
 
-    ImGui::Begin("Test");
-    static int e = Akat;
-    ImGui::RadioButton("radio a", &e, Akat);
-    ImGui::SameLine();
-    ImGui::RadioButton("radio b", &e, Bliskavice);
-    ImGui::SameLine();
-    ImGui::RadioButton("radio c", &e, Cilovnici);
-    ImGui::Text(e == Akat ? "a" : e == Bliskavice ? "b" : "c");
-    ImGui::End();
+    if (show_radio_window) {
+        ImGui::Begin("Test");
+        static int e = Akat;
+        ImGui::RadioButton("radio a", &e, Akat);
+        ImGui::SameLine();
+        ImGui::RadioButton("radio b", &e, Bliskavice);
+        ImGui::SameLine();
+        ImGui::RadioButton("radio c", &e, Cilovnici);
+        ImGui::Text(e == Akat ? "a" : e == Bliskavice ? "b" : "c");
+        ImGui::End();
+    }
 }

@@ -6,7 +6,7 @@
 
 void App::ModuleMain()
 {
-    ImGui::PushFont(font_inconsolata_18);
+    ImGui::PushFont(m_font_inconsolata_18);
 
     // Framerate info
     static ImGuiIO& io = ImGui::GetIO();

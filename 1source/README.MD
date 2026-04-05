@@ -37,3 +37,9 @@ Other dependencies:
 * [raylib](https://github.com/raysan5/raylib) ([zlib](https://github.com/raysan5/raylib/blob/master/LICENSE))
 * [memory-stats](https://github.com/Arc-blroth/memory-stats) ([MIT](https://github.com/Arc-blroth/memory-stats/blob/main/LICENSE-MIT))
 * [num-format](https://github.com/bcmyers/num-format) ([MIT](https://github.com/bcmyers/num-format/blob/main/LICENSE-MIT))
+
+Fonts used is some projects:
+
+* [Inconsolata](https://levien.com/type/myfonts/inconsolata.html) ([SIL Open Font License](https://github.com/google/fonts/blob/main/ofl/inconsolata/OFL.txt))
+* [ProggyClean](https://github.com/bluescan/proggyfonts) ([MIT](https://github.com/bluescan/proggyfonts/blob/master/LICENSE))
+* [ProggyForever](https://github.com/ocornut/proggyforever) ([MIT](https://github.com/ocornut/proggyforever/blob/master/LICENSE.txt))

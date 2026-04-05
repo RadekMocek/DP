@@ -186,11 +186,11 @@ void App::ModuleCanvas()
         auto label_c_str = label.c_str();
         auto label_origin = ImVec2(origin.x + node_x, origin.y + node_y);
         //draw_list->AddText(label_origin, color_node, label_c_str);
-        draw_list->AddText(font_inconsolata_18, 18 * zoom_level, label_origin, color_node, label_c_str);
+        draw_list->AddText(m_font_inconsolata_18, 18 * zoom_level, label_origin, color_node, label_c_str);
 
         // Draw rectangle and store its aabr
         //auto label_size = ImGui::CalcTextSize(label_c_str);
-        ImVec2 label_size = font_inconsolata_18->CalcTextSizeA(18 * zoom_level, FLT_MAX, -1.0F, label_c_str, 0, NULL);
+        ImVec2 label_size = m_font_inconsolata_18->CalcTextSizeA(18 * zoom_level, FLT_MAX, -1.0F, label_c_str, 0, NULL);
         auto upper_left = ImVec2PlusC(label_origin, -border_offset);
         auto lower_right = ImVec2PlusC(ImVec2Plus(label_origin, label_size), border_offset);
         draw_list->AddRect(upper_left, lower_right, color_node);

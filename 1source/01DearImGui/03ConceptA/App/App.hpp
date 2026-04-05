@@ -31,16 +31,16 @@ public:
 
 private:
 	// = Members =
-	GLFWwindow* window{};
-	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+	GLFWwindow* m_window{};
+	ImVec4 m_clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-	const char* window_title = "Dear ImGui :: ConceptA";
-	const bool is_dark_mode = false;
+	const char* m_window_title = "Dear ImGui :: ConceptA";
+	const bool m_is_dark_mode = false;
 
 	// Fonts
-	ImFont* font_default = nullptr;
-	ImFont* font_inconsolata_14 = nullptr;
-	ImFont* font_inconsolata_18 = nullptr;
+	ImFont* m_font_default = nullptr;
+	ImFont* m_font_inconsolata_14 = nullptr;
+	ImFont* m_font_inconsolata_18 = nullptr;
 
 	// User state
 	ImVec2 m_fps_info_size;

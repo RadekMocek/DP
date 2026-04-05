@@ -29,18 +29,14 @@ public:
 
 private:
 	// = Members =
-	GLFWwindow* window{};
-	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+	GLFWwindow* m_window{};
+	ImVec4 m_clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-	const char* window_title = "Dear ImGui :: Playground";
-	const bool is_dark_mode = false;
-
-	// User state
+	const char* m_window_title = "Dear ImGui :: Playground";
+	const bool m_is_dark_mode = false;
 
 	// = Functions =
 	static void GLFWErrorCallback(int error, const char* description);
 	void Start();
 	void Update();
-
-	// User functions
 };

@@ -20,6 +20,4 @@ __This repository contains everything except the main sample program (the diagra
 
 All libraries used in this repository have their licenses mentioned in the [`1source/`](./1source/) directory's README.
 
-Some projects in this repository use [Inconsolata](https://levien.com/type/myfonts/inconsolata.html) under [SIL Open Font License](https://github.com/google/fonts/blob/main/ofl/inconsolata/OFL.txt).
-
-License of this repository: All original code is available under _MIT-0_, and the content of the document is available under _CC BY 4.0_.
+License of this repository: All original code is available under _MIT-0_, and the content of the PDF document is available under _CC BY 4.0_.
