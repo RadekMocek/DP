@@ -30,6 +30,6 @@ target_link_libraries(ImguiApp PRIVATE
 	Freetype::Freetype
 )
 
-#file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/App/Resources 
-#	DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/App/
-#)
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Resource
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
+)

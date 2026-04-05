@@ -1,3 +1,5 @@
+#include <format>
+
 #include "App.hpp"
 
 void App::Update()
@@ -5,11 +7,12 @@ void App::Update()
     ImGuiIO& io = ImGui::GetIO();
 
     // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-    if (show_demo_window)
+    if (show_demo_window) {
         ImGui::ShowDemoWindow(&show_demo_window);
+    }
 
     // 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
-    {
+    if (show_hello_window) {
         static float f = 0.0f;
         static int counter = 0;
 
@@ -37,6 +40,28 @@ void App::Update()
         ImGui::Text("Hello from another window!");
         if (ImGui::Button("Close Me"))
             show_another_window = false;
+        ImGui::End();
+    }
+
+    // 4. Testing misc stuff...
+    if (show_testing_window) {
+        const auto header = std::format("Dear ImGui verze {} ({})", IMGUI_VERSION, IMGUI_VERSION_NUM);
+        ImGuiWindowFlags flags = ImGuiWindowFlags_NoCollapse;
+
+        ImGui::Begin(header.c_str(), NULL, flags);
+
+        ImGui::PushFont(font_inconsolata_medium, 28.0f);
+        ImGui::Text("%s", header.c_str());
+        ImGui::PopFont();
+
+        ImGui::PushFont(nullptr, 28.0f);
+        ImGui::Text("%s", header.c_str());
+        ImGui::PopFont();
+
+        ImGui::PushFont(font_inconsolata_medium, 28.0f);
+        ImGui::Text("%s", header.c_str());
+        ImGui::PopFont();
+
         ImGui::End();
     }
 }

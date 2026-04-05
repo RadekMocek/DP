@@ -36,6 +36,8 @@
 % Poslední dva autory knihy neoddělovat středníkem, ale písmenem 'a'
 \DeclareDelimFormat{finalnamedelim}{\addspace a\space}
 
+\newcommand{\temporary}[1]{{\small\textcolor{gray}{#1}}}
+
 % Název práce
 \TULtitle{Grafické uživatelské rozhraní v režimu okamžitého vykreslování}{Graphical user interface in immediate rendering mode}
 
@@ -107,10 +109,13 @@
 	\begin{abbrList2}
 		\textbf{ANTLR} & \textit{ANother Tool for Language Recognition}, nástroj pro generaci překladačů \\
 		\textbf{API} & \textit{application programming interface}, rozhraní pro programování aplikací \\
+		\textbf{GCC} & \textit{GNU Compiler Collection}; sada překladačů pro jazyky C, C++ ad. \\
 		\textbf{GUI} & \textit{graphical user interface}, grafické uživatelské rozhraní \\
 		\textbf{IMGUI} & \textit{immediate mode graphical user interface}, grafické uživatelské rozhraní v režimu okamžitého vykreslování \\
 		\textbf{JSON} & \textit{JavaScript Object Notation}, jazyk pro popis struktury dat \\
+		\textbf{MSVC} & \textit{Microsoft Visual C++}, překladač pro jazyky C a C++ \\
 		\textbf{MVVM} & \textit{model–view–viewmodel}, architektonický vzor \\
+		\textbf{OS} & \textit{operační systém} \\
 		\textbf{RMGUI} & \textit{retained mode graphical user interface}, grafické uživatelské rozhraní v režimu soběstačného vykreslování \\
 		\textbf{SVG} & \textit{Scalable Vector Graphics}, standard pro popis vektorové grafiky \\
 		\textbf{TOML} & \textit{Tom's Obvious Minimal Language}, jazyk pro popis struktury dat \\
@@ -280,10 +285,7 @@
 	
 	\section{Knihovna Qt}
 	
-	\begin{itemize}
-		\item Pár slov o Qt, protože je to jedna z použitých knihoven.
-		\item U všech použitých knihoven bude GUI definováno z aplikačního kódu, nebude tedy použit Qt Creator.
-	\end{itemize}
+	\temporary{\\ * Pár slov o Qt, protože je to jedna z použitých knihoven.\\ * U všech použitých knihoven bude GUI definováno z aplikačního kódu, nebude tedy použit Qt Creator.}
 	
 	\chapter{Návrh ukázkové aplikace}
 	
@@ -373,16 +375,32 @@
 	
 	\chapter{Implementace ukázkové aplikace}
 	
-	\begin{itemize}
-		\item Byly zvoleny knihovny Dear ImGui, egui, Qt
-		\item Ukázkové aplikace byly dělány v pořadí Dear ImGui→egui→Qt, proto sekce Dear ImGui popisuje i řešení problematiky společné pro všechny knihovny, a sekce zbylých dvou knihoven se již zabývají odlišnostmi a specifickými problémy v daných knihovnách.
-	\end{itemize}
+	Ukázkovou aplikaci této práce jsem implementoval ve třech knihovnách: \textit{Dear ImGui}, \textit{egui} a \textit{Qt}.
+	
+	\temporary{\\ * Proč byly zrovna tyto knihovny zvoleny? \\ * Ukázkové aplikace byly dělány v pořadí Dear ImGui→egui→Qt, proto sekce Dear ImGui popisuje i řešení problematiky společné pro všechny knihovny, a sekce zbylých dvou knihoven se již zabývají odlišnostmi a specifickými problémy v daných knihovnách.}
 	
 	\section{Implementace v knihovně Dear ImGui}
 	
-	\subsection{Dodatečné použité technologie a závislosti}	
-	\subsection{Struktura projektu}
-	\subsection{Tvorba uživatelského rozhraní}
+	Před tím, než jsem začal implementovat ukázkovou aplikaci v knihovně Dear ImGui, bylo potřeba zprovoznit „minimální funkční projekt“. Tedy projekt, který obsahuje všechny potřebné závislosti a lze jej sestavit na operačních systémech Windows a Linux. Po svém spuštění stačí, aby za pomoci knihovny Dear ImGui zobrazil prázdné okno.
+	
+	Toto se může zprvu jevit jako triviální úkol, ale v ekosystému jazyka C++ nejde o přímočarou záležitost. Jazyk C++ totiž žádný standardní ekosystém vlastně nemá. Na OS Linux se pro sestavení projektu obvykle používá překladač \textit{GCC} a nástroj \textit{Make}, na Windows pak zase kombinace \textit{MSVC} a \textit{MSBuild}. Pro multiplatformní projekty se proto často používá program jako \textit{CMake}, který se nachází o vrstvu abstrakce výše a generuje konfigurační soubory nástrojům závislým na vybrané platformě. Ne všechny projekty ale program CMake používají, to platí i pro knihovnu Dear~ImGui.
+	
+	Pro tento projekt jsem se rozhodl použít program CMake v kombinaci s nástrojem \textit{Ninja}, který je multiplatformní a měl by vést na rychlejší sestavování. O překlad se pak stará GCC nebo MSVC podle dané platformy. Jako alternativu jsem zvažoval také systém \textit{build2}. Jedná se o sadu nástrojů pro sestavování, která mimo jiné obsahuje vlastního správce balíčků a je dobře zdokumentovaná. Usoudil jsem ale, že vyšší komplexita tohoto systému by příliš prodloužila dobu vývoje a z důvodu relativně malé komunity by se také hůře řešily případné problémy.
+	
+	Poté, co jsem se rozhodl, jak bude projekt sestavován, zbývalo vyřešit otázku přidávání závislostí. Prvním adeptem byl správce balíčků \textit{vcpkg}, který ale v tu dobu neměl k dispozici nejnovější verzi knihovny Dear ImGui. Jedná se o verzi 1.92, která přinesla určitá vylepšení ohledně vykreslování textu a kterou jsem proto v tomto projektu vyžadoval. Alternativně by šel použít správce balíčků \textit{Conan}, nebo funkce \texttt{FetchContent} programu CMake, která dokáže knihovnu stáhnout z online repozitáře.
+	
+	Nakonec jsem se ale rozhodl nepoužívat žádného správce balíčků, a místo toho jsou zdrojové kódy všech závislostí součástí projektu. Konkrétně se kód aplikace nachází v adresáři \texttt{App} a kód závislostí v adresáři \texttt{Dependency}. Kořenový adresář projektu pak obsahuje hlavní soubor \texttt{CMakeLists.txt}, který programu CMake říká, jak má být projekt sestaven. Některé závislosti mají svůj vlastní soubor tohoto typu, který stačí do toho hlavního importovat. Pro závislosti, které program CMake nepodporují, jsem tento soubor vytvořil.
+	
+	V projektu s takto řešenými závislostmi je sice oproti správci balíčků složitější aktualizovat nebo přidávat nové knihovny, tento přístup má ale i své výhody. Pro sestavení projektu na novém zařízení stačí pouze spustit program CMake a není nutné zprovozňovat žádného správce balíčků. Projekt si veškerý potřebný kód „nese s sebou“, a není tedy závislý na žádné online platformě. Je také možné upravit si zdrojový kód knihoven pro vlastní potřeby, což ovšem není vždy považováno za příklad dobré praxe.
+	
+	Pro zprovoznění knihovny Dear ImGui je potřeba do minimálního projektu přidat nějaký backend. Z důvodu předchozí zkušenosti jsem zvolil OpenGL s knihovnou \textit{Glad} pro načtení funkcí a \textit{GLFW} pro správu oken. Dále jsem do projektu přidal knihovnu \textit{FreeType} pro vykreslování textu, kterou je možné v Dear ImGui použít namísto výchozí knihovny \textit{stb-truetype}.
+	
+	\temporary{\\ * Freetype je větší závislost, ale ostřejší písmo než stb, které mělo navíc v době psaní poslední update v roce 2021\\ * Font inconsolata, protože...,ale...}
+	
+	\subsection{Tvorba uživatelského rozhraní v knihovně Dear ImGui}
+
+	\temporary{\\ * $\cdots$}
+
 	\subsection{Problematika popisu diagramu pomocí textu}
 	\subsection{Vykreslení diagramu}
 	\subsection{Víceřádkové textové pole}

@@ -9,7 +9,7 @@
         "freetype"
     ],
     "overrides": [
-        { "name": "imgui", "version": "1.91.9" },
+        { "name": "imgui", "version": "1.92.6" },
         { "name": "glew", "version": "2.2.0#6" },
         { "name": "glfw3", "version": "3.3.9" },
         { "name": "freetype", "version": "2.13.3" }
