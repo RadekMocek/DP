@@ -8,12 +8,16 @@ enum Choice
 // ReSharper disable once CppMemberFunctionMayBeConst
 void App::Update()
 {
+    const auto Dummy = [] {
+        ImGui::Dummy({0.0f, 8.0f});
+    };
+
     const auto io = ImGui::GetIO();
 
     // State
     static bool show_popup_window = false;
     static bool show_demo_window = true;
-    static bool show_issue_window = false;
+    static bool show_inputtextmultiline_window = true;
     static bool show_radio_window = false;
 
     // Main menu bar
@@ -25,8 +29,8 @@ void App::Update()
         if (ImGui::MenuItem("Demo window", nullptr, show_demo_window)) {
             show_demo_window = !show_demo_window;
         }
-        if (ImGui::MenuItem("Issue demonstration (#9249)", nullptr, show_issue_window)) {
-            show_issue_window = !show_issue_window;
+        if (ImGui::MenuItem("InputTextMultiline test", nullptr, show_inputtextmultiline_window)) {
+            show_inputtextmultiline_window = !show_inputtextmultiline_window;
         }
         if (ImGui::MenuItem("Radio button test", nullptr, show_radio_window)) {
             show_radio_window = !show_radio_window;
@@ -64,30 +68,59 @@ void App::Update()
     }
 
     if (show_demo_window) {
+        ImGui::PushFont(nullptr, 18.0f);
         ImGui::ShowDemoWindow();
+        ImGui::PopFont();
     }
 
-    if (show_issue_window) {
-        ImGui::Begin("Issue demonstration (#9249)");
+    if (show_inputtextmultiline_window) {
+        ImGui::Begin("InputTextMultiline test");
+
+        ImGui::Text("Initially for issue demonstration (#9249)\nnow to test the InputTextMultiline.");
+        Dummy();
+        ImGui::Separator();
+
         constexpr auto INPUT_HEIGHT = 8;
-        static ImGuiInputTextFlags flags_issue = ImGuiInputTextFlags_None;
-        ImGui::CheckboxFlags("ImGuiInputTextFlags_ReadOnly", &flags_issue, ImGuiInputTextFlags_ReadOnly);
-        ImGui::CheckboxFlags("ImGuiInputTextFlags_NoHorizontalScroll", &flags_issue,
-                             ImGuiInputTextFlags_NoHorizontalScroll);
-        ImGui::CheckboxFlags("ImGuiInputTextFlags_ElideLeft", &flags_issue, ImGuiInputTextFlags_ElideLeft);
-        static char text[1024 * INPUT_HEIGHT] = "abcde ABCDE\nfghij FGHIJ\nklmno KLMNO\npqrstu PQRSTU";
-        ImGui::Text("Default style:");
+        static ImGuiInputTextFlags txt_flags = ImGuiInputTextFlags_None;
+
+        ImGui::CheckboxFlags("ReadOnly", &txt_flags, ImGuiInputTextFlags_ReadOnly);
+        ImGui::CheckboxFlags("NoHorizontalScroll", &txt_flags, ImGuiInputTextFlags_NoHorizontalScroll);
+        ImGui::CheckboxFlags("CharsDecimal", &txt_flags, ImGuiInputTextFlags_CharsDecimal);
+        ImGui::CheckboxFlags("AllowTabInput", &txt_flags, ImGuiInputTextFlags_AllowTabInput);
+        ImGui::CheckboxFlags("EscapeClearsAll", &txt_flags, ImGuiInputTextFlags_EscapeClearsAll);
+        ImGui::CheckboxFlags("Password", &txt_flags, ImGuiInputTextFlags_Password);
+        ImGui::CheckboxFlags("AlwaysOverwrite", &txt_flags, ImGuiInputTextFlags_AlwaysOverwrite);
+        ImGui::CheckboxFlags("AutoSelectAll (no work in multiline?)", &txt_flags, ImGuiInputTextFlags_AutoSelectAll);
+        ImGui::CheckboxFlags("ImGuiInputTextFlags_WordWrap (Beta)", &txt_flags, ImGuiInputTextFlags_WordWrap);
+
+        static char text[1024 * INPUT_HEIGHT] =
+            "abcde ABCDE\n"
+            "fghij FGHIJ fghij FGHIJ\n"
+            "klmno KLMNO klmno KLMNO klmno KLMNO\n"
+            "pqrst PQRST pqrst PQRST pqrst PQRST pqrst PQRST\n"
+            "uvwxyz UVWXYZ uvwxyz UVWXYZ uvwxyz UVWXYZ uvwxyz UVWXYZ uvwxyz UVWXYZ\n"
+            "ěščřžýáíé ĚŠČŘŽÝÁÍÉ ěščřžýáíé ĚŠČŘŽÝÁÍÉ ěščřžýáíé ĚŠČŘŽÝÁÍÉ ěščřžýáíé ĚŠČŘŽÝÁÍÉ ěščřžýáíé ĚŠČŘŽÝÁÍÉ ěščřžýáíé ĚŠČŘŽÝÁÍÉ\n"
+            "☺ ☻ ♥ ♦ ♣ ♠\n"
+            "😀\n"
+            "0 1 2 3 4 5 6 7 8 9";
+
+        //ImGui::Text("Default style:");
+        ImGui::Separator();
+        Dummy();
         ImGui::InputTextMultiline("##source1", text, IM_ARRAYSIZE(text),
-                                  ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * INPUT_HEIGHT), flags_issue);
+                                  ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * INPUT_HEIGHT), txt_flags);
+
+        /*
         ImGui::Text("Zero frame padding:");
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
         ImGui::InputTextMultiline("##source2", text, IM_ARRAYSIZE(text),
-                                  ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * INPUT_HEIGHT), flags_issue);
+                                  ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * INPUT_HEIGHT), txt_flags);
         ImGui::PopStyleVar();
         ImGui::Text("io.MouseWheel: %.1f", io.MouseWheel);
         if (io.KeyShift) {
             ImGui::Text("io.KeyShift");
         }
+        //*/
         ImGui::End();
     }
 

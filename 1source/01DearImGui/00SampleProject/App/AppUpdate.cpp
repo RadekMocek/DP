@@ -37,7 +37,14 @@ void App::Update()
     // 3. Show another simple window.
     if (m_show_another_window) {
         ImGui::Begin("Another Window", &m_show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+        
         ImGui::Text("Hello from another window!");
+        
+        ImGui::Text("ìšèøıáíéóúùïò ÌŠÈØİÁÍÉÓÚÙÏÒ");
+        
+        static char str0[128] = "ìšèøıáíéóúùïò ÌŠÈØİÁÍÉÓÚÙÏÒ";
+        ImGui::InputText("input text", str0, IM_COUNTOF(str0));
+        
         if (ImGui::Button("Close Me"))
             m_show_another_window = false;
         ImGui::End();
