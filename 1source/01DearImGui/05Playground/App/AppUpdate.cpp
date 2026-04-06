@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "App.hpp"
 
 enum Choice
@@ -18,7 +20,7 @@ void App::Update()
     static bool show_popup_window = false;
     static bool show_demo_window = true;
     static bool show_inputtextmultiline_window = true;
-    static bool show_radio_window = false;
+    static bool show_widgettest_window = true;
 
     // Main menu bar
     ImGui::BeginMainMenuBar();
@@ -32,8 +34,8 @@ void App::Update()
         if (ImGui::MenuItem("InputTextMultiline test", nullptr, show_inputtextmultiline_window)) {
             show_inputtextmultiline_window = !show_inputtextmultiline_window;
         }
-        if (ImGui::MenuItem("Radio button test", nullptr, show_radio_window)) {
-            show_radio_window = !show_radio_window;
+        if (ImGui::MenuItem("Widget testing", nullptr, show_widgettest_window)) {
+            show_widgettest_window = !show_widgettest_window;
         }
         if (ImGui::MenuItem("Exit", "Alt+F4")) {
             glfwSetWindowShouldClose(m_window, GLFW_TRUE);
@@ -124,8 +126,10 @@ void App::Update()
         ImGui::End();
     }
 
-    if (show_radio_window) {
-        ImGui::Begin("Test");
+    if (show_widgettest_window) {
+        ImGui::Begin("Testovací okno");
+
+        //*
         static int e = Akat;
         ImGui::RadioButton("radio a", &e, Akat);
         ImGui::SameLine();
@@ -133,6 +137,8 @@ void App::Update()
         ImGui::SameLine();
         ImGui::RadioButton("radio c", &e, Cilovnici);
         ImGui::Text(e == Akat ? "a" : e == Bliskavice ? "b" : "c");
+        //*/
+
         ImGui::End();
     }
 }
