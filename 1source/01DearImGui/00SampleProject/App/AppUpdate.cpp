@@ -40,11 +40,13 @@ void App::Update()
         
         ImGui::Text("Hello from another window!");
         
+        /*
         ImGui::Text("ìšèøıáíéóúùïò ÌŠÈØİÁÍÉÓÚÙÏÒ");
         
         static char str0[128] = "ìšèøıáíéóúùïò ÌŠÈØİÁÍÉÓÚÙÏÒ";
         ImGui::InputText("input text", str0, IM_COUNTOF(str0));
-        
+        //*/
+
         if (ImGui::Button("Close Me"))
             m_show_another_window = false;
         ImGui::End();
@@ -67,7 +69,7 @@ void App::Update()
         ImGui::PushFont(m_font_proggyclean, 28.0f);
         ImGui::Text("%s", text);
         ImGui::PopFont();
-        /**/
+        //*/
 
         ImGui::PushFont(m_font_proggyforever, 28.0f);
         ImGui::Text("%s (added via AddFontFromFileTTF)", text);
@@ -77,7 +79,7 @@ void App::Update()
         ImGui::PushFont(m_font_inconsolata, 28.0f);
         ImGui::Text("%s", text);
         ImGui::PopFont();        
-        /**/
+        //*/
 
         ImGui::End();
     }

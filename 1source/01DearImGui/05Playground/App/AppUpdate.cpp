@@ -17,7 +17,6 @@ void App::Update()
     const auto io = ImGui::GetIO();
 
     // State
-    static bool show_popup_window = false;
     static bool show_demo_window = true;
     static bool show_inputtextmultiline_window = true;
     static bool show_widgettest_window = true;
@@ -25,9 +24,6 @@ void App::Update()
     // Main menu bar
     ImGui::BeginMainMenuBar();
     if (ImGui::BeginMenu("Menu")) {
-        if (ImGui::MenuItem("Pop-up", nullptr, show_popup_window)) {
-            show_popup_window = !show_popup_window;
-        }
         if (ImGui::MenuItem("Demo window", nullptr, show_demo_window)) {
             show_demo_window = !show_demo_window;
         }
@@ -43,31 +39,6 @@ void App::Update()
         ImGui::EndMenu();
     }
     ImGui::EndMainMenuBar();
-
-    // Fullscreen window setup
-    constexpr ImGuiWindowFlags flags_window = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove |
-        ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBringToFrontOnFocus;
-    const ImGuiViewport* viewport = ImGui::GetMainViewport();
-    ImGui::SetNextWindowPos(viewport->WorkPos);
-    ImGui::SetNextWindowSize(viewport->WorkSize);
-    static bool show_main_window = true;
-
-    // Fullscreen window begin
-    ImGui::Begin("Hello Counter", &show_main_window, flags_window);
-
-    ImGui::End();
-
-    if (show_popup_window) {
-        ImGui::Begin("Pop-up window");
-
-        ImGui::Text("Not much you can do here...");
-
-        if (ImGui::Button("Close")) {
-            show_popup_window = false;
-        }
-
-        ImGui::End();
-    }
 
     if (show_demo_window) {
         ImGui::PushFont(nullptr, 18.0f);
@@ -127,9 +98,11 @@ void App::Update()
     }
 
     if (show_widgettest_window) {
-        ImGui::Begin("Testovací okno");
+        constexpr ImGuiWindowFlags flags_window_widgettest = ImGuiWindowFlags_HorizontalScrollbar;
 
-        //*
+        ImGui::Begin("Testovací okno", nullptr, flags_window_widgettest);
+
+        /*
         static int e = Akat;
         ImGui::RadioButton("radio a", &e, Akat);
         ImGui::SameLine();
@@ -138,6 +111,15 @@ void App::Update()
         ImGui::RadioButton("radio c", &e, Cilovnici);
         ImGui::Text(e == Akat ? "a" : e == Bliskavice ? "b" : "c");
         //*/
+
+
+        ImGui::Button("A");
+        ImGui::SameLine();
+
+        std::cout << ImGui::GetCursorScreenPos().x << " " << ImGui::GetCursorScreenPos().y << '\n'; //612 246
+        ImGui::SetCursorScreenPos({760, 246});
+
+        ImGui::Button("B");
 
         ImGui::End();
     }

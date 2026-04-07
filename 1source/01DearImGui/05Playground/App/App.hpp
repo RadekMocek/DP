@@ -30,7 +30,7 @@ public:
 private:
 	// = Members =
 	GLFWwindow* m_window{};
-	ImVec4 m_clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+	ImVec4 m_clear_color = ImVec4(0.941f, 0.941f, 0.941f, 1.00f);
 
 	const char* m_window_title = "Dear ImGui :: Playground";
 	const bool m_is_dark_mode = false;
