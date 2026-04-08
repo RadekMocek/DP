@@ -247,7 +247,7 @@
 	
 	Dear ImGui poskytuje ovládací prvek víceřádkového textového pole, který lze zobrazit voláním metody \texttt{InputTextMultiline}. Oproti ostatním knihovnám s přístupem IMGUI má textové pole v této knihovně relativně hodně funkcí. Ve své výchozí podobě vykresluje obsah staticky alokovaného pole znaků, součástí knihovny je ale i volitelná implementace pro \texttt{std::string}. Je-li použito vlastní písmo, které podporuje české znaky, není pak problém tyto znaky zobrazit v textovém poli. Výchozí písmo, které je součástí knihovny, totiž všechny české znaky neobsahuje. Zvýrazňování syntaxe tento ovládací prvek nepodporuje, veškerý text může mít pouze jednu společnou barvu.
 	
-	V textovém poli je možné myší označovat text a ten pak pomocí klávesových zkratek vyjmout, kopírovat, nebo vložit. Klávesami kurzorových šipek lze posouvat textovým kurzorem, kdy se s přidržením klávesy \textit{Ctrl} přeskakují celá slova a s klávesou \textit{Shift} se text označuje. Klávesu \textit{Ctrl} lze také použít v kombinaci s klávesou \textit{Backspace} nebo \textit{Delete} pro mazání celých slov. Dále jsou k dispozici klávesové zkratky pro zrušení poslední změny (\textit{undo}) a její obnovení (\textit{redo}).
+	V textovém poli je možné myší označovat text a ten pak pomocí klávesových zkratek vyjmout, kopírovat, nebo vložit. Klávesami kurzorových šipek lze posouvat textovým kurzorem (kadetem), kdy se s přidržením klávesy \textit{Ctrl} přeskakují celá slova a s klávesou \textit{Shift} se text označuje. Klávesu \textit{Ctrl} lze také použít v kombinaci s klávesou \textit{Backspace} nebo \textit{Delete} pro mazání celých slov. Dále jsou k dispozici klávesové zkratky pro zrušení poslední změny (\textit{undo}) a její obnovení (\textit{redo}).
 	
 	Má-li editovaný dokument větší množství řádků, objeví se na pravé straně textového pole vertikální posuvná lišta (\textit{scrollbar}). Horizontální posuvná lišta ale není podporována. Pokud je tedy nějaký řádek textu příliš dlouhý, tak se na jeho konec uživatel nejlépe dostane posunem textového kurzoru pomocí kláves. Přidání horizontální posuvné lišty by se údajně v tuto chvíli příliš negativně podepsalo na výkonu. Textové pole interně využívá „jednohlavičkovou“ knihovnu \textit{stb-textedit} a v plánu je jeho kompletní přepsání \cite{online_imgui10yrs}. Ve verzi 1.92 (červen 2025) byla každopádně přidána možnost zalamovat příliš dlouhé řádky.
 
@@ -428,22 +428,45 @@
 		\label{_tag_img_DearIDConflict}
 	\end{figure}
 
-	S voláním více metod pro vykreslení ovládacího prvku se tedy dané prvky vykreslí pod sebe. Pro vykreslení prvků vedle sebe je možné mezi jejich volání přidat metodu \texttt{SameLine}, která v podstatě přesune kreslící kurzor zpět na předchozí řádek a přidá k němu malý horizontální posun. Takto lze docílit základního rozložení ovládacích prvků: pokládat je pod sebe shora dolů a případně vedle sebe zleva doprava. Není-li okno dostatečně vysoké, aby dokázalo viditelně vykreslit všechny své prvky, automaticky se v něm zobrazí vertikální posuvná lišta. U horizontální posuvné lišty se toto chování musí zapnout příznakem, i bez něj ale lze obsahem okna horizontálně posouvat kombinací klávesy \textit{Shift} a kolečka myši.
+	S voláním více metod pro vykreslení ovládacího prvku se tedy dané prvky vykreslí pod sebe. Pro vykreslení prvků vedle sebe je možné mezi jejich volání přidat metodu \texttt{SameLine}, která v podstatě přesune kreslící kurzor zpět na předchozí řádek a přidá k němu malý horizontální posun. Takto lze docílit základního rozložení ovládacích prvků: pokládat je pod sebe shora dolů a případně vedle sebe zleva doprava. Není-li okno dostatečně vysoké, aby dokázalo viditelně vykreslit všechny své prvky, automaticky se v něm zobrazí vertikální posuvná lišta. U horizontální posuvné lišty se toto chování musí zapnout příznakem, i bez něj ale lze obsah okna horizontálně posouvat kombinací klávesy \textit{Shift} a kolečka myši.
 	
-	Pro tvorbu složitějšího rozložení je potřeba pracovat s kreslícím kurzorem. K dispozici jsou metody pro získání a nastavení jeho souřadnic. Díky tomu lze vykreslovat na libovolné místo v okně. Další užitečná metoda je \texttt{GetContentRegionAvail}, která vrací informaci o tom, kolik volného místa od aktuální pozice kreslícího kurzoru v okně zbývá. Tu lze použít v kombinaci s podokny.
+	Pro tvorbu složitějšího rozložení je potřeba pracovat s kreslícím kurzorem. K dispozici jsou metody pro získání a nastavení jeho souřadnic. Díky tomu lze vykreslovat na libovolné místo v okně. Další užitečná metoda je \texttt{GetContentRegionAvail}, která vrací informaci o tom, kolik volného místa od aktuální pozice kreslícího kurzoru v okně zbývá. Metoda vrací dva prvky, jeden pro osu x a druhý pro osu y, a často se používá v kombinaci s podokny.
 	
 	Podokno (\textit{child window}) je samostatná oblast, kterou lze umístit do normálního okna. Ve své výchozí podobě má pevnou velikost a při přidávání prvků se chová stejně jako okno. Jakmile se do něj tedy prvky „nevejdou“, objeví se v něm posuvná lišta. Podokna mají své speciální příznaky jako \texttt{ResizeX}, který umožňuje uživateli měnit jeho šířku.
 
-	\temporary{\\ * Vrátit se k tomu, jak je děláno GUI v mojí App}
+	V ukázkové aplikaci je rozložení textového editoru a kreslicího plátna řešeno právě pomocí podoken, kterým je stanovena pevná velikost. Výška obou podoken je rovna volnému místu od kreslícího kurzoru na ose y po odečtení výšky stavového řádku. Šířka podokna, které obsahuje textové pole, je při startu aplikace nastavena na polovinu dostupného místa na ose x. Textové pole tak vždy zabírá polovinu okna i při změně jeho velikosti, protože je tento kód volán s každým průchodem smyčky. Poté je volána metoda \texttt{SameLine} a je vytvořeno podokno pro plátno, které si může vzít zbytek dostupné šířky. Nejprve jsem použil pro levé podokno příznak \texttt{ResizeX}, aby mohl uživatel měnit poměr šířek mezi textovým polem a plátnem, což je u tohoto typu aplikace běžná funkce. S tímto příznakem je ale při změně velikosti okna zachována šířka levého podokna, nikoliv poměř šířek obou podoken. Proto bylo nutné přijít s vlastním řešením.
+	
+	Mezi podokna bylo metodou \texttt{InvisibleButton} přidáno tzv. neviditelné tlačítko. Jedná se o ovládací prvek, se kterým lze interagovat jako s tlačítkem a který zabírá určitý prostor, není ale nijak vykreslen. Zde má tlačítko stejnou výšku jako obě podokna a pokud je drženo, pak se podle pohybu myši mění hodnota proměnné, která reprezentuje poměr jejich šířek. Zdali je neviditelné tlačítko drženo lze zjistit metodou \texttt{IsItemActive}. Knihovna se chová jako stavový automat, a proto tato metoda vrací hodnotu vždy pro poslední vykreslený prvek.
+
+	Jako poslední je v okně vykreslen stavový řádek. Ten může zobrazovat text chyby, kterou nahlašuje třída pro zpracování textu popisujícího diagram. Není-li nahlášena žádná chyba, pak není třeba nic vykreslovat. Při absenci chybového textu zde zůstane prázdný prostor, protože výška podoken nad stavovým řádek je nastavena tak, aby podokna byla co nejvyšší, ale tento prostor nezabírala. Pokud je okno příliš zmenšené, tak se může stát, že se do něj celá chybová hláška nevejde. V takovýchto případech je nutné dávat pozor na horizontální posouvání: není-li oknu předán příznak \texttt{NoScrollWithMouse}, může uživatel pomocí klávesy \textit{Shift} a kolečka myši celým oknem posouvat i přes to, že není zobrazena horizontální posuvná lišta (viz obrázek \ref{_tag_img_DearHorScroll}). Posouvání jsem proto zakázal a v případě malého okna s dlouho chybovou hláškou přidal kontextovou nápovědu, která vždy zobrazí celý chybový text (viz obrázek \ref{_tag_img_DearTooltip}). Jelikož je celá aplikace vykreslována do hostitelského okna, nemůže jej kontextová nápověda „opustit“.
+
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{img/dear_hor_scroll}
+		\caption{Knihovna Dear ImGui: Problém horizontálního posouvání}
+		\label{_tag_img_DearHorScroll}
+	\end{figure}
+
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=.76\textwidth]{img/dear_tooltip}
+		\caption{Knihovna Dear ImGui: Kontextová nápověda}
+		\label{_tag_img_DearTooltip}
+	\end{figure}
+
+	\subsection{Víceřádkové textové pole v knihovně Dear ImGui}
+
+	\temporary{\\ * Vanilla textové pole – widget, error highlight, issue\\ * 3rd party textové pole}
 
 	\subsection{Problematika popisu diagramu pomocí textu}
 	
-	%\temporary{\\ * TOML parser je psán jako state machine}
+	\temporary{\\ * TOML parser je psán jako state machine}
 	
-	\subsection{Vykreslení diagramu}
-	\subsection{Víceřádkové textové pole}
+	\subsection{Vykreslení diagramu}	
 	\subsection{Export diagramu do formátu SVG}
 	\subsection{Další přidané funkce}
+	
+	\temporary{\\ * Zmínit toolbar funkce, to jak kombinace WYSIWYx přístupů koliduje\\ * Zmínit dnd ghost node, bude relevantní v Qt\\ * Zmínit kompletní pořadí operací ve smyčce a případy kdy bylo potřeba dát si na pořadí pozor}
 	
 	\section{Implementace v knihovně egui}
 	
