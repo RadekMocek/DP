@@ -239,7 +239,7 @@
 	
 	%TODO (?) U knihoven, které nejsou použity pro impl. je toho naznačeno více; u dear+egui+qt si tochám na kapitolu impl.?
 	
-	\subsection{Knihovna Dear ImGui}
+	\subsection{Knihovna Dear ImGui}\label{Chapter2SectionDearImGui}
 	
 	Dear ImGui \cite{online_imguiwiki} je knihovna pro tvorbu GUI s přístupem IMGUI napsaná v jazyce C++. Její kód splňuje standard \textit{C++11} a v základu nepoužívá žádné standardní knihovny. Dear ImGui se často využívá ve videoherním průmyslu k tvorbě dynamických nástrojů pro ladění. Knihovna je psaná tak, aby šla snadno integrovat do existujícího projektu s libovolným backendem. Základním stavebním prvkem je proto nemodální dialogové okno. Knihovna umožňuje vytvořit takové okno, které nemá žádné dekorace, zůstává na pozadí a zabírá celý prostor okna hostitelského.
 	
@@ -400,6 +400,8 @@
 	
 	Pro zprovoznění knihovny Dear ImGui je potřeba do minimálního projektu přidat nějaký backend. Z důvodu předchozí zkušenosti jsem zvolil OpenGL s knihovnou \textit{Glad} pro načtení funkcí a \textit{GLFW} pro správu oken. Dále jsem do projektu přidal knihovnu \textit{FreeType} pro vykreslování textu, kterou je možné v Dear ImGui použít namísto výchozí knihovny \textit{stb-truetype}. FreeType je sice o dost větší knihovna, nabízí ale kvalitnější vykreslování písma. Knihovna stb-truetype měla navíc v době psaní poslední aktualizaci v roce 2021. Jako písmo pro celý projekt jsem zvolil \textit{\mbox{Inconsolata}}. Jedná se o písmo, které podporuje české znaky, má permisivní licenci a je neproporcionální (\textit{monospace}). %V běžných GUI aplikacích se takovéto písmo používá např. pro pole textového editoru
 
+	%TODO zmínit github issue
+
 	Po dokončení minimálního projektu bylo možné začít implementovat jednotlivé funkce aplikace. Většinu funkcí včetně hlavní smyčky pokrývá třída \texttt{App}, která je definována v hlavičkovém souboru. Logika aplikace je rozdělena do menších celků v podobě metod. Ty jsou definovány ve větším množství implementačních souborů, do kterých jsou roztříděny podle toho, čím se zabývají. Je-li potřeba, aby více metod přistupovalo ke stejným datům, musí se jednat o členy jejich třídy. Pro data, která jsou potřeba pouze v jedné konkrétní metodě, lze použít klíčové slovo \texttt{static}. Toho se využívá v metodách, které se starají o určitou část GUI a které jsou tedy volány pravidelně s průchodem smyčky.
 	
 	Kromě hlavní třídy \texttt{App} obsahuje projekt další dvě samostatné třídy \texttt{Parser} a \texttt{Exporter}. První třída se stará o převod textu, který popisuje diagram v jazyce TOML, na kolekci struktur. Podle informací obsažených v těchto strukturách je pak diagram vykreslen. O samotný překlad jazyka TOML se stará knihovna \textit{toml++}, úkolem třídy je výstup dále zpracovat dle navrženého schématu a hlásit případné chyby. Druhá třída umožňuje exportovat diagram do formátu SVG. Obě třídy jsou napsány tak, aby byly nezávislé na knihovně Dear ImGui a šly znovu použít v projektu s knihovnou Qt.
@@ -436,9 +438,11 @@
 
 	V ukázkové aplikaci je rozložení textového editoru a kreslicího plátna řešeno právě pomocí podoken, kterým je stanovena pevná velikost. Výška obou podoken je rovna volnému místu od kreslícího kurzoru na ose y po odečtení výšky stavového řádku. Šířka podokna, které obsahuje textové pole, je při startu aplikace nastavena na polovinu dostupného místa na ose x. Textové pole tak vždy zabírá polovinu okna i při změně jeho velikosti, protože je tento kód volán s každým průchodem smyčky. Poté je volána metoda \texttt{SameLine} a je vytvořeno podokno pro plátno, které si může vzít zbytek dostupné šířky. Nejprve jsem použil pro levé podokno příznak \texttt{ResizeX}, aby mohl uživatel měnit poměr šířek mezi textovým polem a plátnem, což je u tohoto typu aplikace běžná funkce. S tímto příznakem je ale při změně velikosti okna zachována šířka levého podokna, nikoliv poměř šířek obou podoken. Proto bylo nutné přijít s vlastním řešením.
 	
-	Mezi podokna bylo metodou \texttt{InvisibleButton} přidáno tzv. neviditelné tlačítko. Jedná se o ovládací prvek, se kterým lze interagovat jako s tlačítkem a který zabírá určitý prostor, není ale nijak vykreslen. Zde má tlačítko stejnou výšku jako obě podokna a pokud je drženo, pak se podle pohybu myši mění hodnota proměnné, která reprezentuje poměr jejich šířek. Zdali je neviditelné tlačítko drženo lze zjistit metodou \texttt{IsItemActive}. Knihovna se chová jako stavový automat, a proto tato metoda vrací hodnotu vždy pro poslední vykreslený prvek.
+	Mezi podokna je metodou \texttt{InvisibleButton} přidáno tzv. neviditelné tlačítko. Jedná se o ovládací prvek, se kterým lze interagovat jako s tlačítkem a který zabírá určitý prostor, ale není nijak vykreslen. Zde má tlačítko stejnou výšku jako obě podokna a pokud je drženo, pak se podle pohybu myši mění hodnota proměnné, která reprezentuje poměr jejich šířek. Zdali je neviditelné tlačítko drženo, lze zjistit metodou \texttt{IsItemActive}. Knihovna se chová jako stavový automat, a proto tato metoda vrací hodnotu vždy pro poslední vykreslený prvek.
 
-	Jako poslední je v okně vykreslen stavový řádek. Ten může zobrazovat text chyby, kterou nahlašuje třída pro zpracování textu popisujícího diagram. Není-li nahlášena žádná chyba, pak není třeba nic vykreslovat. Při absenci chybového textu zde zůstane prázdný prostor, protože výška podoken nad stavovým řádek je nastavena tak, aby podokna byla co nejvyšší, ale tento prostor nezabírala. Pokud je okno příliš zmenšené, tak se může stát, že se do něj celá chybová hláška nevejde. V takovýchto případech je nutné dávat pozor na horizontální posouvání: není-li oknu předán příznak \texttt{NoScrollWithMouse}, může uživatel pomocí klávesy \textit{Shift} a kolečka myši celým oknem posouvat i přes to, že není zobrazena horizontální posuvná lišta (viz obrázek \ref{_tag_img_DearHorScroll}). Posouvání jsem proto zakázal a v případě malého okna s dlouho chybovou hláškou přidal kontextovou nápovědu, která vždy zobrazí celý chybový text (viz obrázek \ref{_tag_img_DearTooltip}). Jelikož je celá aplikace vykreslována do hostitelského okna, nemůže jej kontextová nápověda „opustit“.
+	V hlavním okně nyní zbývá vykreslit pouze stavový řádek. Ten může zobrazovat text chyby, kterou nahlašuje třída pro zpracování textu popisujícího diagram. Není-li nahlášena žádná chyba, pak není třeba nic vykreslovat. Při absenci chybového textu zde zůstane prázdný prostor, protože výška podoken nad stavovým řádkem je nastavena tak, aby byla co nejvyšší, ale tento prostor nezabírala. Při nahlášené chybě je v tomto prostoru vypsána chybová hláška červeným písmem. Barevného textu lze dosáhnout použitím párových metod \texttt{PushStyleColor} a \texttt{PopStyleColor}.
+	
+	Pokud je okno příliš zmenšené, tak se může stát, že se do něj celá chybová hláška nevejde. V takových případech je nutné dávat pozor na horizontální posouvání: Není-li oknu předán příznak \texttt{NoScrollWithMouse}, může uživatel pomocí klávesy \textit{Shift} a kolečka myši celým oknem posouvat i přes to, že není zobrazena horizontální posuvná lišta (viz obrázek \ref{_tag_img_DearHorScroll}). Posouvání jsem proto zakázal a v případě malého okna s dlouho chybovou hláškou přidal kontextovou nápovědu (\textit{tooltip}), která vždy zobrazí celý chybový text (viz obrázek \ref{_tag_img_DearTooltip}). Jelikož je celá aplikace vykreslována do hostitelského okna, nemůže jej kontextová nápověda „opustit“.
 
 	\begin{figure}[ht]
 		\centering
@@ -456,7 +460,39 @@
 
 	\subsection{Víceřádkové textové pole v knihovně Dear ImGui}
 
-	\temporary{\\ * Vanilla textové pole – widget, error highlight, issue\\ * 3rd party textové pole}
+	Jakmile je vytvořeno podokno, které má sloužit jako rodič pro víceřádkové textové pole, stačí mezi jeho párovými metodami zavolat \texttt{InputTextMultiline}. Vlastnosti tohoto ovládacího prvku byly představeny v sekci \ref{Chapter2SectionDearImGui}. Během implementace ukázkové aplikace se objevily určité obtíže, které s tímto ovládacím prvkem souvisí.
+	
+	Knihovna Dear ImGui v základu umožňuje ovládat uživatelské rozhraní pomocí klávesnice. Klávesou \textit{Tab} tak lze přepínat, jaký z interaktivních prvků je aktuálně vybraný. Metodě pro vykreslení textového pole je proto předán příznak \texttt{AllowTabInput}, aby při psaní textu nebylo možné klávesou \textit{Tab} ovládací prvek opustit. Místo toho je do textu vložen znak tabulátoru a toto chování není možné přenastavit např. na vložení čtyř mezer.
+	
+	Další klávesou pro navigaci je \textit{Alt}, která slouží pro skok do záhlaví okna a lišty nabídek. Hlavní okno má záhlaví skryto a lišta je umístěna v samostatném okně, i přesto ale stisk klávesy \textit{Alt} ruší interakci s textovým polem. Protože se v této práci z časových důvodů nevěnuji navigaci pomocí klávesnice a klávesovým zkratkám, vypnul jsem tyto funkce v aplikaci globálně.
+
+	Jak již bylo zmíněno, ve víceřádkovém textovém poli nelze zobrazit horizontální posuvnou lištu. Posouvat pohled je možné pouze s využitím kláves pro změnu pozice textového kurzoru. Při pokusu o posunutí pomocí klávesy \textit{Shift} a kolečka myši jsem přišel na drobnou vizuální chybu. Tímto způsobem sice bylo možné text horizontálně posouvat, ale jen do chvíle, kdy počáteční písmena „narazila“ na okraj ovládacího prvku. Kolečkem myši bylo tedy možné v podstatě jen vynulovat vnitřní okraj (\textit{padding}) textového pole. Tuto chybu jsem nahlásil jako \href{https://github.com/ocornut/imgui/issues/9249}{\textit{issue \#9249}} na platformě GitHub a ve verzi 1.92.6 (únor 2026) byla opravena autorem knihovny.
+
+	Dále jsem do aplikace přidal funkci zvýraznění nahlášené chyby v textovém poli. Samotný ovládací prvek žádné zvýraznění textu nepodporuje, a tak je tato funkce realizována pomocí vykreslování grafických primitiv: Nad částí textu, která obsahuje chybu, je vykreslen poloprůhledný červený obdélník. Knihovna toml++ poskytuje funkci \texttt{source}, která pro jednotlivé zpracované tabulky, pole a hodnoty vrací informace o tom, kde se nachází jejich definice ve vstupním textu. Výstupem funkce je struktura, ze které lze pro začátek a konec dané oblasti získat číslo řádku a číslo znaku v tomto řádku. Tato data jsou převedena na pozici a velikost červeného obdélníka. Výpočet pozice od levého horního rohu podokna ukazuje obrázek \ref{_tag_img_DearErrHigh}. Toto řešení počítá s neproporcionálním písmem, jinak by byla potřeba dodatečná logika pro měření šířky určitých úseků textu.
+
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=.82\textwidth]{img/diag/err_high.pdf}
+		\caption{Knihovna Dear ImGui: Výpočet pozice zvýraznění chyby}
+		\label{_tag_img_DearErrHigh}
+	\end{figure}
+
+	Jednou z žádoucích funkcí aplikace je zvýrazňování syntaxe, kterou ale výchozí textové pole nepodporuje. Proto jsem do projektu přidal doplněk třetí strany \textit{ImGuiColorTextEdit} \cite{online_imguicolortextedit}. Tento doplněk není v aktivním vývoji a v době psaní už se pravděpodobně nejedná o nejlepší způsob, jak do projektu v knihovně Dear ImGui přidat zvýrazňování syntaxe. Když jsem ale implementoval ukázkovou aplikaci, jednalo se o jediný doplněk tohoto typu, který byl vystaven v sekci doplňků na \textit{Dear ImGui wiki}. Od té doby zde přibyl odkaz na fork tohoto projektu, který je v aktivním vývoji. Problémy, které jsou později zmíněny, proto už mohou být v této verzi vyřešeny. Při výběru doplňku jsem kontroloval i jeho forky, ale bylo jich několik aktivních a usoudil jsem, že programátor se nejčastěji setká právě s originálním repozitářem. Nově doporučovaná verze doplňku je navíc fork forku, takže není v základním zobrazení vidět.
+
+	Tento doplněk se nechová jako standardní ovládací prvek v přístupu IMGUI, jehož metoda pro vykreslení by dostala jako parametr referenci na řetězec se zdrojovým textem. Naopak jeho rozhraní spíše připomíná přístup RMGUI. //TODO
+	
+	Kód doplňku jsem mírně upravil pro potřeby ukázkové aplikace.	
+	
+	Při testování doplňku jsem narazil na zásadní problémy //TODO
+
+	Uživatel může přepínat mezi výchozím ovládacím prvkem a prvkem třetí strany. //TODO, viz obrázek
+
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{img/dear_textedits}
+		\caption{Knihovna Dear ImGui: Víceřádkové textové pole}
+		\label{_tag_img_DearTextedits}
+	\end{figure}
 
 	\subsection{Problematika popisu diagramu pomocí textu}
 	

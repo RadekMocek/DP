@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="182.739mm" height="70.5556mm"
+ viewBox="0 0 518 200"
+ xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.2" baseProfile="tiny">
+<title>Qt SVG Document</title>
+<desc>Generated with Qt</desc>
+<defs>
+</defs>
+<g fill="none" stroke="black" stroke-width="1" fill-rule="evenodd" stroke-linecap="square" stroke-linejoin="bevel" >
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Inconsolata" font-size="20" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Inconsolata" font-size="20" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffff" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Inconsolata" font-size="18" font-weight="400" font-style="normal" 
+>
+<rect x="0" y="0" width="300" height="200"/>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="18" y="71" font-family="Inconsolata" font-size="18" font-weight="400" font-style="normal" 
+ >[node.uzel]</text>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="18" y="90" font-family="Inconsolata" font-size="18" font-weight="400" font-style="normal" 
+ >value = &quot;Uzel diagramu&quot;</text>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="18" y="109" font-family="Inconsolata" font-size="18" font-weight="400" font-style="normal" 
+ >pivot = &quot;nowhere&quot;</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Inconsolata" font-size="20" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Inconsolata" font-size="20" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#f0f0f0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Inconsolata" font-size="18" font-weight="400" font-style="normal" 
+>
+<rect x="285" y="0" width="15" height="200"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Inconsolata" font-size="20" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Inconsolata" font-size="20" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#dbdbdb" fill-opacity="1" stroke="#000000" stroke-opacity="0" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Inconsolata" font-size="18" font-weight="400" font-style="normal" 
+>
+<rect x="286" y="50" width="13" height="100"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Inconsolata" font-size="20" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Inconsolata" font-size="20" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#d30102" fill-opacity="0.313726" stroke="#000000" stroke-opacity="0" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Inconsolata" font-size="18" font-weight="400" font-style="normal" 
+>
+<rect x="90" y="95" width="80" height="20"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Inconsolata" font-size="20" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Inconsolata" font-size="20" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#00627a" fill-opacity="1" stroke="#00627a" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Inconsolata" font-size="18" font-weight="400" font-style="normal" 
+>
+<polyline fill="none" vector-effect="none" points="90,95 90,0 " />
+<path vector-effect="none" fill-rule="evenodd" d="M90,95 L86,83 L94,83 L90,95"/>
+<path vector-effect="none" fill-rule="evenodd" d="M90,0 L94,12 L86,12 L90,0"/>
+</g>
+
+<g fill="#f0eee6" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,0,0)"
+font-family="Inconsolata" font-size="18" font-weight="400" font-style="normal" 
+>
+<rect x="94.5" y="26" width="423" height="18"/>
+</g>
+
+<g fill="#00627a" fill-opacity="1" stroke="#00627a" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Inconsolata" font-size="18" font-weight="400" font-style="normal" 
+>
+<text fill="#00627a" fill-opacity="1" stroke="none" xml:space="preserve" x="94.5" y="41" font-family="Inconsolata" font-size="18" font-weight="400" font-style="normal" 
+ >řádek_chyby × výška_řádku - posun_y + padding_y</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Inconsolata" font-size="20" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Inconsolata" font-size="20" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#00627a" fill-opacity="1" stroke="#00627a" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Inconsolata" font-size="18" font-weight="400" font-style="normal" 
+>
+<polyline fill="none" vector-effect="none" points="90,115 0,115 " />
+<path vector-effect="none" fill-rule="evenodd" d="M90,115 L78,119 L78,111 L90,115"/>
+<path vector-effect="none" fill-rule="evenodd" d="M0,115 L12,111 L12,119 L0,115"/>
+</g>
+
+<g fill="#f0eee6" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,0,0)"
+font-family="Inconsolata" font-size="18" font-weight="400" font-style="normal" 
+>
+<rect x="19.5" y="122" width="441" height="18"/>
+</g>
+
+<g fill="#00627a" fill-opacity="1" stroke="#00627a" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Inconsolata" font-size="18" font-weight="400" font-style="normal" 
+>
+<text fill="#00627a" fill-opacity="1" stroke="none" xml:space="preserve" x="19.5" y="137" font-family="Inconsolata" font-size="18" font-weight="400" font-style="normal" 
+ >sloupec_chyby × šířka_znaku - posun_x + padding_x</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Inconsolata" font-size="20" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Inconsolata" font-size="20" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#dbdbdb" fill-opacity="1" stroke="#dbdbdb" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Inconsolata" font-size="18" font-weight="400" font-style="normal" 
+>
+<polyline fill="none" vector-effect="none" points="17,2 17,198 " />
+</g>
+
+<g fill="#ffffff" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,0,0)"
+font-family="Inconsolata" font-size="18" font-weight="400" font-style="normal" 
+>
+<rect x="5.5" y="169" width="63" height="18"/>
+</g>
+
+<g fill="#dbdbdb" fill-opacity="1" stroke="#dbdbdb" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Inconsolata" font-size="18" font-weight="400" font-style="normal" 
+>
+<text fill="#dbdbdb" fill-opacity="1" stroke="none" xml:space="preserve" x="5.5" y="184" font-family="Inconsolata" font-size="18" font-weight="400" font-style="normal" 
+ >padding</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Inconsolata" font-size="20" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Inconsolata" font-size="20" font-weight="400" font-style="normal" 
+>
+</g>
+</g>
+</svg>
