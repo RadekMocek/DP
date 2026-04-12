@@ -131,6 +131,8 @@
 	
 	Úvod
 	
+	\temporary{\\ * Motivace\\ * Obsah práce\\ * Ohledně českých názvů ovládacích prvků (\textit{widgetů})}
+	
 	\chapter{Grafické uživatelské rozhraní v režimu okamžitého vykreslování}
 	
 	Grafické uživatelské rozhraní v režimu okamžitého vykreslování (\textit{immediate mode graphical user interface}, zkráceně IMGUI) je specifický přístup k programování aplikačního softwaru s grafickým uživatelským rozhraním. Základní koncept tohoto přístupu veřejně představil Casey Muratori v roce 2005 a s podobnou myšlenkou pracoval i Thierry Excoffier v roce 2003 \cite{report_zeromemorywidgets}. Definice IMGUI není příliš komplexní ani striktní, a proto se postupem času začaly objevovat různé úhly pohledu a interpretace toho, co by „okamžitý režim“ v kontextu vývoje GUI aplikací měl a neměl znamenat. \cite{online_casey}
@@ -355,7 +357,7 @@
 	
 	Z testu také vyšlo najevo, že popis diagramu je sice relativně stručný a přehledný, ale zabírá velké množství řádků. Pro danou výšku textového pole tedy nebylo najednou zobrazeno příliš mnoho informací. Proto jsem navrhl druhou verzi schématu, která shlukuje některé parametry dohromady a tím snižuje nutnost posouvat řádky (\textit{scrollovat}). Např. místo parametrů \textit{x}, \textit{y} a \textit{base} je zde jeden parametr \textit{xy}, který očekává buď dvouprvkové pole se souřadnicemi, nebo čtyřprvkové, které navíc obsahuje informace o rodičovském uzlu. Uzel má v této verzi na prvním řádku své definice uveden i svůj identifikátor, ze kterého se proto stává povinný údaj. Rozdíl mezi dvěma verzemi návrhu je vidět na obrázku \ref{_tag_img_TOMLSchemaNode}.
 	
-	Poslední poznatek z testování je ten, že by bylo vhodnější mít možnost nastavit dva různé rodičovské uzly, kdy jeden pro své potomky určuje umístění na ose x a druhý na ose y. Tím by se zjednodušila tvorba a úprava diagramů, kde mají být uzly rozmístěny v pravidelné mřížce. Tento problém jsem vyhodnotil jako nepříliš zásadní a pokračoval na návrh popisu cest.
+	Poslední poznatek z testování je ten, že by bylo vhodnější mít možnost nastavit dva různé rodičovské uzly, kdy jeden rodič určuje umístění potomka na ose x a druhý na ose y. Tím by se zjednodušila tvorba a úprava diagramů, kde mají být uzly rozmístěny v pravidelné mřížce. Tento problém jsem v kontextu celé práce vyhodnotil jako nepříliš zásadní a pokračoval na návrh popisu cest.
 	
 	Cesty v diagramu jsou definovány svými body. Pro validní cestu je nutné definovat její startovní a cílový bod. Mezi nimi pak může být definován libovolný počet mezilehlých bodů. Cesta je vykreslena jednoduše postupným propojením bodů od toho startovního, přes případné mezilehlé body, až do bodu cílového. Jsou tedy podporovány pouze rovné čáry bez možnosti definovat křivky.
 	
@@ -363,7 +365,7 @@
 	
 	Pro mezilehlé body je již možné definovat jejich umístění tak, že na každé ose referují pivot jiného uzlu. Implementace by zde měla být jednodušší, protože fáze zpracování cest bude následovat až po kompletním zpracování všech uzlů. Dále mohou jednotlivé body referovat start, cíl, nebo předchozí bod své cesty. Nakonec může být umístění mezilehlého bodu určeno i pomocí absolutních souřadnic. Pro snazší zpracování na straně aplikačního kódu je každý mezilehlý bod definován šestiprvkovou kolekcí, kdy první tři prvky odpovídají umístění na ose x a zbylé tři prvky umístění na ose y. Všechny tři prvky jsou potřeba definovat pouze při referenci pivota, v ostatních případech jsou nevyužité prvky nastaveny na prázdný řetězec.
 	
-	Obrázek \ref{_tag_img_TOMLSchemaPath} představuje další nástroje pro popis cest: Pro jednu cestu je možné definovat více koncových bodů. To znamená, že je pomocí jedné společné definice v podstatě vykresleno více cest. Díky tomu, že mezilehlé body se mohou odkazovat na koncový bod, lze v takovéto definici popsat rozvětvení. Dále je k dispozici parametr \textit{shift}, který definuje „odskok“ startovního a cílových bodů od svých uzlů. Tento parametr pak dokáže nahradit krajní mezilehlé body.
+	Obrázek \ref{_tag_img_TOMLSchemaPath} představuje další nástroje pro popis cest: Pro jednu cestu je možné definovat více koncových bodů. To znamená, že je pomocí jedné společné definice v podstatě vykresleno více cest. Díky tomu, že mezilehlé body se mohou odkazovat na koncový bod, lze v takovéto definici popsat rozvětvení. Dále je k dispozici parametr \textit{shift}, který definuje „odskok“ startovního a cílových bodů od svých uzlů. Tento parametr tak dokáže nahradit krajní mezilehlé body.
 	
 	\begin{figure}[ht]
 		\centering
@@ -460,15 +462,17 @@
 
 	\subsection{Víceřádkové textové pole v knihovně Dear ImGui}
 
-	Jakmile je vytvořeno podokno, které má sloužit jako rodič pro víceřádkové textové pole, stačí mezi jeho párovými metodami zavolat \texttt{InputTextMultiline}. Vlastnosti tohoto ovládacího prvku byly představeny v sekci \ref{Chapter2SectionDearImGui}. Během implementace ukázkové aplikace se objevily určité obtíže, které s tímto ovládacím prvkem souvisí.
+	Jakmile je vytvořeno podokno, které má sloužit jako rodič víceřádkového textového pole, stačí mezi jeho párovými metodami zavolat metodu \texttt{InputTextMultiline}, která slouží pro jeho zobrazení. Vlastnosti tohoto ovládacího prvku byly představeny v sekci \ref{Chapter2SectionDearImGui}. Během implementace ukázkové aplikace se objevily určité obtíže, které s tímto ovládacím prvkem souvisí.
 	
 	Knihovna Dear ImGui v základu umožňuje ovládat uživatelské rozhraní pomocí klávesnice. Klávesou \textit{Tab} tak lze přepínat, jaký z interaktivních prvků je aktuálně vybraný. Metodě pro vykreslení textového pole je proto předán příznak \texttt{AllowTabInput}, aby při psaní textu nebylo možné klávesou \textit{Tab} ovládací prvek opustit. Místo toho je do textu vložen znak tabulátoru a toto chování není možné přenastavit např. na vložení čtyř mezer.
 	
-	Další klávesou pro navigaci je \textit{Alt}, která slouží pro skok do záhlaví okna a lišty nabídek. Hlavní okno má záhlaví skryto a lišta je umístěna v samostatném okně, i přesto ale stisk klávesy \textit{Alt} ruší interakci s textovým polem. Protože se v této práci z časových důvodů nevěnuji navigaci pomocí klávesnice a klávesovým zkratkám, vypnul jsem tyto funkce v aplikaci globálně.
+	Další klávesou pro navigaci je \textit{Alt}, která slouží pro skok do záhlaví okna a lišty nabídek. Hlavní okno má záhlaví skryto a lišta je umístěna v samostatném okně, i přesto ale stisk klávesy \textit{Alt} ruší interakci s textovým polem. Protože se v této práci z časových důvodů dále nevěnuji navigaci pomocí klávesnice a klávesovým zkratkám, vypnul jsem tyto funkce v aplikaci globálně.
 
 	Jak již bylo zmíněno, ve víceřádkovém textovém poli nelze zobrazit horizontální posuvnou lištu. Posouvat pohled je možné pouze s využitím kláves pro změnu pozice textového kurzoru. Při pokusu o posunutí pomocí klávesy \textit{Shift} a kolečka myši jsem přišel na drobnou vizuální chybu. Tímto způsobem sice bylo možné text horizontálně posouvat, ale jen do chvíle, kdy počáteční písmena „narazila“ na okraj ovládacího prvku. Kolečkem myši bylo tedy možné v podstatě jen vynulovat vnitřní okraj (\textit{padding}) textového pole. Tuto chybu jsem nahlásil jako \href{https://github.com/ocornut/imgui/issues/9249}{\textit{issue \#9249}} na platformě GitHub a ve verzi 1.92.6 (únor 2026) byla opravena autorem knihovny.
 
-	Dále jsem do aplikace přidal funkci zvýraznění nahlášené chyby v textovém poli. Samotný ovládací prvek žádné zvýraznění textu nepodporuje, a tak je tato funkce realizována pomocí vykreslování grafických primitiv: Nad částí textu, která obsahuje chybu, je vykreslen poloprůhledný červený obdélník. Knihovna toml++ poskytuje funkci \texttt{source}, která pro jednotlivé zpracované tabulky, pole a hodnoty vrací informace o tom, kde se nachází jejich definice ve vstupním textu. Výstupem funkce je struktura, ze které lze pro začátek a konec dané oblasti získat číslo řádku a číslo znaku v tomto řádku. Tato data jsou převedena na pozici a velikost červeného obdélníka. Výpočet pozice od levého horního rohu podokna ukazuje obrázek \ref{_tag_img_DearErrHigh}. Toto řešení počítá s neproporcionálním písmem, jinak by byla potřeba dodatečná logika pro měření šířky určitých úseků textu.
+	Dále jsem do aplikace přidal funkci zvýraznění nahlášené chyby v textovém poli. Samotný ovládací prvek žádné zvýraznění textu nepodporuje, a tak je tato funkce realizována pomocí vykreslování grafických primitiv: Nad částí textu, která obsahuje chybu, je vykreslen poloprůhledný červený obdélník. Knihovna toml++ poskytuje metodu \texttt{source}, která pro jednotlivé zpracované tabulky, pole a hodnoty vrací informace o tom, kde se nachází jejich definice ve vstupním textu. Výstupem metody je struktura, ze které lze pro začátek a konec dané oblasti získat číslo řádku a číslo znaku v tomto řádku.
+	
+	Tato data jsou převedena na pozici a velikost červeného obdélníka. Výpočet pozice od levého horního rohu podokna ukazuje obrázek \ref{_tag_img_DearErrHigh}. Toto řešení počítá s neproporcionálním písmem, jinak by byla potřeba dodatečná logika pro měření šířky určitých úseků textu. Pro zjištění vertikálního posunu (\texttt{posun\_y} v obrázku) je použita metoda \texttt{GetScrollY}, která tuto hodnotu vrací pro poslední vykreslený prvek. Zjištění horizontálního posunu (\texttt{posun\_x} v obrázku) je složitější a využívá definic ze souboru \texttt{imgui\_internal.h}. Není proto zaručeno,   že toto řešení bude fungovat v budoucích verzích knihovny.
 
 	\begin{figure}[ht]
 		\centering
@@ -477,15 +481,21 @@
 		\label{_tag_img_DearErrHigh}
 	\end{figure}
 
-	Jednou z žádoucích funkcí aplikace je zvýrazňování syntaxe, kterou ale výchozí textové pole nepodporuje. Proto jsem do projektu přidal doplněk třetí strany \textit{ImGuiColorTextEdit} \cite{online_imguicolortextedit}. Tento doplněk není v aktivním vývoji a v době psaní už se pravděpodobně nejedná o nejlepší způsob, jak do projektu v knihovně Dear ImGui přidat zvýrazňování syntaxe. Když jsem ale implementoval ukázkovou aplikaci, jednalo se o jediný doplněk tohoto typu, který byl vystaven v sekci doplňků na \textit{Dear ImGui wiki}. Od té doby zde přibyl odkaz na fork tohoto projektu, který je v aktivním vývoji. Problémy, které jsou později zmíněny, proto už mohou být v této verzi vyřešeny. Při výběru doplňku jsem kontroloval i jeho forky, ale bylo jich několik aktivních a usoudil jsem, že programátor se nejčastěji setká právě s originálním repozitářem. Nově doporučovaná verze doplňku je navíc fork forku, takže není v základním zobrazení vidět.
+	Jednou z žádoucích funkcí aplikace je zvýrazňování syntaxe, kterou ale výchozí textové pole nepodporuje. Proto jsem do projektu přidal doplněk třetí strany \mbox{\textit{ImGuiColorTextEdit}} \cite{online_imguicolortextedit}. Tento doplněk není v aktivním vývoji a v době psaní už se pravděpodobně nejedná o nejlepší způsob, jak do projektu v knihovně Dear ImGui přidat zvýrazňování syntaxe. Když jsem ale implementoval ukázkovou aplikaci, jednalo se o jediný doplněk tohoto typu, který byl vystaven v sekci doplňků na \textit{Dear ImGui wiki}. Od té doby zde přibyl odkaz na fork\footnote{„Fork“ je na platformě GitHub nezávislá kopie nějakého repozitáře. Oproti větvím (\textit{branches}) je možné s touto kopií volněji experimentovat bez jakéhokoliv zásahu do původního projektu \cite{online_githubfork}. Pro tento termín neexistuje zavedený český překlad.} tohoto projektu, který je v aktivním vývoji. Problémy, které jsou později zmíněny, proto už mohou být v této verzi vyřešeny. Při výběru doplňku jsem kontroloval i jeho forky, ale bylo jich několik aktivních a usoudil jsem, že programátor se nejčastěji setká právě s originálním repozitářem. Nově doporučovaná verze doplňku je navíc forkem jiného forku, takže není ve výchozím zobrazení na platformě GitHub vidět.
 
-	Tento doplněk se nechová jako standardní ovládací prvek v přístupu IMGUI, jehož metoda pro vykreslení by dostala jako parametr referenci na řetězec se zdrojovým textem. Naopak jeho rozhraní spíše připomíná přístup RMGUI. //TODO
+	Tento doplněk se nechová jako standardní ovládací prvek v přístupu IMGUI, jeho rozhraní spíše připomíná přístup RMGUI. Není zde tedy metoda pro vykreslení ovládacího prvku, která by dostala jako parametr referenci na řetězec se zdrojovým textem a případné příznaky. Místo toho pracuje aplikace s instancí třídy \texttt{TextEditor}, u které se s každým průchodem smyčky volá metoda \texttt{Render}. Ovládací prvek si udržuje stav textového obsahu u sebe. Pro práci s jeho textem v aplikačním kódu je nutné využít metod \texttt{GetText} a \texttt{SetText}.
 	
-	Kód doplňku jsem mírně upravil pro potřeby ukázkové aplikace.	
+	Doplněk jsem mírně upravil pro potřeby ukázkové aplikace. Jelikož je jeho zdrojový kód součástí projektu a pravděpodobně pro něj již nevyjdou žádné aktualizace, upravil jsem kód přímo bez využití záplat (\textit{patch files}). Jednou ze změn je např. chování při stisku klávesy \textit{Tab}, kdy jsou do textu namísto znaku tabulátoru vloženy mezery. Pro zvýrazňování syntaxe jsem přidal vlastní definici jazyka, aby byla zvýrazňována jen klíčová slova z navrhovaného schématu pro jazyk TOML. K tomu jsem definoval vlastní barevná schémata pro světlý a tmavý režim aplikace, které mají oproti těm výchozím lepší poměr kontrastu mezi popředím a pozadím.
 	
-	Při testování doplňku jsem narazil na zásadní problémy //TODO
+	Hlavní motivací pro použití tohoto doplňku, která je zároveň i prvním viditelným rozdílem oproti výchozímu textovému poli, je schopnost zvýrazňovat syntax. Při testování doplňku jsem ale narazil na další rozdíly a problémy tohoto ovládacího prvku: \begin{itemize}
+		\item Má funkci pro zvýraznění chyb v kódu. Zvýrazněn je vždy celý řádek a není možné zvýraznit pouze jeho část.
+		\item Nepodporuje mazání celých slov pomocí klávesových zkratek \textit{Ctrl} + \textit{Backspace} a \textit{Ctrl} + \textit{Delete}.
+		\item Nepodporuje zalamování dlouhých řádků.
+		\item Aby se při výběru textu držením levého tlačítka myši aktualizovala vybraná oblast, musí se kurzor nacházet uvnitř ovládacího prvku. Lze tak označit pouze ten text, který je aktuálně vidět.
+		\item Dokáže zobrazit horizontální posuvnou lištu, i tak je ale horizontální posouvání problémové. Pohled na text je totiž posouván automaticky a zdá se být nekonzistentní. V určitých případech je pohled posouván tak, že textový kurzor není vidět, protože je posun příliš malý. Uživatel sice může využít posuvné lišty, aby textový kurzor do pohledu dostal, jakmile ale začne psát, pohled se opět přesune na automaticky určené místo. Uživatel tedy nemusí vidět text, který aktuálně píše.
+	\end{itemize}
 
-	Uživatel může přepínat mezi výchozím ovládacím prvkem a prvkem třetí strany. //TODO, viz obrázek
+	Z důvodu posledního bodu, který značně zhoršuje uživatelský zážitek, jsem přidal do nastavení aplikace možnost přepínat mezi výchozím ovládacím prvkem a prvkem třetí strany. Obrázek \ref{_tag_img_DearTextedits} ukazuje, jak vypadají obě varianty ve světlém a tmavém režimu.
 
 	\begin{figure}[ht]
 		\centering
@@ -494,7 +504,13 @@
 		\label{_tag_img_DearTextedits}
 	\end{figure}
 
-	\subsection{Problematika popisu diagramu pomocí textu}
+	\subsection{Zpracování vstupního textu v jazyce TOML}
+	
+	Vedle víceřádkového textového pole je nejdůležitějším prvkem ukázkové aplikace kreslicí plátno, ve kterém je zobrazen diagram podle textového popisu. V něm se využívá metod pro vykreslování grafických primitiv, které poskytuje daná knihovna. Nejprve je ale nutné textový vstup na volání těchto metod převést. Převod probíhá ve dvou krocích, kdy se o první krok stará třída \texttt{Parser}, která je nezávislá na použité knihovně. Druhý krok je již součástí kódu kreslicího plátna a využívá metody knihovny Dear ImGui. Z určitých důvodů se však nejedná o prosté vykreslování podle kompletně připravených dat.
+	
+	Ve své výchozí podobě je uzel diagramu obdélník, ve kterém je umístěn text. Nemá-li uzel nastavenou explicitní velikost, pak je určena podle tohoto textu tak, aby byl celý text obsažen v obdélníku s přidaným vnitřním okrajem. V diagramu může nastat situace, kdy má takový uzel nějaké potomky a jeho velikost ovlivňuje umístění těchto potomků. Pro určení přesných pozic a velikostí všech uzlů je tedy nutné znát velikosti textů po tom, co budou vykresleny. Knihovna Dear ImGui poskytuje metodu \texttt{CalcTextSizeA}, která pro dané písmo, velikost a textový obsah vrací informace o tom, jak by byl takto vykreslený text velký.
+	
+	Třída \texttt{Parser} musí být nezávislá na knihovně Dear ImGui a nelze v ní tedy přímo volat metodu pro zjištění velikosti vykresleného textu. Toto by šlo řešit různě, ale já se rozhodl právě pro postup s dvěma kroky. V prvním kroku třída \texttt{Parser} s využitím knihovny toml++ převede vstupní text na struktury pro krok druhý. Třída „udělá vše, co dokáže“ bez nutnosti použít knihovnu Dear ImGui a jakmile její krok skončí, dále už se v tomto průchodu hlavní smyčkou nepoužije. Proto je v druhém kroku potřeba provádět určité dodatečné výpočty.
 	
 	\temporary{\\ * TOML parser je psán jako state machine}
 	

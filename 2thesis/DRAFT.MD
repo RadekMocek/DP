@@ -9,23 +9,10 @@
 * GLFW 3.3 vs. 3.4
 * S Monospace fontem se lépe pracuje
 
-#### Tvorba uživatelského rozhraní
-
-* Knihovna je stavový automat – logika se snadno rozděluje do více funkcí; když dám `PushStyleVar`, nesmím zapomenout na `PopStyleVar`
-* Tzv. kurzor postupně vykresluje jednotlivé ovládací prvky a posouvá se
-* Tvorba layoutu spočívá ve volání `GetCursorScreenPos`, `SetCursorScreenPos`, `SameLine`, `GetContentRegionAvail` a jednoduché matematiky
-* Interaktivní prvky musí mít unikátní ID, případné použití `##`/`PushID`
-* Scrolling – i když si člověk vypne u hlavního okna scrollbary, pokud je umístěno něco „mimo viewport“, pak lze pomocí MW s celou app posunout – uvnitř hl. okna se vše posune a my doskrolujeme k out-of-bounds prvku. Toto je potřeba si hlídat, platí to např. i u moc dlouhého textu, který přeteče → horizontal scroll.
-* Dear ImGui má flag ResizeX pro měnění poměru šířek mezi textedit a canvas (LMB drag). To ale není ideální: při změně velikosti okna se nezachovává poměr, interně totiž knihovna neřeší poměr, ale šířku texteditu v pixelech, kterou zachovává. Proto byl napsán vlastní _splitter_ pomocí invisible button.
-
 #### Problematika popisu diagramu pomocí textu
 
-* Každá node musí mít svou ID, pak lze `[node.rodič]↵xy=[x,y]` a `[node.potomek]↵xy=["rodič",x,y]`
-* Co ale přesně znamenají souřadnice node, že se zde nachází její střed, nebo levý horní roh? Odkud probíhá posun od rodičovské node?
-  * → Byl přidán pivot, každá node má vlastní pivot a referuje pivot případného rodiče
-  * Díky tomu lze mít např. více dvě nodes vedle sebe s danou mezerou, „můj pivot je vlevo a posun od pravého pivota rodiče je x“, pak i&nbsp;se změnou šířky rodiče dojde k posunu a zachová se tedy velikost mezery
-  * Každá node může mít tedy maximálně jednoho rodiče, později se ukázalo, že by bylo vhodnější referovat zvlášť na ose x a y (max 2 rodiče), je to vhodnější pro nodes v mřížce, ale není to zas tak zásadní.
-* TOML parser nepředává knihovně finální souřadnice nodes, pouze kontroluje, zdali reference neukazují do prázdna a nemáme kruhovou referenci. Dále vrací pořadí, v jakém provést dodatečné zpracování. Proč? Node je obdélník (nebo jiný tvar) s textem, velikost obdélníku je implicitně určena jeho textem, tedy node s 20znakovým popiskem je širší než node s 10znakovým popiskem. Abychom zjistili šířku textu, musíme volat ImGui, a TOML parser by měl být nezávislý na ImGui... (ImGui musíme volat, protože se teoreticky mohou měnit fonty za běhu, řeší to za nás víceřádkový text apod.). Toto by šlo řešit různě, ale já se rozhodl, že TOML parser udělá, co je v jeho silách, a jakmile předá řízení ImGui, pak v tomto průchodu smyčkou už nepracuje. ImGui pak „zpracovává“ nodes tak, že pomocí textu a zoom level zjistí skutečnou vykreslovací velikost. Finální souřadnice ImGui dopočítá, protože již zná souřadnice případného rodiče, to protože od TOML parseru dostává pořadí, v jakém zpracovávat. Toto pořadí bere v ohled rodiče a potomky.
+* TOML parser nepředává knihovně finální souřadnice nodes, pouze kontroluje, zdali reference neukazují do prázdna a nemáme kruhovou referenci. Dále vrací pořadí, v jakém provést dodatečné zpracování. Proč? Node je obdélník (nebo jiný tvar) s textem, velikost obdélníku je implicitně určena jeho textem, tedy node s 20znakovým popiskem je širší než node s 10znakovým popiskem. Abychom zjistili šířku textu, musíme volat ImGui, a TOML parser by měl být nezávislý na ImGui... (ImGui musíme volat, protože se teoreticky mohou měnit fonty za běhu, řeší to za nás víceřádkový text apod.).
+* Toto by šlo řešit různě, ale já se rozhodl, že TOML parser udělá, co je v jeho silách, a jakmile předá řízení ImGui, pak v tomto průchodu smyčkou už nepracuje. ImGui pak „zpracovává“ nodes tak, že pomocí textu a zoom level zjistí skutečnou vykreslovací velikost. Finální souřadnice ImGui dopočítá, protože již zná souřadnice případného rodiče, to protože od TOML parseru dostává pořadí, v jakém zpracovávat. Toto pořadí bere v ohled rodiče a potomky.
 * Bylo implementováno iterativně, od vykreslení jednoho obdélníku po plnohodnotné blokové schéma.
 * [App/Logic/TOML/Parser.cpp](https://github.com/RadekMocek/DiagramPche_DearImGui/blob/main/App/Logic/TOML/Parser.cpp), metoda Parse je okomentovaná
   * Jednotlivé zpracovávané Nodes mám nejprve v mapě (vhodné pro kontrolu referencí), pak jsem je přesouval pomocí std::move do prioritní fronty, ze které si to Dear ImGui popovalo.
@@ -40,21 +27,13 @@
 * ImDrawList má funkce pro obdélník, elipsu, čáru; kosočtverec a šipku jsem si „doimplementoval“.
 * ImDrawList umí přepínat vrstvy, takže lze snadno implementovat Z souřadnici
 
-#### Víceřádkové textové pole
-
-* Dear ImGui vanilla editor i později přidaný 3rd party widget mají problémy, viz [DP-dearimgui-readme](https://github.com/RadekMocek/DiagramPche_DearImGui?tab=readme-ov-file#problems), autor knihovny do budoucna plánuje rewrite, viz [10 years of Dear ImGui](https://github.com/ocornut/imgui/issues/7892), sekce _6.7. REWRITING INPUTTEXT (v2)_, něco z tohohle by šlo zmínit v rešerši
-* Do vanilla widgetu bylo přidáno zvýrazňování chyb vykreslováním poloprůhledných červených obdélníků nad textem (tedy umíme jen jednu chybu naráz, tu první nahlášenou ☺); zde byl problém s horizontal scroll (obecně jeden z problémů tohoto widgetu), pro zjištění aktuální hodnoty horizontálního posunu musím šahat do imgui_internal.h, kde není zaručeno, že to bude v budoucnu fungovat
-* Pak jsem přidal 3rd party editor, trochu si ho upravil, problémy také zmiňuji v readme
-  * Tento editor má ještě další forky, které jsou možná lepší, ale originál je nejznámější a je featured přímo v Dear ImGui readme, takže na něj pravděpodobně nejvíc lidí narazí. Navíc dostal patch přímo od autora Dear ImGui, aby fungoval na nové verzi (jedná se o malou změnu, takže by asi nebyl problém upravit nějaký fork). Forky už jsem zkrátka netestoval.
-  * Editor umí error highlight, ale jen celý řádek.
-
 #### Export diagramu do formátu SVG
 
 * Problémy: multiline text, rgba (webový prohlížeč to umí, ale můj inkscape a qView ne, dělám SVG aby to vypadalo správně i v těchto programech)
 * Používám mírně upravenou header only knihovnu simple-svg
 * Po kliknutí na export se pro příští frame nastaví proměnná typu _is\_svg\_requested_ na true, a v tomto průchodu smyčkou se kromě vykreslování buduje i SVG dokument. Moje logika, která volá simple-svg, se chová jako stavový automat.
 * Pro usnadnění před exportem resetuji canvas scrolling a zoom level.
-* Pro správné pořadí vykreslování (tedy aby i v SVG fungovala Z souřadnice), řadím jednotlivé svg::Shapes do prioritní fronty. Jedná se o&nbsp;absktraktní classu, takže zabaleno do unique_ptr.
+* Pro správné pořadí vykreslování (tedy aby i v SVG fungovala Z souřadnice), řadím jednotlivé svg::Shapes do prioritní fronty. Jedná se o&nbsp;abstraktní classu, takže zabaleno do unique_ptr.
 * Knihovnu jsem si upravil, aby podporovala průhlednost, není to ale ideální a podporuji pouze fill opacity. Stroke opacity už neumím, to by vyžadovalo větší zásah do knihovny, nebo možná lépe napsat si vlastní.
 * Uživatelův diagram může klidně začínat až na souřadnicích 1000,1000; u SVG chci, aby SVG plátno obsahovalo diagram bez prázdného místa. Proto při přidávání tvarů počítám bounding box, který se pak použije k posunutí všech tvarů.
 * SVG export má svůj modal, modaly v Dear ImGui jsou krapet zvláštní (z pohledu psaní jejich kódu)
