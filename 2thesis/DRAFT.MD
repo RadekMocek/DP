@@ -9,15 +9,6 @@
 * GLFW 3.3 vs. 3.4
 * S Monospace fontem se lépe pracuje
 
-#### Problematika popisu diagramu pomocí textu
-
-* TOML parser nepředává knihovně finální souřadnice nodes, pouze kontroluje, zdali reference neukazují do prázdna a nemáme kruhovou referenci. Dále vrací pořadí, v jakém provést dodatečné zpracování. Proč? Node je obdélník (nebo jiný tvar) s textem, velikost obdélníku je implicitně určena jeho textem, tedy node s 20znakovým popiskem je širší než node s 10znakovým popiskem. Abychom zjistili šířku textu, musíme volat ImGui, a TOML parser by měl být nezávislý na ImGui... (ImGui musíme volat, protože se teoreticky mohou měnit fonty za běhu, řeší to za nás víceřádkový text apod.).
-* Toto by šlo řešit různě, ale já se rozhodl, že TOML parser udělá, co je v jeho silách, a jakmile předá řízení ImGui, pak v tomto průchodu smyčkou už nepracuje. ImGui pak „zpracovává“ nodes tak, že pomocí textu a zoom level zjistí skutečnou vykreslovací velikost. Finální souřadnice ImGui dopočítá, protože již zná souřadnice případného rodiče, to protože od TOML parseru dostává pořadí, v jakém zpracovávat. Toto pořadí bere v ohled rodiče a potomky.
-* Bylo implementováno iterativně, od vykreslení jednoho obdélníku po plnohodnotné blokové schéma.
-* [App/Logic/TOML/Parser.cpp](https://github.com/RadekMocek/DiagramPche_DearImGui/blob/main/App/Logic/TOML/Parser.cpp), metoda Parse je okomentovaná
-  * Jednotlivé zpracovávané Nodes mám nejprve v mapě (vhodné pro kontrolu referencí), pak jsem je přesouval pomocí std::move do prioritní fronty, ze které si to Dear ImGui popovalo.
-  * Později jsem ponechal data v mapě a prioritní fronta obsahuje pouze pořadové číslo (podle něj řadíme) a klíč do mapy. Díky tomu data přežijí toto zpracování a lze použít později v toolbaru. Také díky tomu při TOML syntax error (což se děje běžně při psaní, než něco dopíšeme) nezmizí celý diagram a můžeme kreslit pomocí posledních validních dat.
-
 #### Vykreslení diagramu
 
 * Popsat jak funguje canvas, není to žadný speciální widget, kreslíme „do prázdna“, invisible button, RMB to move, ...
@@ -57,16 +48,13 @@
 * Dále umíme:
   * Ikonky – IconFontCppHeaders, přidán ikonkový font
   * Změna color theme v settings; U dark theme jsem vypnul průhlednost dodatečných oken → čitelnější.
-  * Benchmark?
+  * Benchmark
 
 * Dodatečné poznámky:
   * Nastavil jsem, aby přesouvání oken bylo možné pouze LMB tahem jejich headeru, nelze tedy tahat za tělo okna  
   * Dear ImGui slider neumí step size..., otrava.
-  * Má nějakou implicitní navigaci pomocí šipek, tabulátoru atd. Moc to nefunguje, nebo s tím neumím (?). Klávesové zkratky by to ještě chtělo prozkoumat.
   * U ComboBoxu paduju položky mezerama, aby se neměnila šířka comboboxu při změně položky.
   * Zkusil jsem neparsovat TOML každý frame, ale jen, když je potřeba; na výkonu se to nepodepsalo
-  * Upgradoval jsem z 1.92.5 na 1.92.6, protože...
-  * <https://github.com/goossens/ImGuiColorTextEdit>
 
 * Jak se tedy píše „běžná“ aplikace v Dear ImGui?
   * MultiLineTextEdit je problematický widget, rozhodně od žádné existující IMGUI knihovny nemůžeme čekat widget s "VS Code user experience", alespoň zatím ne.
