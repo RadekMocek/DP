@@ -30,7 +30,7 @@
 * SVG export má svůj modal, modaly v Dear ImGui jsou krapet zvláštní (z pohledu psaní jejich kódu)
 * Možnost show in explorer → na Windows se mi podařilo udělat, že se neotevře explorer znovu, pokud již existuje instance exploreru s&nbsp;tímto adresářem, Zároveň je soubor v exploreru zvýrazněn. Na Linuxu je toto problémovější, tam pouze „hloupě“ otevírám explorer.
 
-#### …
+#### Další přidané funkce
 
 * Dialogy save/open
   * Použita knihovna _Native File Dialog Extended_
@@ -75,6 +75,7 @@
     * Dear ImGui je děláno primárně pro přidání debug okýnek do existující aplikace (zjednodušeně řečeno). Tady to spíše vypadá, že je prioritou tvorba samostatných „běžných, user-facing“ desktop/web aplikací. Běží na tom Rerun.io od stejného autora.
   * Moje struktura projektu asi není úplně Rust idiomatická, snažím se to mít stejné jako v Cpp projektu
   * Klíčové slovo static v Rustu nelze použít uvnitř funkce jako v C++, takže buď musí být všechny hodnoty součástí struct App, nebo musím přijít s modulárnějším přístupem.
+  * Umí `ui.with_layout(egui::Layout::right_to_left ... {})`
   * Defaultní light theme mělo šedý text na bílém pozadí → změněno na černý text pro lepší čitelnost (pro dark mode byl font zase zesvětlen).
   * Podporuje přes 30 druhů kurzoru (GLFW 3.3.10 umí 10), všechny ale asi fungují jen na webu? Alespoň na Windows je grabbing stejný jako move (čtyřsměrná šipka namísto ruky).
   * Defaultní font podporuje řadu emoji, a to monochrome, takže lze použít jako ikonky. Toto funguje, i když přepíši defaultní font na Inconsolata, který emoji nepodporuje (pracuje se s prioritou). Každopádně symboly nemají konzistentní vizuální identitu a neexistuje emoji např. pro elipsu, nebo odlišení _save_ od _save as_, prostě jen disketa. Takže může se hodit, ale na seriózní ikony raději použít alternativu.
