@@ -340,7 +340,7 @@
 	
 	Uzel je ve své základní podobě obdélník obsahující text. Pro tvorbu jednoduchého blokového schématu je potřeba mít pro každý uzel možnost specifikovat jeho umístění, velikost a textový obsah. Pro snadnější editaci existujících diagramů je zde požadavek, aby bylo možné definovat pozici uzlu relativně k jinému uzlu. Tím vznikají vztahy typu \textit{rodič-potomek} a při změně pozice rodičovského uzlu se změní i pozice všech jeho potomků. Pokud by bylo možné definovat umístění uzlů pouze absolutně, velmi by to zkomplikovalo editaci existujících diagramů. Další požadavek je, aby bylo možné uzly definovat v libovolném pořadí, tedy aby mohl být ve zdrojovém textu potomek definován dříve než jeho rodič. To sice zkomplikuje logiku na straně aplikačního kódu, ale zlepší uživatelský zážitek.
 	
-	Pozice uzlu je určena nastavením hodnot pro klíče \textit{x} a \textit{y}, které odpovídají souřadnicím kreslicího plátna. Co ale přesně souřadnice pro daný uzel znamenají? Mohl by zde být umístěn jeho střed, nebo také některý z rohů vykresleného obdélníka. Proto jsem přidal klíč \textit{pivot}, kde lze toto chování pro každý uzel nastavit. Hodnotou tohoto klíče je řetězec, např. \texttt{"center"} nebo \texttt{"top-left"}. V doménově specifickém jazyce by bylo možné mít pro tento účel dedikovaná klíčová slova, pak by byl neplatný \textit{pivot} zachycen již během překladu. V tomto případě je nutné kontrolovat správnost argumentu až v pozdější fázi.
+	Pozice uzlu je určena nastavením hodnot pro klíče \textit{x} a \textit{y}, které odpovídají souřadnicím kreslicího plátna. Co ale přesně souřadnice pro daný uzel znamenají? Mohl by zde být umístěn jeho střed, nebo také některý z rohů vykresleného obdélníka. Proto jsem přidal klíč \textit{pivot}, kde lze toto chování pro každý uzel nastavit. Hodnotou tohoto klíče je řetězec, např. \texttt{"center"} nebo \texttt{"top-left"}. V doménově specifickém jazyce by bylo možné mít pro tento účel dedikovaná klíčová slova, pak by byl neplatný pivot zachycen již během překladu. V tomto případě je nutné kontrolovat správnost argumentu až v pozdější fázi.
 	
 	Otázka ohledně přesného umístění vykreslených uzlů nastává také u relativních souřadnic. Pokud by souřadnice potomka byly relativní např. ke středu rodiče, byla by vyřešena problematika přesunů, ale ne změn velikosti. Příkladem je diagram se dvěma uzly ve vztahu rodič-potomek, kde je rodičův pivot nastaven na střed. Uživatel si přeje, aby byl potomek umístěn pět jednotek pod svým rodičem. Změna pozice rodiče by toto zachovala, ale po změně jeho výšky by bylo nutné zvýšit ypsilonovou souřadnici potomka, protože se střed rodiče nijak neposunul. Proto jsem přidal možnost definovat pivota rodiče, ke kterému jsou souřadnice potomka relativní. Obrázek \ref{_tag_img_TOMLSchemaNode} ukazuje popsaný scénář a také prozrazuje další vlastnosti navrženého schématu.
 	
@@ -536,24 +536,46 @@
 	
 	Po zpracování všech uzlů jsou nakonec zpracovány cesty. Zde mohou být mezilehlé body, které také mají relativní souřadnice. Referovat mohou ale pouze uzly, které jsou v tuto chvíli již vyřešené, nebo jiné body na své vlastní cestě. Není tedy potřeba řešit žádné pořadí zpracování, a cesty proto mohou být rovnou ukládány do kolekce typu \texttt{std::vector}.
 	
-	Třída \texttt{Parser} je psána jako stavový automat. Aplikace obsahuje instanci této třídy a jako součást průchodu hlavní smyčkou volá její metodu \texttt{Parse}, kde vstupním parametrem je reference na řetězec s popisem diagramu. Kolekce se zpracovanými uzly a cestami jsou veřejnými členy této třídy, a tak k nim aplikace může přistupovat. Dalším veřejným členem je případná chybová hláška. Dojde-li k chybě již při překladu jazyka TOML, není obsah kolekcí vymazán a lze tak použít data z předchozích iterací. Díky tomu, že metoda pro zpracování textového vstupu nic nevrací a třída si místo toho udržuje výsledky u sebe, není třeba řešit žádné kopírování nebo přesouvání většího objemu dat. Celé řešení si vystačí s referencemi.
+	Třída \texttt{Parser} je psána jako stavový automat. Aplikace obsahuje instanci této třídy a jako součást průchodu hlavní smyčkou volá její metodu \texttt{Parse}, kde vstupním parametrem je reference na řetězec s popisem diagramu. Kolekce se zpracovanými uzly a cestami jsou veřejnými členy této třídy, a tak k nim aplikace může přistupovat. Dalším veřejným členem je případná chybová hláška. Dojde-li k chybě již při překladu jazyka TOML, není obsah kolekcí vymazán a lze tak použít data z předchozích iterací. Díky tomu, že metoda pro zpracování textového vstupu nic nevrací a třída si místo toho udržuje výsledky u sebe, není třeba řešit žádné kopírování nebo přesouvání většího objemu dat. Takto si celé řešení vystačí s referencemi.
 	
 	\subsection{Vykreslení diagramu v knihovně Dear ImGui}
 	
-	Poté, co má třída \texttt{App} k dispozici informace o objektech v aktuálním diagramu, může jej začít vykreslovat. Obrázek \ref{_tag_img_DearMCanvasNodes} naznačuje, jak jsou dopočítány přesné souřadnice uzlů.
+	Poté, co má třída \texttt{App} k dispozici informace o objektech v aktuálním diagramu, může jej začít vykreslovat. Obrázek \ref{_tag_img_DearMCanvasNodes} naznačuje, jak jsou dopočítány přesné souřadnice těch uzlů, jejichž velikost je určena implicitně podle textového popisku. V této části kódu je již možné použít metody knihovny Dear ImGui, a tak je metodou \texttt{CalcTextSizeA} spočtena velikost textového popisku, ze které je pak odvozena velikost celého uzlu. Nemá-li uzel nastavený parametr \textit{pivot}, pak je na zadaných souřadnicích vykreslen jeho levý horní roh. Pokud je hodnota pivota nastavena např. na \texttt{"center"}, pak je uzel před vykreslením posunut o polovinu vypočtené velikosti, aby se na zadaných souřadnicích nacházel jeho střed.
 	
-	\temporary{\\ * Popne ID a získá patřičnou Node, pak probíhá zpracování alá druhý krok\\ * Souřadnice Z\\ * Detaily ohledně samotného plátna jakožto „widgetu“ v Dear ImGui}		
+	U závislých uzlů ještě dochází k posunu podle souřadnic rodiče. Přesné souřadnice rodiče jsou v danou chvíli již známy, protože jsou jednotlivé uzly zpracovány v pořadí určeném třídou \texttt{Parser}. Po zpracování každého uzlu jsou pro tento účel přesné souřadnice uloženy do mapy \texttt{m\_canvas\_nodes}. Dolní část obrázku ukazuje, jak je v jednoduchém diagramu postupně určena pozice závislého uzlu. Po stanovení přesné pozice je již možné tento uzel vykreslit.			
+	
+	%todo m\_canvas\_nodes obsahuje topleft, botright, center
 	
 	\begin{figure}[ht]
 		\centering
 		\includegraphics[width=\textwidth]{img/diag/m_canvas_nodes.pdf}
-		\caption{TBD}
+		\caption{Princip určení přesných pozic uzlů v diagramu}
 		\label{_tag_img_DearMCanvasNodes}
 	\end{figure}
 	
-	\subsection{Další přidané funkce}
+	Uzly diagramu jsou vykresleny pomocí metod struktury \texttt{ImDrawList}. Např. k vykreslení uzlu ve tvaru obdélníka je třeba volat \texttt{AddRectFilled} pro jeho výplň, \texttt{AddRect} pro okraj a nakonec \texttt{AddText} pro textový popisek. Tyto metody jsou pro každý uzel volány hned po určení přesných souřadnic, a tak pořadí vykreslování odpovídá pozici v prioritní frontě třídy \texttt{Parser}.
 	
-	\temporary{\\ * Zmínit toolbar funkce, to jak kombinace WYSIWYx přístupů koliduje\\ * Zmínit dnd ghost node, bude relevantní v Qt\\ * Zmínit kompletní pořadí operací ve smyčce a případy kdy bylo potřeba dát si na pořadí pozor}
+	Schéma pro popis diagramu povoluje parametr \textit{z}, který slouží pro přepínání „hloubky“ jednotlivých uzlů. Toho je docíleno pomocí tzv. kanálů (\textit{channels}), které lze během vykreslování přepínat. Nehledě na pořadí volání jsou objekty s nižším číslem kanálu vykresleny pod těmi s číslem vyšším.
+	
+	Následně jsou vykresleny cesty. Zde je zpracování mírně složitější, protože mezilehlé body mohou mít pro každou osu jiného rodiče, kde rodičem může být i jiný bod na této cestě. Zpracování může dále zkomplikovat textový popisek, cesta s více koncovými body, nebo parametr \textit{shift}. Každopádně jsou pro každou cestu postupně zpracovány její body a metoda \texttt{AddPolyline} pak přijímá kolekci těchto bodů.
+	
+	Diagram je takto vykreslován na kreslicí plátno. To v případě knihovny Dear ImGui není žádný speciální ovládací prvek. V podstatě se kreslí na prázdné místo v hlavním okně, které zde zbylo po přidání víceřádkového textového pole. V této fázi průchodu hlavní smyčkou je dočasně nastaveno, aby vykreslování pomocí struktury \texttt{ImDrawList} probíhalo pouze v této prázdné oblasti. Příliš velký diagram tedy nebude useknut, aby se nevykresloval přes ostatní části aplikace.
+	
+	Uživatel může v kreslicím plátně posouvat pohled držením pravého tlačítka myši a měnit úroveň přiblížení pomocí kolečka myši. Toho je docíleno neviditelným tlačítkem, které zabírá celou oblast plátna. Tlačítko slouží pouze pro zachycení interakcí. Samotné posunutí a změna velikosti vykresleného diagramu jsou realizovány dodatečnými výpočty během určování přesných pozic uzlů a cest. Výše popsaný princip toto pro zjednodušení nezmiňoval.
+	
+	Při posouvání pravým tlačítkem myši se podle pohybu kurzoru mění hodnota proměnné, která značí aktuální posun pohledu. Tato hodnota je přičítána k souřadnicím vykreslovaných uzlů až po jejich uložení do mapy \texttt{m\_canvas\_nodes}. Jedná se tedy o poslední operaci před samotným vykreslením.
+	
+	%todo s GLFW měním kurzor
+	
+	Kolečkem myši se pak mění hodnota proměnné, která určuje úroveň škálování. Touto hodnotou jsou hned na začátku zpracování vynásobeny souřadnice a velikost uzlu. Tím dochází ke zvětšení či zmenšení celého vykresleného diagramu.
+	
+	Hodnoty v mapě \texttt{m\_canvas\_nodes} tedy berou v potaz úroveň přiblížení, ale ne posun pohledu. Ten v mapě neuchovávám, protože to za mě vede na čistší kód. Uzly a jednotlivé body cest mohou mít své souřadnice určeny různými způsoby s tím, že v některých případech by bylo nutné k nim hodnotu posunu přičíst, a v některých ne. Ve zvoleném přístupu stačí hodnotu přičíst vždy jako poslední krok před vykreslením.
+	
+	Mapa \texttt{m\_canvas\_nodes} slouží kromě určování přesných pozic také pro určení, zdali se na souřadnicích nějakého uzlu právě nenachází kurzor myši. Proto je výhodné pozice uzlů uchovávat škálované. 😫😫😫
+	
+	\subsection{Další funkce aplikace v knihovně Dear ImGui}
+	
+	\temporary{\\ * Zmínit toolbar funkce, to jak kombinace WYSIWYx přístupů koliduje\\ * Zmínit dnd ghost node, bude relevantní v Qt\\ * Zmínit kompletní pořadí operací ve smyčce a případy kdy bylo potřeba dát si na pořadí pozor (to možná až na konci?)\\ * Zmínit SVG export \\ * Asi zmínit vše, co padlo v návrhu}
 	
 	\section{Implementace v knihovně egui}
 	

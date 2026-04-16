@@ -11,16 +11,12 @@
 
 #### Vykreslení diagramu
 
-* Popsat jak funguje canvas, není to žadný speciální widget, kreslíme „do prázdna“, invisible button, RMB to move, ...
 * "Font size based zooming", MW scroll nad canvasem celočíselně přičítá/odečítá velikosti písma v canvasu, ze kterého se pak odvodí celkový _canvas zoom level_; protože neceločíselná velikost písma v Dear ImGui produkuje mírně rozmazaný text (i po updatu na 1.92.6)
-  * Také když MW měnil přímo float zoom_level, tak se poměr velikosti písma a obdélníku v node mírně měnil, (velikost vykreslovaného písma je zaručena asi jen do určité přesnosti, která je nižší než pro vykreslování obdélníku)
-* Kreslení pomocí ImDrawList hned po tom, co si zpracuji informace od TOML parseru
-* ImDrawList má funkce pro obdélník, elipsu, čáru; kosočtverec a šipku jsem si „doimplementoval“.
-* ImDrawList umí přepínat vrstvy, takže lze snadno implementovat Z souřadnici
+* Také když MW měnil přímo float zoom_level, tak se poměr velikosti písma a obdélníku v node mírně měnil, (velikost vykreslovaného písma je zaručena asi jen do určité přesnosti, která je nižší než pro vykreslování obdélníku)
 
 #### Export diagramu do formátu SVG
 
-* Problémy: multiline text, rgba (webový prohlížeč to umí, ale můj inkscape a qView ne, dělám SVG aby to vypadalo správně i v těchto programech)
+* Problémy: multiline text, rgba (webový prohlížeč to umí, ale můj Inkscape a qView ne, dělám SVG aby to vypadalo správně i v těchto programech)
 * Používám mírně upravenou header only knihovnu simple-svg
 * Po kliknutí na export se pro příští frame nastaví proměnná typu _is\_svg\_requested_ na true, a v tomto průchodu smyčkou se kromě vykreslování buduje i SVG dokument. Moje logika, která volá simple-svg, se chová jako stavový automat.
 * Pro usnadnění před exportem resetuji canvas scrolling a zoom level.
