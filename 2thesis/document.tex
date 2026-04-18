@@ -300,7 +300,7 @@
 	
 	Navrhovaná aplikace na základě zadaného textového popisu vykreslí odpovídající diagram. Dělí se tedy na dvě hlavní části: víceřádkové textové pole a kreslicí plátno. Textové pole je základní ovládací prvek, který je ale relativně komplexní, a proto je vhodné jej použít jako jeden z hlavních stavebních kamenů ukázkové aplikace. Plátno pak pomůže prozkoumat schopnost knihoven vykreslovat programátorem definované objekty. Tedy vykreslování i něčeho jiného, než jsou základní ovládací prvky, které knihovna poskytuje.
 	
-	Při programování GUI aplikací se ale často pracuje právě se základními ovládacími prvky, a proto by je ukázková aplikace měla využívat. Nemělo by se však jednat pouze o „galerii ovládacích prvků“, kterou lze často najít jako příklad v dokumentaci dané knihovny. Použité ovládací prvky by měly dávat smysl v kontextu editoru diagramů. Proto navrhovaná aplikace obsahuje např. celočíselné vstupní pole pro změnu velikosti písma, posuvník (\textit{slider}) pro změnu přiblížení pohledu na diagram, nebo výběr barvy (\textit{color picker}) pro změnu barvy uzlu bez nutnosti zásahu do zdrojového textu daného diagramu.
+	Při programování GUI aplikací se ale často pracuje právě se základními ovládacími prvky, a proto by je ukázková aplikace měla využívat. Nemělo by se však jednat pouze o „galerii ovládacích prvků“, kterou lze často najít jako příklad v dokumentaci dané knihovny. Použité ovládací prvky by měly dávat smysl v kontextu editoru diagramů. Proto navrhovaná aplikace obsahuje např. celočíselné vstupní pole (\textit{NumericUpDown}, nebo také \textit{SpinBox}) pro změnu velikosti písma, posuvník (\textit{slider}) pro změnu úrovně přiblížení pohledu na diagram, nebo výběr barvy (\textit{color picker}), který umožní změnit barvu uzlu bez nutnosti zásahu do zdrojového textu daného diagramu.
 	
 	\begin{figure}[ht]
 		\centering
@@ -542,9 +542,7 @@
 	
 	Poté, co má třída \texttt{App} k dispozici informace o objektech v aktuálním diagramu, může jej začít vykreslovat. Obrázek \ref{_tag_img_DearMCanvasNodes} naznačuje, jak jsou dopočítány přesné souřadnice těch uzlů, jejichž velikost je určena implicitně podle textového popisku. V této části kódu je již možné použít metody knihovny Dear ImGui, a tak je metodou \texttt{CalcTextSizeA} spočtena velikost textového popisku, ze které je pak odvozena velikost celého uzlu. Nemá-li uzel nastavený parametr \textit{pivot}, pak je na zadaných souřadnicích vykreslen jeho levý horní roh. Pokud je hodnota pivota nastavena např. na \texttt{"center"}, pak je uzel před vykreslením posunut o polovinu vypočtené velikosti, aby se na zadaných souřadnicích nacházel jeho střed.
 	
-	U závislých uzlů ještě dochází k posunu podle souřadnic rodiče. Přesné souřadnice rodiče jsou v danou chvíli již známy, protože jsou jednotlivé uzly zpracovány v pořadí určeném třídou \texttt{Parser}. Po zpracování každého uzlu jsou pro tento účel přesné souřadnice uloženy do mapy \texttt{m\_canvas\_nodes}. Dolní část obrázku ukazuje, jak je v jednoduchém diagramu postupně určena pozice závislého uzlu. Po stanovení přesné pozice je již možné tento uzel vykreslit.			
-	
-	%todo m\_canvas\_nodes obsahuje topleft, botright, center
+	U závislých uzlů ještě dochází k posunu podle přesných souřadnic rodiče, které jsou v danou chvíli již známy. Jednotlivé uzly jsou totiž zpracovány v pořadí určeném třídou \texttt{Parser}. Po zpracování každého uzlu jsou pro tento účel vypočítané souřadnice uloženy do mapy \texttt{m\_canvas\_nodes}. Konkrétně jsou ukládány pozice levého horního rohu, pravého dolního rohu a středu. Z těchto třech bodů lze snadno dopočítat všechny ostatní pozice, které by mohl případný potomek referovat. Spodní část obrázku ukazuje, jak je v jednoduchém diagramu postupně určena pozice závislého uzlu. Po stanovení přesné pozice je již možné tento uzel vykreslit.
 	
 	\begin{figure}[ht]
 		\centering
@@ -557,25 +555,58 @@
 	
 	Schéma pro popis diagramu povoluje parametr \textit{z}, který slouží pro přepínání „hloubky“ jednotlivých uzlů. Toho je docíleno pomocí tzv. kanálů (\textit{channels}), které lze během vykreslování přepínat. Nehledě na pořadí volání jsou objekty s nižším číslem kanálu vykresleny pod těmi s číslem vyšším.
 	
-	Následně jsou vykresleny cesty. Zde je zpracování mírně složitější, protože mezilehlé body mohou mít pro každou osu jiného rodiče, kde rodičem může být i jiný bod na této cestě. Zpracování může dále zkomplikovat textový popisek, cesta s více koncovými body, nebo parametr \textit{shift}. Každopádně jsou pro každou cestu postupně zpracovány její body a metoda \texttt{AddPolyline} pak přijímá kolekci těchto bodů.
+	Následně jsou vykresleny cesty. Zde je zpracování mírně složitější, protože mezilehlé body mohou mít pro každou osu jiného rodiče. Rodičem navíc může být i jiný bod na této cestě. Zpracování může dále zkomplikovat textový popisek, cesta s více koncovými body, nebo parametr \textit{shift}. Každopádně jsou pro každou cestu postupně zpracovány její body a metoda \texttt{AddPolyline}, která slouží k vykreslení lomené čáry, pak přijímá kolekci těchto bodů.
 	
-	Diagram je takto vykreslován na kreslicí plátno. To v případě knihovny Dear ImGui není žádný speciální ovládací prvek. V podstatě se kreslí na prázdné místo v hlavním okně, které zde zbylo po přidání víceřádkového textového pole. V této fázi průchodu hlavní smyčkou je dočasně nastaveno, aby vykreslování pomocí struktury \texttt{ImDrawList} probíhalo pouze v této prázdné oblasti. Příliš velký diagram tedy nebude useknut, aby se nevykresloval přes ostatní části aplikace.
+	Diagram je vykreslován na kreslicí plátno, což v případě knihovny Dear ImGui není žádný speciální ovládací prvek. V podstatě se kreslí na prázdné místo v hlavním okně, které zde zbylo po přidání víceřádkového textového pole. V této fázi průchodu hlavní smyčkou je dočasně nastaveno, aby vykreslování pomocí struktury \texttt{ImDrawList} probíhalo pouze v této prázdné oblasti. Příliš velký diagram tedy bude „useknut“, aby se nevykresloval přes ostatní části aplikace.
 	
-	Uživatel může v kreslicím plátně posouvat pohled držením pravého tlačítka myši a měnit úroveň přiblížení pomocí kolečka myši. Toho je docíleno neviditelným tlačítkem, které zabírá celou oblast plátna. Tlačítko slouží pouze pro zachycení interakcí. Samotné posunutí a změna velikosti vykresleného diagramu jsou realizovány dodatečnými výpočty během určování přesných pozic uzlů a cest. Výše popsaný princip toto pro zjednodušení nezmiňoval.
+	Uživatel může v kreslicím plátně posouvat pohled držením pravého tlačítka myši a měnit úroveň přiblížení pomocí kolečka myši. Toho je docíleno ovládacím prvkem neviditelného tlačítka, které zabírá celou oblast plátna. Tlačítko slouží pouze pro zachycení interakcí. Samotné posunutí a změna velikosti vykresleného diagramu jsou realizovány dodatečnými výpočty během určování přesných pozic uzlů a cest. Výše popsaný princip tyto transformace pro zjednodušení nezmiňoval.
 	
-	Při posouvání pravým tlačítkem myši se podle pohybu kurzoru mění hodnota proměnné, která značí aktuální posun pohledu. Tato hodnota je přičítána k souřadnicím vykreslovaných uzlů až po jejich uložení do mapy \texttt{m\_canvas\_nodes}. Jedná se tedy o poslední operaci před samotným vykreslením.
+	Při posouvání pravým tlačítkem myši se podle pohybu kurzoru mění hodnota proměnné, která značí aktuální posun pohledu. Tato hodnota je přičítána k souřadnicím vykreslovaných uzlů až po jejich uložení do mapy \texttt{m\_canvas\_nodes}. Jedná se tedy o poslední operaci před samotným vykreslením. Kolečkem myši se pak mění hodnota proměnné, která určuje úroveň škálování. Touto hodnotou je hned na začátku zpracování vynásobena pozice a velikost uzlu, čímž dochází ke zvětšení či zmenšení celého vykresleného diagramu.
 	
-	%todo s GLFW měním kurzor
+	Hodnoty v mapě \texttt{m\_canvas\_nodes} tedy berou v potaz úroveň přiblížení, ale ne posun pohledu. Posun v mapě neuchovávám, protože to za mě vede na čistší kód. Uzly a jednotlivé body cest mohou mít své souřadnice určeny různými způsoby s tím, že v některých případech by bylo nutné k nim hodnotu posunu přičíst, a v některých ne. Ve zvoleném přístupu stačí hodnotu posunu přičíst vždy jako poslední krok před vykreslením.
 	
-	Kolečkem myši se pak mění hodnota proměnné, která určuje úroveň škálování. Touto hodnotou jsou hned na začátku zpracování vynásobeny souřadnice a velikost uzlu. Tím dochází ke zvětšení či zmenšení celého vykresleného diagramu.
-	
-	Hodnoty v mapě \texttt{m\_canvas\_nodes} tedy berou v potaz úroveň přiblížení, ale ne posun pohledu. Ten v mapě neuchovávám, protože to za mě vede na čistší kód. Uzly a jednotlivé body cest mohou mít své souřadnice určeny různými způsoby s tím, že v některých případech by bylo nutné k nim hodnotu posunu přičíst, a v některých ne. Ve zvoleném přístupu stačí hodnotu přičíst vždy jako poslední krok před vykreslením.
-	
-	Mapa \texttt{m\_canvas\_nodes} slouží kromě určování přesných pozic také pro určení, zdali se na souřadnicích nějakého uzlu právě nenachází kurzor myši. Proto je výhodné pozice uzlů uchovávat škálované. 😫😫😫
+	Mapa \texttt{m\_canvas\_nodes} slouží kromě určování přesných pozic také pro kontrolu, zdali se na souřadnicích nějakého uzlu právě nenachází kurzor myši. Pokud tomu tak je, pak se na obou osách kurzor nachází mezi levým horním a pravým dolním bodem uzlu, a proto je výhodné uchovávat souřadnice uzlů škálované. Této kontroly se využívá v některých dalších funkcích ukázkové aplikace.
 	
 	\subsection{Další funkce aplikace v knihovně Dear ImGui}
 	
-	\temporary{\\ * Zmínit toolbar funkce, to jak kombinace WYSIWYx přístupů koliduje\\ * Zmínit dnd ghost node, bude relevantní v Qt\\ * Zmínit kompletní pořadí operací ve smyčce a případy kdy bylo potřeba dát si na pořadí pozor (to možná až na konci?)\\ * Zmínit SVG export \\ * Asi zmínit vše, co padlo v návrhu}
+	Ukázková aplikace dále obsahuje panel nástrojů, jehož funkce využívají různých ovládacích prvků a měly by dále prohloubit poznání knihovny Dear ImGui. V části nad víceřádkovým textovým polem se nachází textový popisek, který informuje o aktuální pozici textového kurzoru v tomto poli. Konkrétně je vypsáno číslo řádku a číslo znaku v tomto řádku („číslo sloupce“), což je informace často zobrazovaná textovými editory. Tato funkce je ovšem dostupná pouze při použití textového pole z doplňku třetí strany. Výchozí ovládací prvek tyto informace veřejně neposkytuje.
+	
+	Dále se v panelu nástrojů nachází celočíselné vstupní pole, kterým lze měnit velikost písma v textovém poli. Knihovna pro tento účel poskytuje metodu \texttt{InputInt}, která vykreslí vstupní pole doprovázené dvěma tlačítky. Hodnotu dodané celočíselné proměnné lze měnit pomocí těchto tlačítek, nebo přímou editací textu ve vstupním poli. Omezení rozsahu musí být řešeno vlastní logikou, viz kód \ref{_tag_code_NumericUpDown}. Hodnota proměnné je pak použita při volání párových metod \texttt{PushFont} a \texttt{PopFont}, které kromě dočasné změny písma umožňují také měnit jeho velikost. Mezi voláními těchto metod se nachází veškerá obsluha víceřádkového textového vole, a proto velikost jeho písma odpovídá nastavené hodnotě.
+	
+	V části nad kreslicím plátnem se v panelu nástrojů nachází ovládací prvky, které umožňují editaci uzlů diagramu bez nutnosti zásahu do vstupního dokumentu. Uživatel musí nejprve kliknout na nějaký uzel, aby jej označil jako „vybraný“. Takový uzel je pak možné určitým způsobem editovat. Konkrétně se v této části panelu nástrojů nachází textový popisek, který zobrazuje identifikátor právě vybraného uzlu. Dále je zde výběr barev a rozbalovací seznam (\textit{drop-down list}).
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{img/dear_WYG_0}
+		\caption{Knihovna Dear ImGui: panel nástrojů, výběr uzlu}
+		\label{_tag_img_DearWYG0}
+	\end{figure}
+	
+	Výběr barev slouží ke změně barvy vybraného uzlu a je vykreslen metodou \texttt{ColorEdit4}, kde číslo \texttt{4} značí, že lze nastavit i alfa kanál. Obrázek \ref{_tag_img_DearWYG1} ukazuje, jak může uživatel změnit barvu vybraného uzlu. Pokud daný uzel ve vstupním dokumentu již obsahuje parametr \textit{color}, pak je jeho hodnota změněna podle uživatelem zvolené barvy. V opačném případě je tento parametr do vstupního dokumentu přidán.
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{img/dear_WYG_1}
+		\caption{Knihovna Dear ImGui: změna barvy uzlu}
+		\label{_tag_img_DearWYG1}
+	\end{figure}
+	
+	Očekávaná hodnota parametru \textit{color} je řetězec ve tvaru \texttt{\#RRGGBBAA}, což je stejný formát, který se nachází v dolní oblasti podokna výběru barev. Knihovna ovšem neposkytuje veřejný způsob, jak získat hodnotu tohoto zobrazeného řetězce. K dispozici je pouze čtyřprvková struktura, která je proto na žádaný řetězec převedena vlastní logikou. Aby bylo možné upravit hodnotu parametru ve vstupním dokumentu, je potřeba znát jeho umístění v řetězci. Pro potřebné parametry je proto při zpracování ukládána jejich pozice\dots
+	
+	\temporary{\\ * proto PQ obsahuje pouze IDs\\ * převod toml source na číslo znaku\\ * kolize WYSIWYx přístupů}
+	
+	Rozbalovací seznam slouží k ...	
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=.95\textwidth]{img/dear_WYG_2}
+		\caption{Knihovna Dear ImGui: změna tvaru uzlu}
+		\label{_tag_img_DearWYG2}
+	\end{figure}
+	
+	\temporary{\\ * Ikonky, PadRight \\ * Zmínit dnd ghost node, bude relevantní v Qt\\ * Zmínit SVG export \\ * Asi zmínit vše, co padlo v návrhu}
+	
+	\temporary{\\ Někde zmínit kompletní pořadí operací ve smyčce\\ a případy, kdy bylo potřeba dát si na pořadí pozor.}
 	
 	\section{Implementace v knihovně egui}
 	
@@ -604,6 +635,12 @@
 		\lstinputlisting[language=CppImGui]{code/hello_counter_imgui.cpp}
 		\caption{Kód demonstrující přístup IMGUI s využitím knihovny Dear ImGui}
 		\label{_tag_code_HelloCounterImGui}
+	\end{code}
+	
+	\begin{code}
+		\lstinputlisting[language=CppNumericUpDown]{code/numericupdown.cpp}
+		\caption{Porovnání knihoven: celočíselné vstupní pole}
+		\label{_tag_code_NumericUpDown}
 	\end{code}
 	
 \end{document}

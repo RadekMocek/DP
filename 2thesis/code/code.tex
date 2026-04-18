@@ -38,6 +38,13 @@
 }
 
 
+% Porovnání knihoven: celočíselné vstupní pole
+\lstdefinelanguage{CppNumericUpDown}[]{C++}{
+    , morekeywords = {constexpr}
+    , morendkeywords = {InputInt, clamp, QPointer, QSpinBox, setMinimum, setMaximum, setSingleStep, setValue, addWidget, connect}
+}
+
+
 % Highlight českých znaků
 \makeatletter
 \lst@InputCatcodes
@@ -59,6 +66,8 @@
     ^^^^016e^^^^016f% ů
     ^^^^0147^^^^0148% ň
     ^^^^0164^^^^0165% ť
+    ^^^^017d^^^^017e% ž
+    ^^^^201e^^^^201c% české uvozovky
 	^^00}
 \lst@RestoreCatcodes
 \makeatother

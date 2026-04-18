@@ -11,6 +11,7 @@
 
 #### Vykreslení diagramu
 
+* Při posouvání canvasu měním vzhled kurzoru pomocí GLFW
 * "Font size based zooming", MW scroll nad canvasem celočíselně přičítá/odečítá velikosti písma v canvasu, ze kterého se pak odvodí celkový _canvas zoom level_; protože neceločíselná velikost písma v Dear ImGui produkuje mírně rozmazaný text (i po updatu na 1.92.6)
 * Také když MW měnil přímo float zoom_level, tak se poměr velikosti písma a obdélníku v node mírně měnil, (velikost vykreslovaného písma je zaručena asi jen do určité přesnosti, která je nižší než pro vykreslování obdélníku)
 
@@ -65,6 +66,7 @@
 
 * Prozatím jen nesetříděné poznámky:
   * Oproti no dependency Dear ImGui má egui určitě nějaké závislosti
+  * TOMLEDIT místo TOML, kvůli source position
   * Cargo oproti CMake neumí kopírovat soubory do build složky
   * Vycházím z egui project template, která je od stejného autora, jako je samotná knihovna
     * Template už zde má připravenou struct App, glow renderer, ...
@@ -84,6 +86,7 @@
   * V Cpp od TOML knihovny dostávám umístění v kódu jako row+char_in_row, což se hodí pro Error Highlight, zde dostávám char_total, což se hodí při toolbar canvas interaction.
   * Egui painter neumí přepínat Z, pouze malířův algoritmus → implementována prioritní fronta draw commands.
   * PROBLÉM: Obecně se knihovny liší ve výšce řádku textu (projevuje se u nodes s víceřádkovým textem), zde to ale navíc vypadá, že to není konzistentní při zoomování (tedy výška řádku se mění s velikostí vykreslovaného písma?)
+* __Viz [problems](https://github.com/RadekMocek/DiagramPche_egui?tab=readme-ov-file#problems)__
 
 ### Implementace v Qt
 
@@ -106,6 +109,7 @@
     * Umí SVG export out-of-the-box
     * Umí vykreslit elipsu podle bounding rect, je potřeba nastavit painter pen a brush
     * Cesty definované pomocí kolekce bodů: kolekce musí obsahovat dvojice, které budou spojeny, tedy až na start a cíl jsou zde všechny body dvakrát
+* __Viz [problems](https://github.com/RadekMocek/DiagramPche_Qt?tab=readme-ov-file#problems)__
 
 ## Porovnání výsledků
 
