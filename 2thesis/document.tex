@@ -189,7 +189,7 @@
 	
 	To, že bude výsledná aplikace vypadat na všech platformách stejně, platí až na tzv. dekorace okna, jejichž vzhled je ovlivněn operačním systémem a desktopovým prostředím. Knihovny s přístupem IMGUI často vykreslují všechny ovládací prvky do jednoho „hostitelského“ okna, které jim poskytuje vybraný backend, a to včetně dialogových oken. Dodatečná okna jsou v tomto případě vykreslována a spravována samotnou knihovnou jako součást hostitelského okna, ze kterého je nelze přesunout „ven“. Nemodální dialogové okno bývá základním stavebním blokem IMGUI knihoven s tím, že pro simulaci hlavního okna aplikace se vytvoří dialogové okno o takové velikosti, aby zabralo celý prostor okna hostitelského. U tohoto hlavního okna je nastaveno, aby bylo vždy na pozadí, nevykreslovalo své záhlaví apod.
 	
-	Obrázek \ref{_tag_img_HelloCounterImguiQtWinLin} ukazuje čtyři instance demonstrační aplikace popsané v sekci \ref{Chapter2SectionHelloCounter} (čítač s pozdravem), která zde navíc zobrazuje dialogové okno. U instancí implementovaných v knihovně Qt (sloupec vpravo) není dialogové okno součástí okna hlavního, a proto jej lze přesunout na libovolné místo. Zároveň je ale vzhled okna závislý na vybrané platformě\footnote{Zde je třeba zmínit, že knihovna Qt již od verze 5 nabízí multiplatformní styl \textit{Fusion} \cite{online_qtfusion}. Lze tedy docílit stejného vzhledu aplikace na všech platformách. Ne vždy je ovšem tento styl výchozí.}.
+	Obrázek \ref{_tag_img_HelloCounterImguiQtWinLin} ukazuje čtyři instance demonstrační aplikace popsané v sekci \ref{Chapter2SectionHelloCounter} (čítač s pozdravem), která zde navíc zobrazuje dialogové okno. U instancí implementovaných v knihovně Qt (sloupec vpravo) není dialogové okno součástí okna hlavního, a proto jej lze přesunout na libovolné místo. Zároveň je ale vzhled tohoto okna závislý na vybrané platformě\footnote{Zde je třeba zmínit, že knihovna Qt již od verze 5 nabízí multiplatformní styl \textit{Fusion} \cite{online_qtfusion}. Lze tedy docílit stejného vzhledu aplikace na všech platformách. Ne vždy je ovšem tento styl výchozí.}.
 	
 	\begin{figure}[ht]
 		\centering
@@ -246,7 +246,7 @@
 	
 	Dear ImGui \cite{online_imguiwiki} je knihovna pro tvorbu GUI s přístupem IMGUI napsaná v jazyce C++. Její kód splňuje standard \textit{C++11} a v základu nepoužívá žádné standardní knihovny. Dear ImGui se často využívá ve videoherním průmyslu k tvorbě dynamických nástrojů pro ladění. Knihovna je psaná tak, aby šla snadno integrovat do existujícího projektu s libovolným backendem. Základním stavebním prvkem je proto nemodální dialogové okno. Knihovna umožňuje vytvořit takové okno, které nemá žádné dekorace, zůstává na pozadí a zabírá celý prostor okna hostitelského.
 	
-	Knihovna nemá žádnou oficiální dokumentaci, která by pokrývala všechny její funkce. Poskytuje ale metodu pro zobrazení ukázkového okna, které obsahuje dostupné ovládací prvky v různých nastaveních. Nastavením ovládacího prvku se v tomto případě myslí dodání proměnné s určitými příznaky (\textit{flags}). U textového pole existují např. příznaky typu „pouze pro čtení“ nebo „zalamuj dlouhé řádky“. Najde-li programátor v ukázkovém okně chtěnou funkci, její implementaci pak snadno dohledá ve zdrojovém kódu tohoto okna. Pomoci mohou také občasné komentáře ve zdrojovém kódu samotné knihovny, nebo dokumentace některého z jejích wrapperů. I přes absenci oficiální dokumentace nebývá díky relativně velké komunitě problém najít odpovědi na základní problémy. Velká komunita okolo knihovny Dear ImGui se projevuje také existencí řady doplňků. Časté jsou doplňky pro animace, grafy, prohlížení souborů, nebo pokročilejší textové editory.
+	Knihovna nemá žádnou oficiální dokumentaci, která by pokrývala všechny její funkce. Poskytuje ale metodu pro zobrazení ukázkového okna, které obsahuje dostupné ovládací prvky v různých nastaveních. Nastavením ovládacího prvku se v tomto případě myslí dodání proměnné s určitými příznaky (\textit{flags}). U textového pole existují např. příznaky typu „pouze pro čtení“ nebo „zalamuj dlouhé řádky“. Najde-li programátor v ukázkovém okně chtěnou funkci, její implementaci pak snadno dohledá ve zdrojovém kódu tohoto okna. Pomoci mohou také občasné komentáře ve zdrojovém kódu samotné knihovny, nebo dokumentace některé z odvozených knihoven. I přes absenci oficiální dokumentace nebývá díky relativně velké komunitě problém najít odpovědi na základní problémy. Velká komunita okolo knihovny Dear ImGui se projevuje také existencí řady doplňků. Časté jsou doplňky pro animace, grafy, prohlížení souborů, nebo pokročilejší textové editory.
 	
 	Dear ImGui poskytuje ovládací prvek víceřádkového textového pole, který lze zobrazit voláním metody \texttt{InputTextMultiline}. Oproti ostatním knihovnám s přístupem IMGUI má textové pole v této knihovně relativně hodně funkcí. Ve své výchozí podobě vykresluje obsah staticky alokovaného pole znaků, součástí knihovny je ale i volitelná implementace pro \texttt{std::string}. Je-li použito vlastní písmo, které podporuje české znaky, není pak problém tyto znaky zobrazit v textovém poli. Výchozí písmo, které je součástí knihovny, totiž všechny české znaky neobsahuje. Zvýrazňování syntaxe tento ovládací prvek nepodporuje, veškerý text může mít pouze jednu společnou barvu.
 	
@@ -266,6 +266,8 @@
 	
 	\subsection{Knihovna Nuklear}
 	
+	Nuklear je knihovna pro tvorbu GUI s přístupem IMGUI napsaná v jazyce C.
+	
 	% Dříve "zahnrad.h"
 	% https://github.com/Immediate-Mode-UI/Nuklear/wiki
 	% Pak automatický Doxygen z komentářů v header file; problém; kód není kompletně zdokumentovaný
@@ -276,20 +278,28 @@
 	
 	\subsection{Knihovna microui}
 	
+	Microui je knihovna pro tvorbu GUI s přístupem IMGUI napsaná v jazyce C.
+	
 	% COMMUNITY FORK?: https://github.com/rxi/microui/issues/79
 	%                  https://github.com/microui-community/microui
 	% POST YOUR SCREENSHOT: https://github.com/rxi/microui/issues/35
 	
 	\subsection{Knihovna raygui}
 	
+	Raygui je knihovna pro tvorbu GUI s přístupem IMGUI napsaná v jazyce C.
+	
 	% * https://github.com/raysan5/rguilayout
 	% * Editable multiline textbox not supported
 	
 	\subsection{Knihovna Gio}
 	
+	Gio je knihovna pro tvorbu GUI s přístupem IMGUI napsaná v jazyce Go.
+	
 	% * https://github.com/oligo/gioview
 	
 	\subsection{Knihovna dvui}
+	
+	Dvui je knihovna pro tvorbu GUI s přístupem IMGUI napsaná v jazyce Zig.
 	
 	\section{Knihovna Qt}
 	
@@ -301,7 +311,7 @@
 	
 	Navrhovaná aplikace na základě zadaného textového popisu vykreslí odpovídající diagram. Dělí se tedy na dvě hlavní části: víceřádkové textové pole a kreslicí plátno. Textové pole je základní ovládací prvek, který je ale relativně komplexní, a proto je vhodné jej použít jako jeden z hlavních stavebních kamenů ukázkové aplikace. Plátno pak pomůže prozkoumat schopnost knihoven vykreslovat programátorem definované objekty. Tedy vykreslování i něčeho jiného, než jsou základní ovládací prvky, které knihovna poskytuje.
 	
-	Při programování GUI aplikací se ale často pracuje právě se základními ovládacími prvky, a proto by je ukázková aplikace měla využívat. Nemělo by se však jednat pouze o „galerii ovládacích prvků“, kterou lze často najít jako příklad v dokumentaci dané knihovny. Použité ovládací prvky by měly dávat smysl v kontextu editoru diagramů. Proto navrhovaná aplikace obsahuje např. celočíselné vstupní pole (\textit{NumericUpDown}, nebo také \textit{SpinBox}) pro změnu velikosti písma, posuvník (\textit{slider}) pro změnu úrovně přiblížení pohledu na diagram, nebo výběr barvy (\textit{color picker}), který umožní změnit barvu uzlu bez nutnosti zásahu do zdrojového textu daného diagramu.
+	Při programování GUI aplikací se ale často pracuje právě se základními ovládacími prvky, a proto by je ukázková aplikace měla využívat. Nemělo by se však jednat pouze o „galerii ovládacích prvků“, kterou lze často najít jako příklad v dokumentaci dané knihovny. Použité ovládací prvky by měly dávat smysl v kontextu editoru diagramů. Proto navrhovaná aplikace obsahuje např. celočíselné vstupní pole (\textit{spinbox}) pro změnu velikosti písma, posuvník (\textit{slider}) pro změnu úrovně přiblížení pohledu na diagram, nebo výběr barvy (\textit{color picker}), který umožní změnit barvu uzlu bez nutnosti zásahu do zdrojového textu daného diagramu.
 	
 	\begin{figure}[ht]
 		\centering
@@ -404,6 +414,7 @@
 	Pro zprovoznění knihovny Dear ImGui je potřeba do minimálního projektu přidat nějaký backend. Z důvodu předchozí zkušenosti jsem zvolil OpenGL s knihovnou \textit{Glad} pro načtení funkcí a \textit{GLFW} pro správu oken. Dále jsem do projektu přidal knihovnu \textit{FreeType} pro vykreslování textu, kterou je možné v Dear ImGui použít namísto výchozí knihovny \textit{stb-truetype}. FreeType je sice o dost větší knihovna, nabízí ale kvalitnější vykreslování písma. Knihovna stb-truetype měla navíc v době psaní poslední aktualizaci v roce 2021. Jako písmo pro celý projekt jsem zvolil \textit{\mbox{Inconsolata}}. Jedná se o písmo, které podporuje české znaky, má permisivní licenci a je neproporcionální (\textit{monospace}). %V běžných GUI aplikacích se takovéto písmo používá např. pro pole textového editoru
 
 	%TODO zmínit github issue
+	//TODO \href{https://github.com/ocornut/imgui/issues/9348}{\textit{issue \#9348}} na platformě GitHub
 
 	Po dokončení minimálního projektu bylo možné začít implementovat jednotlivé funkce aplikace. Většinu funkcí včetně hlavní smyčky pokrývá třída \texttt{App}, která je definována v hlavičkovém souboru. Logika aplikace je rozdělena do menších celků v podobě metod. Ty jsou definovány ve větším množství implementačních souborů, do kterých jsou roztříděny podle toho, čím se zabývají. Je-li potřeba, aby více metod přistupovalo ke stejným datům, musí se jednat o členy jejich třídy. Pro data, která jsou potřeba pouze v jedné konkrétní metodě, lze použít klíčové slovo \texttt{static}. Toho se využívá v metodách, které se starají o určitou část GUI a které jsou tedy volány pravidelně s průchodem smyčky.
 	
@@ -411,12 +422,12 @@
 
 	\subsection{Tvorba uživatelského rozhraní v knihovně Dear ImGui}
 
-	Princip práce s knihovnou Dear ImGui byl naznačen v sekci \ref{Chapter2SectionHelloCounter}. Knihovna se chová jako stavový automat a poskytuje tak řadu „párových metod“ pro tvorbu základního rámce uživatelského rozhraní. Příkladem jsou metody \texttt{BeginMainMenuBar} a \texttt{EndMainMenuBar}. Po zavolání první metody se všechna další volání knihovny vztahují k hlavní liště nabídek. Jakmile je práce s touto lištou v aplikačním kódu dokončena, je třeba zavolat metodu druhou. Není-li „uzavírající“ metoda zavolána, pak knihovna tuto chybu hlásí za běhu uvnitř uživatelského rozhraní (viz obrázek \ref{_tag_img_DearRuntimeError}). V Dear ImGui může mít každé okno svou vlastní lištu nabídek a ta hlavní je interně řešena tak, že je vytvořeno speciální okno obsahující pouze tuto lištu. Proto chybová hláška oznamuje neuzavření lišty (\texttt{EndMenuBar}) a neuzavření okna (\texttt{End}). Alternativně by šlo vytvořit pouze hlavní okno a do něj přidat lištu vlastní. Řešení s nezávislou hlavní lištou se ale objevuje v oficiálním příkladu použití knihovny, a proto jsem jej zvolil.
+	Princip práce s knihovnou Dear ImGui byl naznačen v sekci \ref{Chapter2SectionHelloCounter}. Knihovna se chová jako stavový automat a poskytuje tak řadu „párových metod“ pro tvorbu základního rámce uživatelského rozhraní. Příkladem jsou metody \texttt{BeginMainMenuBar} a \texttt{EndMainMenuBar}. Po zavolání první metody se všechna další volání knihovny vztahují k hlavní liště nabídek. Jakmile je práce s touto lištou v aplikačním kódu dokončena, je třeba zavolat metodu druhou. Není-li „uzavírající“ metoda zavolána, pak knihovna tuto chybu hlásí za běhu uvnitř uživatelského rozhraní (obrázek \ref{_tag_img_DearRuntimeError}). V Dear ImGui může mít každé okno svou vlastní lištu nabídek a ta hlavní je interně řešena tak, že je vytvořeno speciální okno obsahující pouze tuto lištu. Proto chybová hláška oznamuje neuzavření lišty (\texttt{EndMenuBar}) a neuzavření okna (\texttt{End}). Alternativně by šlo vytvořit pouze hlavní okno a do něj přidat lištu vlastní. Řešení s nezávislou hlavní lištou se ale objevuje v oficiálním příkladu použití knihovny, a proto jsem jej zvolil.
 
 	\begin{figure}[ht]
 		\centering
 		\includegraphics[width=\textwidth]{img/dear_runtime_error}
-		\caption{Knihovna Dear ImGui: oznámení chyby za běhu}
+		\caption{Dear ImGui: oznámení chyby za běhu}
 		\label{_tag_img_DearRuntimeError}
 	\end{figure}
 
@@ -424,12 +435,12 @@
 
 	V kontextu okna už lze vykreslovat ovládací prvky. Knihovna interně pracuje s „kreslícím kurzorem“, který po vytvoření okna ukazuje do jeho levé horní části. Je-li zavolána metoda pro přidání ovládacího prvku, tak je tento prvek vykreslen na pozici kreslícího kurzoru. Po přidání daného prvku se kreslící kurzor posouvá na novou pozici a je připraven na další prvek. Pokud je např. dvakrát zavolána metoda \texttt{Button}, budou se v okně pod sebou nacházet dvě vykreslená tlačítka.
 	
-	Knihovna si uchovává o vykreslených ovládacích prvcích určité údaje a ke každému má přidělen identifikátor. Ten musí být unikátní a je vypočten jako hash \textit{popisku} a \textit{rodiče}. V případě okna s tlačítkem se jedná o textový popisek tlačítka a název daného okna. To znamená, že když jedno okno obsahuje více tlačítek se stejným popiskem, dochází ke kolizi. Kolize je opět oznámena jako chyba za běhu a může se projevit nefunkčností některého z dotčených ovládacích prvků. Vypočtený hash navíc nebere v potaz typ objektu, ke kolizi tedy může dojít i s použitím více druhů ovládacích prvků (viz obrázek \ref{_tag_img_DearIDConflict}). Tento problém se dá vyřešit dvojicí metod \texttt{PushID} a \texttt{PopID}, nebo speciálním formátem popisku. Obsahuje-li popisek dvě po sobě jdoucí znaky mřížky, pak od této části již není jeho text vykreslen. Díky tomu lze definovat více prvků, které mají odlišné popisky, ale jejich vykreslená část je totožná. \cite{online_imguiwiki}
+	Knihovna si uchovává o vykreslených ovládacích prvcích určité údaje a ke každému má přidělen identifikátor. Ten musí být unikátní a je vypočten jako hash \textit{popisku} a \textit{rodiče}. V případě okna s tlačítkem se jedná o textový popisek tlačítka a název daného okna. To znamená, že když jedno okno obsahuje více tlačítek se stejným popiskem, dochází ke kolizi. Kolize je opět oznámena jako chyba za běhu a může se projevit nefunkčností některého z dotčených ovládacích prvků. Vypočtený hash navíc nebere v potaz typ objektu, ke kolizi tedy může dojít i s použitím více druhů ovládacích prvků (obrázek \ref{_tag_img_DearIDConflict}). Tento problém se dá vyřešit dvojicí metod \texttt{PushID} a \texttt{PopID}, nebo speciálním formátem popisku. Obsahuje-li popisek dvě po sobě jdoucí znaky mřížky, pak od této části již není jeho text vykreslen. Díky tomu lze definovat více prvků, které mají odlišné popisky, ale jejich vykreslená část je totožná. \cite{online_imguiwiki}
 
 	\begin{figure}[ht]
 		\centering
 		\includegraphics[width=\textwidth]{img/dear_id_conflict}
-		\caption{Knihovna Dear ImGui: konflikt identifikátorů pro ovládací prvky}
+		\caption{Dear ImGui: konflikt identifikátorů pro ovládací prvky}
 		\label{_tag_img_DearIDConflict}
 	\end{figure}
 
@@ -445,19 +456,19 @@
 
 	V hlavním okně nyní zbývá vykreslit pouze stavový řádek. Ten může zobrazovat text chyby, kterou nahlašuje třída pro zpracování textu popisujícího diagram. Není-li nahlášena žádná chyba, pak není třeba nic vykreslovat. Při absenci chybového textu zde zůstane prázdný prostor, protože výška podoken nad stavovým řádkem je nastavena tak, aby byla co nejvyšší, ale tento prostor nezabírala. Při nahlášené chybě je v tomto prostoru vypsána chybová hláška červeným písmem. Barevného textu lze dosáhnout použitím párových metod \texttt{PushStyleColor} a \texttt{PopStyleColor}.
 	
-	Pokud je okno příliš zmenšené, tak se může stát, že se do něj celá chybová hláška nevejde. V takových případech je nutné dávat pozor na horizontální posouvání: Není-li oknu předán příznak \texttt{NoScrollWithMouse}, může uživatel pomocí klávesy \textit{Shift} a kolečka myši celým oknem posouvat i přes to, že není zobrazena horizontální posuvná lišta (viz obrázek \ref{_tag_img_DearHorScroll}). Posouvání jsem proto zakázal a v případě malého okna s dlouho chybovou hláškou přidal kontextovou nápovědu (\textit{tooltip}), která vždy zobrazí celý chybový text (viz obrázek \ref{_tag_img_DearTooltip}). Jelikož je celá aplikace vykreslována do hostitelského okna, nemůže jej kontextová nápověda „opustit“.
+	Pokud je okno příliš zmenšené, tak se může stát, že se do něj celá chybová hláška nevejde. V takových případech je nutné dávat pozor na horizontální posouvání: Není-li oknu předán příznak \texttt{NoScrollWithMouse}, může uživatel pomocí klávesy \textit{Shift} a kolečka myši celým oknem posouvat i přes to, že není zobrazena horizontální posuvná lišta (obrázek \ref{_tag_img_DearHorScroll}). Posouvání jsem proto zakázal a v případě malého okna s dlouho chybovou hláškou přidal kontextovou nápovědu (\textit{tooltip}), která vždy zobrazí celý chybový text (obrázek \ref{_tag_img_DearTooltip}). Jelikož je celá aplikace vykreslována do hostitelského okna, nemůže jej kontextová nápověda „opustit“.
 
 	\begin{figure}[ht]
 		\centering
 		\includegraphics[width=\textwidth]{img/dear_hor_scroll}
-		\caption{Knihovna Dear ImGui: Problém horizontálního posouvání}
+		\caption{Dear ImGui: problém horizontálního posouvání}
 		\label{_tag_img_DearHorScroll}
 	\end{figure}
 
 	\begin{figure}[ht]
 		\centering
 		\includegraphics[width=.76\textwidth]{img/dear_tooltip}
-		\caption{Knihovna Dear ImGui: Kontextová nápověda}
+		\caption{Dear ImGui: kontextová nápověda}
 		\label{_tag_img_DearTooltip}
 	\end{figure}
 
@@ -478,11 +489,11 @@
 	\begin{figure}[ht]
 		\centering
 		\includegraphics[width=.82\textwidth]{img/diag/err_high.pdf}
-		\caption{Knihovna Dear ImGui: Výpočet pozice zvýraznění chyby}
+		\caption{Dear ImGui: výpočet pozice zvýraznění chyby}
 		\label{_tag_img_DearErrHigh}
 	\end{figure}
 
-	Jednou z žádoucích funkcí aplikace je zvýrazňování syntaxe, kterou ale výchozí textové pole nepodporuje. Proto jsem do projektu přidal doplněk třetí strany \mbox{\textit{ImGuiColorTextEdit}} \cite{online_imguicolortextedit}. Tento doplněk není v aktivním vývoji a v době psaní už se pravděpodobně nejedná o nejlepší způsob, jak do projektu v knihovně Dear ImGui přidat zvýrazňování syntaxe. Když jsem ale implementoval ukázkovou aplikaci, jednalo se o jediný doplněk tohoto typu, který byl vystaven v sekci doplňků na \textit{Dear ImGui wiki}. Od té doby zde přibyl odkaz na fork\footnote{„Fork“ je na platformě GitHub nezávislá kopie nějakého repozitáře. Oproti větvím (\textit{branches}) je možné s touto kopií volněji experimentovat bez jakéhokoliv zásahu do původního projektu \cite{online_githubfork}. Pro tento termín neexistuje zavedený český překlad.} tohoto projektu, který je v aktivním vývoji. Problémy, které jsou později zmíněny, proto už mohou být v této verzi vyřešeny. Při výběru doplňku jsem kontroloval i jeho forky, ale bylo jich několik aktivních a usoudil jsem, že programátor se nejčastěji setká právě s originálním repozitářem. Nově doporučovaná verze doplňku je navíc forkem jiného forku, takže není ve výchozím zobrazení na platformě GitHub vidět.
+	Jednou z žádoucích funkcí aplikace je zvýrazňování syntaxe, kterou ale výchozí textové pole nepodporuje. Proto jsem do projektu přidal doplněk třetí strany \mbox{\textit{ImGuiColorTextEdit}} \cite{online_imguicolortextedit}. Tento doplněk není v aktivním vývoji a v době psaní už se pravděpodobně nejedná o nejlepší způsob, jak do projektu v knihovně Dear \mbox{ImGui} přidat zvýrazňování syntaxe. Když jsem ale implementoval ukázkovou aplikaci, jednalo se o jediný doplněk tohoto typu, který byl vystaven v sekci doplňků na \textit{Dear ImGui wiki}. Od té doby zde přibyl odkaz na fork\footnote{„Fork“ je na platformě GitHub nezávislá kopie nějakého repozitáře. Oproti větvím (\textit{branches}) je možné s touto kopií volněji experimentovat bez jakéhokoliv zásahu do původního projektu \cite{online_githubfork}. Pro tento termín neexistuje zavedený český překlad.} tohoto projektu, který je v aktivním vývoji. Problémy, které jsou později zmíněny, proto už mohou být v této verzi vyřešeny. Při výběru doplňku jsem kontroloval i jeho forky, ale bylo jich několik aktivních a usoudil jsem, že programátor se nejčastěji setká právě s originálním repozitářem. Nově doporučovaná verze doplňku je navíc forkem jiného forku, takže není ve výchozím zobrazení na platformě GitHub vidět.
 
 	Tento doplněk se nechová jako standardní ovládací prvek v přístupu IMGUI a jeho rozhraní spíše připomíná přístup RMGUI. Není zde tedy metoda pro vykreslení ovládacího prvku, která by dostala jako parametr referenci na řetězec se zdrojovým textem a případné příznaky. Místo toho pracuje aplikace s instancí třídy \texttt{TextEditor}, u které se s každým průchodem smyčky volá metoda \texttt{Render}. Ovládací prvek si udržuje stav textového obsahu u sebe a pro práci s tímto textem v aplikačním kódu je nutné využít metod \texttt{GetText} a \texttt{SetText}.
 	
@@ -501,7 +512,7 @@
 	\begin{figure}[ht]
 		\centering
 		\includegraphics[width=\textwidth]{img/dear_textedits}
-		\caption{Knihovna Dear ImGui: Víceřádkové textové pole}
+		\caption{Dear ImGui: víceřádkové textové pole}
 		\label{_tag_img_DearTextedits}
 	\end{figure}
 
@@ -579,7 +590,7 @@
 	\begin{figure}[ht]
 		\centering
 		\includegraphics[width=\textwidth]{img/dear_WYG_0}
-		\caption{Knihovna Dear ImGui: panel nástrojů, výběr uzlu}
+		\caption{Dear ImGui: panel nástrojů, výběr uzlu}
 		\label{_tag_img_DearWYG0}
 	\end{figure}
 	
@@ -588,7 +599,7 @@
 	\begin{figure}[ht]
 		\centering
 		\includegraphics[width=\textwidth]{img/dear_WYG_1}
-		\caption{Knihovna Dear ImGui: změna barvy uzlu}
+		\caption{Dear ImGui: změna barvy uzlu}
 		\label{_tag_img_DearWYG1}
 	\end{figure}
 	
@@ -600,41 +611,99 @@
 	
 	Problém, který se objevil v této aplikaci, je s vymazáním historie změn. Jakmile uživatel změní barvu uzlu pomocí ovládacího prvku, nelze již v textovém poli vrátit změny klávesovou zkratkou \textit{Ctrl} + \textit{Z}. Pro zprovoznění této funkce by bylo nutné buď upravit ovládací prvek textového pole tak, aby bral v potaz externí změny, nebo přijít s kompletně vlastním řešením historie změn.
 	
-	Další parametr, který lze změnit mimo textový editor, je tvar uzlu. K tomu slouží přidaný rozbalovací seznam (viz obrázek \ref{_tag_img_DearWYG2}). Knihovna Dear ImGui pro jeho vykreslení poskytuje párové metody \texttt{BeginCombo} a \texttt{EndCombo}. Mezi nimi lze volat jakékoliv jiné metody ovládacích prvků, které se pak vykreslí v rozbaleném seznamu. Náhled ovládacího prvku se nastavuje samostatně, a nemusí tak odpovídat vybrané položce. Jedná se o relativně všestrannější a složitější přístup, a proto jsem pro účely aplikace implementoval pomocnou funkci. Ta za pomoci šablony (\texttt{template}) přijímá pole \texttt{std::array} o libovolném počtu řetězců a vykresluje odpovídající „tradiční“ rozbalovací seznam.
+	Další parametr, jehož hodnotu lze měnit mimo textový editor, je tvar uzlu. K tomu slouží přidaný rozbalovací seznam (obrázek \ref{_tag_img_DearWYG2}). Knihovna Dear ImGui pro jeho vykreslení poskytuje párové metody \texttt{BeginCombo} a \texttt{EndCombo}. Mezi nimi lze volat jakékoliv jiné metody ovládacích prvků, které se pak vykreslí v rozbaleném seznamu. Náhled ovládacího prvku se nastavuje samostatně, a nemusí tak odpovídat vybrané položce. Jedná se tedy o relativně všestrannější a složitější přístup, a proto jsem pro účely aplikace implementoval pomocnou funkci. Ta za pomoci šablony (\textit{\mbox{template}}) přijímá pole \texttt{std::array} o libovolném počtu řetězců a vykresluje odpovídající „tradiční“ rozbalovací seznam.
 	
 	\begin{figure}[ht]
 		\centering
 		\includegraphics[width=.95\textwidth]{img/dear_WYG_2}
-		\caption{Knihovna Dear ImGui: změna tvaru uzlu}
+		\caption{Dear ImGui: změna tvaru uzlu}
 		\label{_tag_img_DearWYG2}
 	\end{figure}
 	
-	Jednotlivé položky seznamu mají svou vlastní ikonu. Pro jejich vykreslení jsem využil písmo s ikonami od komunity \textit{Pictogrammers}. Tento font je při startu aplikace sloučen s fontem Inconsolata, takže pro účel kreslení ikon není třeba nic přepínat. Vybrané písmo definuje své ikony v rozsahu, který je podle standardu Unicode \cite{std_unicode} nazýván jako \textit{Private Use Area}. Znaky v této oblasti nemají standardem specifikovaný význam a jsou vyhrazeny pro „soukromé použití“. K usnadnění zápisu používám hlavičkový soubor z repozitáře \textit{IconFontCppHeaders}, který pro jednotlivé znaky definuje makra. Kód \ref{_tag_code_DearCombo} ukazuje\dots
+	Jednotlivé položky seznamu mají svou vlastní ikonu. Pro jejich vykreslení jsem využil písmo s ikonami od komunity \textit{Pictogrammers}. Tento font je při startu aplikace sloučen s fontem Inconsolata, takže pro účel kreslení ikon není třeba nic přepínat. Vybrané písmo definuje své ikony v rozsahu, který je podle standardu Unicode \cite{std_unicode} nazýván jako \textit{Private Use Area}. Znaky v této oblasti nemají standardem specifikovaný význam a jsou vyhrazeny pro „soukromé použití“. K usnadnění zápisu používám hlavičkový soubor z repozitáře \textit{IconFontCppHeaders}, který pro jednotlivé znaky definuje makra.
+	
+	Kód \ref{_tag_code_DearCombo} ukazuje vykreslení rozbalovacího seznamu, který slouží pro změnu tvaru uzlu. Je zde použita vlastní pomocná funkce, která přijímá pole položek. Jednotlivé položky pak využívají maker pro přidání ikon. Ve výchozím stavu je ovládací prvek příliš široký, a tak je pro něj nastavena šířka explicitně. Knihovna sice poskytuje příznak, který nastaví šířku prvku automaticky podle právě vybrané položky, pak se ale s výběrem jiné položky může šířka změnit. To by šlo řešit doplněním kratších řetězců mezerami, zvolené řešení se mi ale zdálo čistší.
 	
 	\begin{code}[ht]
-		\lstinputlisting[language=CppDearCombo]{code/dear_combo.cpp}
-		\caption{TBD}
+		\lstinputlisting[language=CppDearComboSlider]{code/dear_combo.cpp}
+		\caption{Dear ImGui: rozbalovací seznam s tvarem uzlu}
 		\label{_tag_code_DearCombo}
 	\end{code}
 	
-	Mezery zprava protože\dots pro účely nabídky se 4 položkami dostačující, jinak by se muselo přijít s robustnějším řešením \dots
+	Kromě hlavního panelu nástrojů má aplikace také druhý panel, který je umístěn vespod kreslicího plátna. V jeho pravé části se nachází posuvník pro změnu úrovně přiblížení diagramu. K vykreslení posuvníku v pravé části panelu je potřeba posunout kreslící kurzor knihovny Dear ImGui tak, aby zbývalo místo pouze pro tento ovládací prvek (kód \ref{_tag_code_DearSlider}).
+	
+	\begin{code}[ht]
+		\lstinputlisting[language=CppDearComboSlider]{code/dear_slider.cpp}
+		\caption{Dear ImGui: posuvník v pravé části panelu}
+		\label{_tag_code_DearSlider}
+	\end{code}
+	
+	Úrovně přiblížení diagramu jsou odvozeny od velikosti písma, které je použito pro textové popisky uzlů a cest. Každá dostupná úroveň přiblížení odpovídá nějakému celému číslu, protože neceločíselné velikosti písma mohou vést na mírně rozmazaný text. Konkrétní rozsah hodnot je 6–30 s velikostí kroku 4. Posuvník v knihovně Dear ImGui umožňuje omezit rozsah, ale nepodporuje nastavení velikosti kroku. Proto musely být povolené hodnoty přiblížení „namapovány“ na hodnoty posuvníku.
+	
+	V levé části sekundárního panelu se nachází čtveřice tlačítek s ikonami, kde každé odpovídá jednomu dostupnému tvaru uzlu. Tato tlačítka mohou být stylem „táhni a pusť“ (\textit{drag and drop}) přetažena na plátno, čímž se na pozici kurzoru myši objeví nový uzel. Během tažení je pod kurzorem vykreslen náhledový uzel, který naznačuje, kde se bude nový uzel po puštění tlačítka myši nacházet (obrázek \ref{_tag_img_DearDND}).
 	
 	\begin{figure}[ht]
 		\centering
-		\includegraphics[width=.85\textwidth]{img/dear_dnd}
-		\caption{Knihovna Dear ImGui: TBD}
+		\includegraphics[width=.84\textwidth]{img/dear_dnd}
+		\caption{Dear ImGui: funkce „táhni a pusť“}
 		\label{_tag_img_DearDND}
 	\end{figure}
 	
-	\temporary{\\ * SCT :: slider a dnd ghost node \\ * Nevyužívám poskytnuté dnd funkcionality \\ * A tak dále, viz papír na mém stole}
+	Knihovna Dear ImGui poskytuje \textit{drag and drop} funkce, které uživateli umožňují např. zkopírovat hodnotu z jednoho ovládacího do druhého, nebo měnit pořadí položek v seznamu. Pro účel přidání uzlu do plátna jsem ale poskytnuté funkce nevyužil, protože nejsou v tomto případě potřeba. Jakmile uživatel klikne na některé z tlačítek, nastaví se logická proměnná \texttt{m\_is\_dragndropping\_node} na \textit{true}. Tuto hodnotu si proměnná drží, dokud uživatel nepustí levé tlačítko myši, což lze kontrolovat metodou \texttt{IsMouseDown}. Pokud k tomu dojde ve chvíli, kdy se kurzor nachází v oblasti plátna, tak je do vstupního dokumentu přidána definice nového uzlu. Hodnotou logické proměnné je podmíněno vykreslení náhledového uzlu, které funguje na stejném principu jako vykreslení všech ostatních uzlů.
+
+	Do aplikace jsem dále přidal možnost uložit a nahrát ze souboru dokument popisující diagram. Tyto akce jsou dostupné v liště nabídek a také využívají písma s ikonami. Pro výběr konkrétního souboru je vyvolán nativní dialog pomocí knihovny \textit{Native File Dialog Extended} (obrázek \ref{_tag_img_DearNTFE}). Pro samotnou práci se soubory jsou použity datové proudy ze standardní knihovny jazyka C++.	
 	
-	\temporary{\\ Někde zmínit kompletní pořadí operací ve smyčce\\ a případy, kdy bylo potřeba dát si na pořadí pozor.}
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{img/dear_ntfe}
+		\caption{Dear ImGui: nabídka s ikonami a nativní dialog}
+		\label{_tag_img_DearNTFE}
+	\end{figure}
+	
+	Záhlaví hostitelského okna obsahuje cestu k právě editovanému souboru a znakem hvězdičky indikuje neuložené změny. Při neuložených změnách a pokusu o nahrání jiného souboru či zavření aplikace je zobrazeno varovné modální okno (obrázek \ref{_tag_img_DearWARN}). Správu textu v záhlaví hostitelského okna nechává knihovna Dear ImGui na starost vybranému backendu. V tomto případě je tedy text upravován pomocí knihovny GLFW. Ta také poskytuje callback metodu, která se zavolá při pokusu o zavření hostitelského okna.
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=.55\textwidth]{img/dear_unsavedwarn}
+		\caption{Dear ImGui: modální okno varující před neuloženými změnami}
+		\label{_tag_img_DearWARN}
+	\end{figure}
+	
+	Aplikace dále obsahuje okno s nastavením, kde lze mimo jiné přepnout její vzhled do tmavého režimu (obrázek \ref{_tag_img_DearDARK}). Knihovna poskytuje funkce \texttt{StyleColorsLight} a \texttt{StyleColorsDark}, jejichž voláním je téma přenastaveno. Interně jsou všechny použité barvy uloženy v poli \texttt{Colors}, které je součástí struktury stylů. Zmíněné metody si získají ukazatel na strukturu stylů voláním \texttt{GetStyle} a nastaví jednotlivé položky pole na předpřipravené hodnoty. Takto si lze nastavit i vlastní styl, nebo upravit ten existující. V aplikaci např. u tmavého režimu přenastavuji barvu pozadí nemodálních oken tak, aby nebyla poloprůhledná, čímž je zvýšena čitelnost.
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=.94\textwidth]{img/dear_dark}
+		\caption{Dear ImGui: aplikace v tmavém režimu, nastavení vzhledu}
+		\label{_tag_img_DearDARK}
+	\end{figure}	
+	
+%	\begin{figure}[ht]
+%		\centering
+%		\includegraphics[width=.95\textwidth]{img/dear_style}
+%		\caption{\textit{Dear ImGui Style Editor}}
+%		\label{_tag_img_DearSTYLE}
+%	\end{figure}
+	
+	Poslední zmíněnou funkcí aplikace je export diagramu do formátu SVG. Pro sestavení výsledného souboru používám \textit{simple-svg}, což je jednohlavičková knihovna z roku 2010. Tato knihovna má určité problémy, nechtěl jsem ale trávit příliš času s implementací vlastního řešení. Ostatní knihovny, které jsem našel, se zaměřovaly spíše na překlad či vykreslování souborů ve formátu SVG, nikoliv na vytvoření validního dokumentu podle zadaných parametrů.
+	
+	Knihovna simple-svg je obsluhována třídou \texttt{Exporter}, která je psána tak, aby byla nezávislá na knihovně Dear ImGui a šla tak případně použít v projektu s knihovnou Qt. Podobně jako u třídy \texttt{Parser} se jedná o stavový automat, jehož instance je členem hlavní třídy \texttt{App}. Tuto instanci budu dále nazývat jako „exportér“.
+	
+	Exportér je aktivován, jakmile uživatel ve vyhrazeném modalovém okně potvrdí export do formátu SVG. Po potvrzení bude v dalším průchodu hlavní smyčkou dokument sestaven. Během vykreslování diagramu jsou totiž kromě metod struktury \texttt{ImDrawList} volány také analogické metody exportéra. Pokud není exportér aktivován, pak je volání jeho metod ignorováno. V opačném případě přidá metoda do interní prioritní fronty objekt, který bude součástí výsledného dokumentu. Např. u uzlu ve tvaru obdélníka se jedná o objekty \texttt{svg::Rectangle} a \texttt{svg::Text}.
+	
+	\temporary{\\ * Proč prioritní fronta\\ * AABR \\ * Resetuji canvas\\ * Víceřádkový text\\ * Můj edit knihovny}
 	
 	\section{Implementace v knihovně egui}
 	
 	\section{Implementace v knihovně Qt}
 	
 	\chapter{Porovnání výsledků}
+	
+	\section{IMGUI vs. RMGUI z pohledu aplikačního kódu}
+	
+	\temporary{\\ IMGUI\\ :: Kompletní pořadí operací ve smyčce a případy, kdy bylo potřeba dát si na pořadí pozor.}
+	
+	\section{Benchmark}
 	
 	\chapter{Závěr}
 	
