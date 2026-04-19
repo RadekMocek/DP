@@ -112,14 +112,23 @@ void App::Update()
         ImGui::Text(e == Akat ? "a" : e == Bliskavice ? "b" : "c");
         //*/
 
-
+        /*
         ImGui::Button("A");
         ImGui::SameLine();
-
-        std::cout << ImGui::GetCursorScreenPos().x << " " << ImGui::GetCursorScreenPos().y << '\n'; //612 246
         ImGui::SetCursorScreenPos({760, 246});
-
         ImGui::Button("B");
+        //*/
+
+        if (ImGui::BeginCombo("A", "B")) {
+            if (ImGui::Selectable("C")) {
+                std::cout << "c\n";
+            }
+            ImGui::Text("D");
+            ImGui::Button("E");
+            ImGui::SameLine();
+            ImGui::Button("F");
+            ImGui::EndCombo();
+        }
 
         ImGui::End();
     }

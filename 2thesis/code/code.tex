@@ -40,8 +40,19 @@
 
 % Porovnání knihoven: celočíselné vstupní pole
 \lstdefinelanguage{CppNumericUpDown}[]{C++}{
-    , morekeywords = {constexpr}
-    , morendkeywords = {InputInt, clamp, QPointer, QSpinBox, setMinimum, setMaximum, setSingleStep, setValue, addWidget, connect}
+    , morekeywords = {constexpr, mut}
+    , morendkeywords = {
+            InputInt, clamp,
+            horizontal, add, DragValue, button, clicked,
+            QPointer, QSpinBox, setMinimum, setMaximum, setSingleStep, setValue, addWidget, connect
+        }
+}
+
+
+% Dear: GUICombo
+\lstdefinelanguage{CppDearCombo}[]{C++}{
+    , morekeywords = {constexpr}    
+    , morendkeywords = {GUICombo}
 }
 
 
