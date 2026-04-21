@@ -15,8 +15,10 @@ impl MyApp {
                     );
 
                     //
-                    ui.text_edit_singleline(&mut self.big_text);
-                    //ui.add(egui::TextEdit::singleline(&mut self.big_text).clip_text(false));
+                    if self.do_show_big_text {
+                        ui.text_edit_singleline(&mut self.big_text);
+                        //ui.add(egui::TextEdit::singleline(&mut self.big_text).clip_text(false));
+                    }
                     //
 
                     let length = self.big_text.len();
@@ -35,6 +37,7 @@ impl MyApp {
 
                 ui.separator();
                 ui.checkbox(&mut self.do_fill_big_text, "Keep adding characters");
+                ui.checkbox(&mut self.do_show_big_text, "Show the textedit widget");
                 ui.spinner();
 
                 if self.do_fill_big_text && self.big_text.len() < 10_000_000 {

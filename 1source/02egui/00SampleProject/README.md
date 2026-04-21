@@ -1,7 +1,7 @@
 # egui/eframe template
 
 > [!NOTE]  
-> This template is derived from [eframe_template](https://github.com/emilk/eframe_template) by [emilk](https://github.com/emilk) under [MIT](https://github.com/emilk/eframe_template/blob/main/LICENSE-MIT).
+> This template is derived from [eframe_template](https://github.com/emilk/eframe_template) by [emilk](https://github.com/emilk) under [MIT](https://github.com/emilk/eframe_template/blob/main/LICENSE-MIT).<br>__This was made with egui version 0.33 in mind__
 
 Change the name of the crate: Choose a good name for your project, and change the name to it in:
 

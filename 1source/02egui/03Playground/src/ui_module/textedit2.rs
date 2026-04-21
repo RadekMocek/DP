@@ -2,12 +2,11 @@ use crate::MyApp;
 
 impl MyApp {
     pub fn win_textedit2(&mut self, ui: &mut egui::Ui) {
-        egui::Window::new("Textedit scroll & jump?")
+        egui::Window::new("Textedit aaaah")
             .collapsible(false)
-            .open(&mut self.do_show_win_textedit)
+            .open(&mut self.do_show_win_textedit2)
             .show(ui.ctx(), |ui| {
                 let font_size = 22.0;
-                let mut text = "0ABCD\n1DEFG\n2HIJK\n4MNOP\n5QRST\n6UVWX\n7YZŽ";
 
                 ui.scope(|ui| {
                     ui.style_mut().text_styles.insert(
@@ -19,13 +18,9 @@ impl MyApp {
                         .id_salt("source")
                         .show(ui, |ui| {
                             ui.add(
-                                egui::TextEdit::multiline(&mut text)
-                                    .code_editor()
-                                    //.desired_rows(2),
+                                egui::TextEdit::multiline(&mut self.test_text2).code_editor(), //.desired_rows(2),
                             );
                         });
-
-                    let _ = ui.button("???");
                 });
             });
     }

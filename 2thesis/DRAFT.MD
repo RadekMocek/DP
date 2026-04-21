@@ -33,6 +33,7 @@
 
 * Prozatím jen nesetříděné poznámky:
   * Oproti no dependency Dear ImGui má egui určitě nějaké závislosti
+  * Beru glow místo wgpu, ať máme oboje OpenGL; eframe pak pro okna používá winit?
   * TOMLEDIT místo TOML, kvůli source position
   * Cargo oproti CMake neumí kopírovat soubory do build složky
   * Vycházím z egui project template, která je od stejného autora, jako je samotná knihovna

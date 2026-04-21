@@ -1,3 +1,4 @@
+//*
 use crate::MyApp;
 use egui_extras::syntax_highlighting::CodeTheme;
 
@@ -41,3 +42,4 @@ impl MyApp {
             });
     }
 }
+//*/
