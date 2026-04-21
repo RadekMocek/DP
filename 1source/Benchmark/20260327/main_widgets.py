@@ -14,9 +14,9 @@ PATH = pathlib.Path(__file__).parent
 
 
 class Metric(StrEnum):
-    DUR = "Duration [ms]"
-    RAM = "RAM Resident Set Size [MiB]"
-    CPU = "System CPU [%]"
+    DUR = "Doba potřebná k otevření okna [ms]"
+    RAM = "Využití operační paměti procesem [MiB]"
+    CPU = "Celkové využití procesoru systémem [%]"
 
 
 class Lib(StrEnum):
@@ -24,6 +24,18 @@ class Lib(StrEnum):
     DEAROPT = "DearImGuiOPT"
     EGUI = "egui"
     QT = "Qt"
+
+
+def lib_str_long(lib: Lib):
+    match lib:
+        case Lib.DEAR:
+            return "Dear ImGui"
+        case Lib.DEAROPT:
+            return "Dear ImGui with TOML parse optimization"
+        case Lib.EGUI:
+            return "egui"
+        case Lib.QT:
+            return "Qt"
 
 
 def lib_color(lib: Lib):
@@ -82,9 +94,6 @@ class WBenchRun:
         return median(durs), median(rams)
 
 
-METRICS = [Metric.RAM, Metric.CPU, Metric.DUR]
-
-
 def init():
     path = PATH / "csv_widgets"
     filenames = [f for f in listdir(path) if isfile(join(path, f))]
@@ -104,21 +113,59 @@ def init():
 
 
 def main_plot(runs):
-    for key, run in runs.items():
-        print(f"{key.ljust(18)}{run.get_total_duration_str()}")
+    # for key, run in runs.items():
+    #    print(f"{key.ljust(18)}{run.get_total_duration_str()}")
 
-    device = "win"
+    devices = [
+        # ("win", "-"),
+        ("lin", "-"),
+        # ("OLD", ":")
+    ]
 
-    # libs = [Lib.DEAR, Lib.EGUI, Lib.QT]
     libs = [Lib.DEAR, Lib.DEAROPT, Lib.EGUI, Lib.QT]
+    libs = [Lib.DEAR, Lib.EGUI, Lib.QT]
 
-    for metric in METRICS:
-        plt.figure()
-        plt.title(f"{str(metric)}")
+    metrics = [Metric.RAM, Metric.CPU, Metric.DUR]
+    metrics = [Metric.DUR, Metric.RAM]
+
+    fig = plt.figure(figsize=(8, 3))
+    axs = fig.subplots(1, 2)
+
+    from_ = 19
+
+    for (idx, metric) in enumerate(metrics):
+        print(idx)
         for lib in libs:
-            key = f"{str(lib)}_{device}"
-            plt.plot(runs[key].get_metric(metric)[:-1], color=f"{lib_color(lib)}")
-    plt.show()
+            for dev_pair in devices:
+                dev, linestyle = dev_pair
+                key = f"{str(lib)}_{dev}"
+
+                arry = runs[key].get_metric(metric)[from_:-1]
+
+                axs[idx].set_title(f"{str(metric)}")
+
+                axs[idx].plot(
+                    arry,
+                    color=f"{lib_color(lib)}",
+                    linestyle=linestyle,
+                    label=lib_str_long(lib),
+                )
+
+                if lib == Lib.DEAR:
+                    arrx = runs[key].n_batches[from_:-1]
+                    step = 20
+                    axs[idx].set_xticks(range(0, len(arry), step))
+                    axs[idx].set_xticklabels([arrx[i] for i in range(0, len(arrx), step)],
+                                             rotation=50, ha="right")
+
+        if idx == 0:
+            axs[idx].set_xlabel("Počet „dávek“")
+            axs[idx].xaxis.set_label_coords(1.07, -0.16)
+            # axs[idx].annotate("Počet „dávek“:", xy=(0, 0), xytext=(-5, -7),ha="right", va="top",xycoords="axes fraction", textcoords="offset points")
+
+    axs[1].legend(loc="upper left")
+    fig.savefig(f"figs/widgets.pdf", bbox_inches="tight")
+    # plt.show()
 
 
 def main_table(runs):
@@ -159,5 +206,5 @@ def main_table(runs):
 
 if __name__ == "__main__":
     benchruns = init()
-    # main_plot(benchruns)
-    main_table(benchruns)
+    main_plot(benchruns)
+    # main_table(benchruns)

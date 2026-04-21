@@ -82,10 +82,9 @@ gui_menubar_and_textedit(struct nk_context* ctx, struct media* media, GLFWwindow
         }
         nk_menubar_end(ctx);
 
-        // .: Text edit; best Nuklear can do (?) :/ :.
+        // .: Text edit :.
         nk_layout_row_dynamic(ctx, WINDOW_HEIGHT - 60, 2);
-
-        nk_edit_string_zero_terminated(ctx, NK_EDIT_BOX, buf, sizeof(buf) - 1, nk_filter_default);
+        nk_edit_string_zero_terminated(ctx, NK_EDIT_BOX, buf, sizeof(buf) - 1, nk_filter_default);   
     }
     nk_end(ctx);
 
@@ -486,9 +485,20 @@ int main(int argc, char* argv[])
     {/* GUI */
         device_init(&device);
         {
-            const void* image; int w, h;
+            const void* image;
+            int w, h;
+            
             struct nk_font_config cfg = nk_font_config(0);
-            cfg.oversample_h = 3; cfg.oversample_v = 2;
+            cfg.oversample_h = 3;
+            cfg.oversample_v = 2;
+            
+            const nk_rune nk_font_cz_ranges[] = {
+                0x0020, 0x00FF,
+                0x0100, 0x017F,
+                0
+            };
+            cfg.range = &nk_font_cz_ranges[0];
+
             /* Loading one font with different heights is only required if you want higher
              * quality text otherwise you can just set the font height directly
              * e.g.: ctx->style.font.height = 20. */
@@ -504,6 +514,10 @@ int main(int argc, char* argv[])
         }
         nk_init_default(&ctx, &media.font_14->handle);
     }
+
+    // text edit test
+    //struct nk_text_edit text_edit;
+    //nk_textedit_init_default(&text_edit);
 
     while (!glfwWindowShouldClose(win))
     {

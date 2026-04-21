@@ -1,10 +1,13 @@
 # ImGui
 imgui.ini
 
+# Qt
+.qtcreator/
+
 # Visual Studio
 .vs/
 
-# - .NET
+# .NET
 bin/
 obj/
 PUBLISHED/

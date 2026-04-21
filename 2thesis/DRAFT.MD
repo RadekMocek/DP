@@ -8,8 +8,6 @@
 * S Monospace fontem se lépe pracuje
 * Při posouvání canvasu měním vzhled kurzoru pomocí GLFW
 * Nastavil jsem, aby přesouvání oken bylo možné pouze LMB tahem jejich headeru, nelze tedy tahat za tělo okna  
-* Benchmark
-  * Zkusil jsem neparsovat TOML každý frame, ale jen, když je potřeba; na výkonu se to nepodepsalo
 * Export diagramu do formátu SVG
   * Problémy: multiline text, rgba (webový prohlížeč to umí, ale můj Inkscape a qView ne, dělám SVG aby to vypadalo správně i v těchto programech)
   * Používám mírně upravenou header only knihovnu [_simple-svg_](https://github.com/adishavit/simple-svg)
@@ -81,7 +79,10 @@
 
 ## Porovnání výsledků
 
-...
+### Benchmark
+
+* Zkusil jsem v Dear ImGui neparsovat TOML každý frame, ale jen, když je potřeba; na výkonu se to nepodepsalo
+* Syntax highlight také nemá patrný vliv na výkon
 
 ## Jak by tato práce mohla pokračovat
 

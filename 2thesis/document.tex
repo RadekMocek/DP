@@ -238,7 +238,7 @@
 	
 	V textovém poli je možné myší označovat text a ten pak pomocí klávesových zkratek vyjmout, kopírovat, nebo vložit. Klávesami kurzorových šipek lze posouvat textovým kurzorem (kadetem), kdy se s přidržením klávesy \textit{Ctrl} přeskakují celá slova a s klávesou \textit{Shift} se text označuje. Klávesu \textit{Ctrl} lze také použít v kombinaci s klávesou \textit{Backspace} nebo \textit{Delete} pro mazání celých slov. Dále jsou k dispozici klávesové zkratky pro zrušení poslední změny (\textit{undo}) a její obnovení (\textit{redo}).
 	
-	Má-li editovaný dokument větší množství řádků, objeví se na pravé straně textového pole vertikální posuvná lišta (\textit{scrollbar}). Horizontální posuvná lišta ale není podporována. Pokud je tedy nějaký řádek textu příliš dlouhý, tak se na jeho konec uživatel nejlépe dostane posunem textového kurzoru pomocí kláves. Přidání horizontální posuvné lišty by se údajně v tuto chvíli příliš negativně podepsalo na výkonu. Textové pole interně využívá „jednohlavičkovou“ knihovnu \textit{stb-textedit} a v plánu je jeho kompletní přepsání \cite{online_imgui10yrs}. Ve verzi 1.92 (červen 2025) byla každopádně přidána možnost zalamovat příliš dlouhé řádky.
+	Má-li editovaný dokument větší množství řádků, objeví se na pravé straně textového pole vertikální posuvná lišta (\textit{scrollbar}). Horizontální posuvná lišta ale není podporována. Pokud je tedy nějaký řádek textu příliš dlouhý, tak se na jeho konec uživatel nejlépe dostane posunem textového kurzoru pomocí kláves. Přidání horizontální posuvné lišty by se údajně v tuto chvíli příliš negativně podepsalo na výkonu. Textové pole interně využívá jednohlavičkovou knihovnu \textit{stb-textedit} a v plánu je jeho kompletní přepsání \cite{online_imgui10yrs}. Ve verzi 1.92 (červen 2025) byla každopádně přidána možnost zalamovat příliš dlouhé řádky.
 
 	Pro vykreslování grafických primitiv je možné si vyžádat ukazatel na strukturu \texttt{ImDrawList}, která obsahuje vykreslovací příkazy pro své okno. Tato struktura poskytuje metody pro přidání dalších objektů k vykreslení. Jedná se např. o pravidelný mnohoúhelník, kruh, nebo elipsu. Informace o objektu, jako je jeho pozice, velikost a barva, jsou předány konkrétní metodě jako parametry. Dále jsou k dispozici např. metody pro vykreslení úsečky, křivky, nebo textu.
 		
@@ -257,23 +257,22 @@
 	
 	\subsection{Knihovna Nuklear}
 	
-	Nuklear je knihovna pro tvorbu GUI s přístupem IMGUI implementovaná v jazyce C.
+	Nuklear (dříve \textit{Zahnrad}) \cite{online_nuklearwiki} je knihovna pro tvorbu GUI s přístupem IMGUI implementovaná ve standardu \textit{C89} jazyka C. Podobně jako Dear ImGui je psána tak, aby šla integrovat do projektu s libovolným backendem. Základním prvkem je zde také nemodální dialogové okno a stejným způsobem lze vytvořit okno, které zabírá celý prostor hostitelského okna. Nuklear je „jednohlavičková“ (\textit{header-only}) knihovna o zhruba 18 tisících řádcích. Oproti předchozím dvěma knihovnám má tedy značně užší rozsah.
 	
-	% Dříve "zahnrad.h"
-	% https://github.com/Immediate-Mode-UI/Nuklear/wiki
-	% Pak automatický Doxygen z komentářů v header file; problém; kód není kompletně zdokumentovaný
-	% Má připravenou strukturu `nk_text_edit` pro "komplexnější" textový editor; ovšem nulové info, jak to používat
-	% POST YOUR SCREENSHOT: https://github.com/vurtun/nuklear/issues/202
-	%                       https://github.com/Immediate-Mode-UI/Nuklear/issues/251
-	%                       https://github.com/zecruel/CadZinho
+	Knihovna má k dispozici automaticky generovanou dokumentaci z komentářů ve zdrojovém kódu pomocí nástroje \textit{Doxygen}. Velká část kódu ale okomentovaná není a samotná dokumentace v podobě webové stránky je velmi nepřehledná. Pro pochopení knihovny je vhodnější komunitní wiki na platformě GitHub, kde jsou mimo jiné představeny všechny dostupné ovládací prvky. Tato wiki není nikde explicitně zmiňována a může tak být programátorem snadno přehlédnuta.
+	
+	Nuklear poskytuje ovládací prvek víceřádkového textového pole, který lze zobrazit voláním funkce \texttt{nk\_edit\_string\_zero\_terminated}. Ten vykresluje obsah staticky alokovaného pole znaků. Po specifikování správných rozsahů a importování vhodného písma dokáže knihovna vykreslovat české znaky. Textové pole umožňuje pohybovat s textovým kurzorem a označovat text pomocí myši. Označené znaky pak lze hromadně smazat.
+	
+	Textové pole nepodporuje některé běžné klávesy, jako je např. \textit{Home} a \textit{End}. Výše zmíněné klávesové zkratky také nejsou k dispozici. Z posuvných lišt je opět vykreslena pouze ta vertikální a zalamování dlouhých řádků není podporováno. U některých kláves je problém, že ihned po svém stisknutí berou vstup jako „opakovaný“. Chovají se tedy tak, jakoby uživatel klávesu držel. Toto se děje mimo jiné u klávesy \textit{Backspace}, a je proto např. obtížné smazat jeden znak textu.
+		
+	Knihovna má připravenou strukturu \texttt{nk\_text\_edit}, která by měla umožnit definovat složitější textový editor s podporou schránky a historie změn. Její konfigurace už je ale složitější a není příliš zdokumentovaná, proto jsem se jí dále nevěnoval. Pro vykreslování grafických primitiv je možné volat poskytnuté funkce, jako je např. \texttt{nk\_fill\_rect} pro vykreslení obdélníka.
 	
 	\subsection{Knihovna microui}
 	
-	Microui je knihovna pro tvorbu GUI s přístupem IMGUI implementovaná v jazyce C.
+	Microui \cite{online_microui} je knihovna pro tvorbu GUI s přístupem IMGUI implementovaná v jazyce C.
 	
-	% COMMUNITY FORK?: https://github.com/rxi/microui/issues/79
-	%                  https://github.com/microui-community/microui
-	% POST YOUR SCREENSHOT: https://github.com/rxi/microui/issues/35
+	% COMMUNITY FORK? (abandoned??): https://github.com/rxi/microui/issues/79
+	%                  				 https://github.com/microui-community/microui
 	
 	\subsection{Knihovna raygui}
 	
@@ -294,9 +293,9 @@
 	
 	\section{Knihovna Qt}
 	
-	Qt \cite{online_qt} je knihovna pro tvorbu GUI s přístupem RMGUI implementovaná v jazyce C++.
+	Qt \cite{online_qt} je knihovna pro tvorbu GUI s přístupem RMGUI implementovaná v jazyce C++. Společnost \textit{Qt Group} zastřešuje vývoj knihovny a poskytuje k ní různé komerční i open-source licence. Z toho nejvíce permisivní licencí je LGPL. Jedná se o široce používanou knihovnu, a proto je v této práci vybrána jako zástupce přístupu~RMGUI.
 	
-	\temporary{\\ * LGPL, QtGroup, 1990s, ...\\ * Je zde pár slov o Qt, protože je to jedna z použitých knihoven.\\ * MOC, qmake, Qt Creator, ...\\ * U všech použitých knihoven bude GUI definováno z aplikačního kódu, nebude tedy použit Qt Creator.}
+	Existuje více způsobů, jak pomocí knihovny Qt definovat uživatelské rozhraní. Časté je použití programu \textit{Qt Creator}, který obsahuje vizuální editor. Jelikož je z výše uvedených knihoven Dear ImGui jediná, pro kterou existují vizuální editory, zaměřuji se v této práci na definici uživatelského rozhraní z aplikačního kódu. I v knihovně Qt bude tedy GUI definováno pomocí jazyka C++.
 	
 	\chapter{Návrh ukázkové aplikace}
 	
@@ -737,9 +736,55 @@
 	
 	\section{Porovnání přístupů IMGUI a RMGUI z pohledu aplikačního kódu}
 	
-	\temporary{\\ IMGUI\\ :: Kompletní pořadí operací ve smyčce a případy, kdy bylo potřeba dát si na pořadí pozor.\\ :: Unsavedwarn modal je dobrý příkladem, modaly jsou celkově zvláštní, v Qt zprvu dávají větší smysl, ale zase je to hodně psaní\\ :: MultiLineTextEdit je problémový widget\\ RMGUI\\ :: Callback hell}
+	\temporary{\\ IMGUI\\ :: Kompletní pořadí operací ve smyčce a případy, kdy bylo potřeba dát si na pořadí pozor.\\ :: Unsavedwarn modal je dobrý příkladem, modaly jsou celkově zvláštní, v Qt zprvu dávají větší smysl, ale zase je to hodně psaní\\ :: MultiLineTextEdit je problémový widget\\ RMGUI\\ :: Callback hell\\ :: „Ukecané“\\ :: Synchronizace stavů}
 	
 	\section{Benchmark}
+	
+	\subsection{Benchmark nodes}
+	
+	\temporary{Popsat, jak benchmark probíhá, obrázek.}
+	
+	\temporary{\\ Využití CPU: zde je vidět overhead u IMGUI a zároveň, jak je Qt v druhé fázi „dožene“.}
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{img/bench/nodes_CPU_shon.pdf}
+		\caption{Benchmark...}
+	\end{figure}
+	
+	\temporary{\\ Využití RAM: zde je vidět problém spotřeby RAM u egui.}
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{img/bench/nodes_RAM_shon.pdf}
+		\caption{Benchmark...}
+	\end{figure}
+	
+	\temporary{\\ Zpoždění: zde je opět vidět problém spotřeby RAM u egui.}
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{img/bench/nodes_DUR_shon.pdf}
+		\caption{Benchmark...}
+	\end{figure}
+	
+	\temporary{\\ Proto ukážeme ještě Zpoždění s vypnutým TXT editorem: zde je opět vidět narůstající zpoždění u Qt.}
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{img/bench/nodes_DUR_txoff.pdf}
+		\caption{Benchmark...}
+	\end{figure}
+	
+	\subsection{Benchmark widgets}
+	
+	\temporary{Popsat, jak benchmark probíhá, obrázek.}
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{img/bench/widgets.pdf}
+		\caption{Benchmark...}
+	\end{figure}
 	
 	\chapter{Závěr}
 	

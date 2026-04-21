@@ -122,7 +122,7 @@ def alt_(runs, devices, bench_id, versus_mod: Tuple[str, str]):
         for ax, col in zip(axs[0], ["both", versus_mod[0], versus_mod[1]]):
             ax.set_title(col)
 
-        for ax, row in zip(axs[:,0], devices):
+        for ax, row in zip(axs[:, 0], devices):
             ax.set_ylabel(row[1], size="large")
 
     plt.show()
@@ -147,18 +147,23 @@ def main():
     for key, run in runs.items():
         print(f"{key.ljust(26)}{run.get_duration_str()}")
 
-    devices_all = [("win", "Win10 Desktop"),
-                   ("lin", "Mint laptop, integrated GPU"),
-                   ("ling", "Mint laptop, dedicated GPU")]
+    devices_all = [
+        ("win", "Win10 Desktop"),  # 0
+        ("lin", "Mint laptop, integrated GPU"),  # 1
+        ("ling", "Mint laptop, dedicated GPU"),  # 2
+        ("OLD", "Mint laptop OLD")  # 3
+    ]
 
-    # dev_linux_both = devices_all[1:]
+    dev_linux_both = [devices_all[1], devices_all[2]]
     dev_lini_win = [devices_all[1], devices_all[0]]
+    dev_lin_new_old = [devices_all[2], devices_all[3]]
 
     # all_(runs, dev_linux_both, "on Mint laptop\nROW1: integrated GPU\nROW2: dedicated GPU")
-
     # all_(runs, dev_lini_win, "\nROW1: Mint laptop integrated GPU\nROW2: Win10 desktop dedicated GPU")
+    # all_(runs, dev_lin_new_old, " !!\nROW1: 2016 mint laptop igpu\nROW2: 2011 mint laptop igpu")
 
-    alt_(runs, dev_lini_win, BENCHES[0][0], ("shon", "shoff"))
+    # alt_(runs, dev_lini_win, BENCHES[0][0], ("shon", "shoff"))
+    alt_(runs, dev_lin_new_old, "b2", ("shon", "txoff"))
 
 
 if __name__ == "__main__":
