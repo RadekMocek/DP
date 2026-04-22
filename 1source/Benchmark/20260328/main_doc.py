@@ -30,11 +30,11 @@ def device_name(dev: Device):
         case Device.WIN:
             return "Win10 Desktop"
         case Device.LIN:
-            return "Mint laptop, integrated GPU"
+            return "Mint laptop 2016"
         case Device.LING:
             return "Mint laptop, dedicated GPU"
         case Device.OLD:
-            return "OLD Mint laptop, iGPU"
+            return "Mint laptop 2011"
 
 
 class Metric(StrEnum):
@@ -169,11 +169,14 @@ def main():
     # for key, run in runs.items():
     #    print(f"{key.ljust(26)}{run.get_duration_str()}")
 
+    switch = False
+
     libs = [Lib.DEAR, Lib.EGUI, Lib.QT]
 
-    devices = [Device.WIN, Device.LING, Device.LIN]
-    devices = [Device.LIN, Device.OLD]
-    devices = [Device.LIN]
+    if switch:
+        devices = [Device.LIN]
+    else:
+        devices = [Device.OLD, Device.LIN]
 
     device_linestyle = {
         Device.WIN: "-",
@@ -185,8 +188,10 @@ def main():
     do_moveavg = False
     n_subplots = 3
 
-    metrics = [Metric.CPU]
-    metrics = [Metric.RAM, Metric.CPU, Metric.DUR]
+    if switch:
+        metrics = [Metric.RAM, Metric.CPU, Metric.DUR]
+    else:
+        metrics = [Metric.CPU]
 
     for (img_idx, metric) in enumerate(metrics):
 
@@ -194,10 +199,12 @@ def main():
 
         for benchtype in ["shon", "txoff"]:
 
-            if metric == Metric.CPU and benchtype == "txoff":
+            if metric != Metric.DUR and benchtype == "txoff":
                 continue
 
-            fig = plt.figure(figsize=(9, 3))
+            figsize = (9, 3)  # if switch else (18, 6)
+
+            fig = plt.figure(figsize=figsize)
             axs = fig.subplots(1, n_subplots, sharey=True)
             ax_tops = [axs[idx].twiny() for idx in range(n_subplots)]
 
@@ -226,11 +233,18 @@ def main():
                         if do_moveavg and metric == Metric.CPU:
                             arry = moveavg(arry, 20)
 
+                        label = lib_str_long(lib)
+                        if not switch:
+                            if lib != Lib.DEAR:
+                                label = "_nolegend_"
+                            else:
+                                label = device_name(dev)
+
                         axs[idx].plot(
                             y_,
                             color=color,
                             linestyle=device_linestyle[dev],
-                            label=lib_str_long(lib),
+                            label=label,
                         )
 
                         step = 8
@@ -258,11 +272,21 @@ def main():
                             axs[idx].tick_params(labelright=True)
                             axs[idx].yaxis.set_tick_params(right=True, labelright=True)
 
-            axs[0].legend(loc="upper left")
+            if switch:
+                axs[0].legend(loc="upper left")
+            else:
+                axs[2].legend(loc="upper right")
+                leg = axs[2].get_legend()
+                leg.legend_handles[0].set_color("black")
+                leg.legend_handles[1].set_color("black")
 
             fig.subplots_adjust(wspace=0.024)
 
-            fig.savefig(f"figs2/nodes_{metric_str_short(metric)}_{benchtype}.pdf", bbox_inches="tight")
+            if switch:
+                fig.savefig(f"figs2/nodes_{metric_str_short(metric)}_{benchtype}.pdf", bbox_inches="tight")
+            else:
+                fig.savefig(f"figs2/nodes_trend.pdf", bbox_inches="tight")
+
     # plt.tight_layout()
     # plt.show()
 

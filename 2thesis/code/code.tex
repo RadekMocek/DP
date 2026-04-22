@@ -56,6 +56,23 @@
 }
 
 
+% PseudoRust
+\lstdefinelanguage{Rust}{
+    , comment=[l]{//}
+    , string = [b]"
+    , keywords = {as,async,await,break,const,continue,crate,dyn,else,enum,extern,false,fn,for,if,impl,in,let,loop,match,mod,move,mut,pub,ref,return,self,Self,static,struct,super,trait,true,type,unsafe,use,where,while}
+}
+
+
+% egui x dear: closure x statemach
+\lstdefinelanguage{RustEguiClosure}[]{Rust}{ 
+    , morendkeywords = {
+        TopBottomPanel, top, show, MenuBar, new, menu_button, button, concatcp!, clicked, send_viewport_cmd, ViewportCommand,
+        BeginMainMenuBar, BeginMenu, MenuItem, glfwSetWindowShouldClose, EndMenu, EndMainMenuBar
+    }
+    , alsoletter = {!}
+}
+
 % Highlight českých znaků
 \makeatletter
 \lst@InputCatcodes

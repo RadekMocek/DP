@@ -238,7 +238,7 @@
 	
 	V textovém poli je možné myší označovat text a ten pak pomocí klávesových zkratek vyjmout, kopírovat, nebo vložit. Klávesami kurzorových šipek lze posouvat textovým kurzorem (kadetem), kdy se s přidržením klávesy \textit{Ctrl} přeskakují celá slova a s klávesou \textit{Shift} se text označuje. Klávesu \textit{Ctrl} lze také použít v kombinaci s klávesou \textit{Backspace} nebo \textit{Delete} pro mazání celých slov. Dále jsou k dispozici klávesové zkratky pro zrušení poslední změny (\textit{undo}) a její obnovení (\textit{redo}).
 	
-	Má-li editovaný dokument větší množství řádků, objeví se na pravé straně textového pole vertikální posuvná lišta (\textit{scrollbar}). Horizontální posuvná lišta ale není podporována. Pokud je tedy nějaký řádek textu příliš dlouhý, tak se na jeho konec uživatel nejlépe dostane posunem textového kurzoru pomocí kláves. Přidání horizontální posuvné lišty by se údajně v tuto chvíli příliš negativně podepsalo na výkonu. Textové pole interně využívá jednohlavičkovou knihovnu \textit{stb-textedit} a v plánu je jeho kompletní přepsání \cite{online_imgui10yrs}. Ve verzi 1.92 (červen 2025) byla každopádně přidána možnost zalamovat příliš dlouhé řádky.
+	Má-li editovaný dokument větší množství řádků, objeví se na pravé straně textového pole vertikální posuvná lišta (\textit{scrollbar}). Horizontální posuvná lišta ale není podporována. Pokud je tedy nějaký řádek textu příliš dlouhý, tak se na jeho konec uživatel nejlépe dostane posunem textového kurzoru pomocí kláves. Přidání horizontální posuvné lišty by se údajně v tuto chvíli příliš negativně podepsalo na výkonu. Textové pole interně využívá „jednohlavičkovou“ (\textit{header-only}) knihovnu \textit{stb-textedit} a v plánu je jeho kompletní přepsání \cite{online_imgui10yrs}. Ve verzi 1.92 (červen 2025) byla každopádně přidána možnost zalamovat příliš dlouhé řádky.
 
 	Pro vykreslování grafických primitiv je možné si vyžádat ukazatel na strukturu \texttt{ImDrawList}, která obsahuje vykreslovací příkazy pro své okno. Tato struktura poskytuje metody pro přidání dalších objektů k vykreslení. Jedná se např. o pravidelný mnohoúhelník, kruh, nebo elipsu. Informace o objektu, jako je jeho pozice, velikost a barva, jsou předány konkrétní metodě jako parametry. Dále jsou k dispozici např. metody pro vykreslení úsečky, křivky, nebo textu.
 		
@@ -251,21 +251,21 @@
 	
 	Knihovna je z velké části zdokumentovaná a pokud tedy programátor narazí na neznámou funkci, neměl by být problém dohledat její význam. Obtížnější mohou být situace, kdy si programátor není jist, jaké funkce přesně použít pro vyřešení konkrétního problému. K dispozici je však několik ukázkových projektů, které pokrývají alespoň základní funkce knihovny. Případné problémy lze řešit v sekci diskuzí na platformě GitHub. I zde je k dispozici řada komunitních doplňků a integrací pro různé backendy.
 	
-	Egui poskytuje ovládací prvek víceřádkového textového pole, který lze zobrazit voláním metody \texttt{multiline} u struktury \texttt{TextEdit}. Pole vykresluje obsah řetězce, který dostává jako měnitelnou (\textit{mutable}) referenci na typ \texttt{String}. Z pohledu počtu podporovaných funkcí se jedná o jediný ovládací prvek v této rešerši, který konkuruje textovém poli z knihovny Dear ImGui. K dispozici jsou všechny zmíněné klávesové zkratky a výchozí písmo podporuje všechny české znaky. Ve své základní podobě prvek nepodporuje zvýrazňování syntaxe a automaticky zalamuje dlouhé řádky bez možnosti zobrazení horizontální posuvné lišty. Balík \textit{egui\_extras} pak obsahuje modul pro zvýrazňování syntaxe.
+	Egui poskytuje ovládací prvek víceřádkového textového pole, který lze zobrazit voláním metody \texttt{multiline} u struktury \texttt{TextEdit}. Textové pole vykresluje obsah řetězce, který dostává jako měnitelnou (\textit{mutable}) referenci na typ \texttt{String}. Z pohledu počtu podporovaných funkcí konkuruje tento ovládací prvek textovému poli z knihovny Dear ImGui. K dispozici jsou všechny zmíněné klávesové zkratky a výchozí písmo podporuje všechny české znaky. Ve své základní podobě prvek nepodporuje zvýrazňování syntaxe a automaticky zalamuje dlouhé řádky bez možnosti zobrazení horizontální posuvné lišty. Balík \textit{egui\_extras} pak obsahuje modul pro zvýrazňování syntaxe.
 	
 	K vykreslování grafických primitiv je možné využít pomocnou strukturu \texttt{Painter}, která slouží pro kreslení tvarů a textu v určité oblasti. Výběr tvarů je podobný jako u struktury \texttt{ImDrawList} v knihovně Dear ImGui.
 	
 	\subsection{Knihovna Nuklear}
 	
-	Nuklear (dříve \textit{Zahnrad}) \cite{online_nuklearwiki} je knihovna pro tvorbu GUI s přístupem IMGUI implementovaná ve standardu \textit{C89} jazyka C. Podobně jako Dear ImGui je psána tak, aby šla integrovat do projektu s libovolným backendem. Základním prvkem je zde také nemodální dialogové okno a stejným způsobem lze vytvořit okno, které zabírá celý prostor hostitelského okna. Nuklear je „jednohlavičková“ (\textit{header-only}) knihovna o zhruba 18 tisících řádcích. Oproti předchozím dvěma knihovnám má tedy značně užší rozsah.
+	Nuklear (dříve \textit{Zahnrad}) \cite{online_nuklearwiki} je knihovna pro tvorbu GUI s přístupem IMGUI implementovaná ve standardu \textit{C89} jazyka C. Podobně jako Dear ImGui je psána tak, aby šla integrovat do projektu s libovolným backendem. Základním prvkem je zde také nemodální dialogové okno a stejným způsobem lze vytvořit okno, které zabírá celý prostor hostitelského okna. Nuklear je jednohlavičková knihovna o zhruba 18~tisících řádcích kódu. Oproti předchozím dvěma knihovnám má tedy značně užší rozsah.
 	
-	Knihovna má k dispozici automaticky generovanou dokumentaci z komentářů ve zdrojovém kódu pomocí nástroje \textit{Doxygen}. Velká část kódu ale okomentovaná není a samotná dokumentace v podobě webové stránky je velmi nepřehledná. Pro pochopení knihovny je vhodnější komunitní wiki na platformě GitHub, kde jsou mimo jiné představeny všechny dostupné ovládací prvky. Tato wiki není nikde explicitně zmiňována a může tak být programátorem snadno přehlédnuta.
+	Ke knihovně existuje automaticky generovaná dokumentace z komentářů ve zdrojovém kódu pomocí nástroje \textit{Doxygen}. Velká část kódu ale okomentovaná není a samotná dokumentace v podobě webové stránky je velmi nepřehledná. Pro pochopení knihovny je vhodnější komunitní wiki na platformě GitHub, kde jsou mimo jiné představeny všechny dostupné ovládací prvky. Tato wiki není nikde explicitně zmiňována a může tak být programátorem snadno přehlédnuta.
 	
 	Nuklear poskytuje ovládací prvek víceřádkového textového pole, který lze zobrazit voláním funkce \texttt{nk\_edit\_string\_zero\_terminated}. Ten vykresluje obsah staticky alokovaného pole znaků. Po specifikování správných rozsahů a importování vhodného písma dokáže knihovna vykreslovat české znaky. Textové pole umožňuje pohybovat s textovým kurzorem a označovat text pomocí myši. Označené znaky pak lze hromadně smazat.
 	
-	Textové pole nepodporuje některé běžné klávesy, jako je např. \textit{Home} a \textit{End}. Výše zmíněné klávesové zkratky také nejsou k dispozici. Z posuvných lišt je opět vykreslena pouze ta vertikální a zalamování dlouhých řádků není podporováno. U některých kláves je problém, že ihned po svém stisknutí berou vstup jako „opakovaný“. Chovají se tedy tak, jakoby uživatel klávesu držel. Toto se děje mimo jiné u klávesy \textit{Backspace}, a je proto např. obtížné smazat jeden znak textu.
+	Textové pole nepodporuje některé běžné klávesy, jako je např. \textit{Home} a \textit{End}. Výše zmíněné klávesové zkratky také nejsou k dispozici. Z posuvných lišt je opět vykreslena pouze ta vertikální a zalamování dlouhých řádků není podporováno. U některých kláves je problém, že ihned po svém stisknutí berou vstup jako „opakovaný“. Chovají se tedy tak, jakoby uživatel klávesu držel. Toto se děje mimo jiné u klávesy \textit{Backspace}, a je proto např. obtížné smazat jen jeden znak v textu.
 		
-	Knihovna má připravenou strukturu \texttt{nk\_text\_edit}, která by měla umožnit definovat složitější textový editor s podporou schránky a historie změn. Její konfigurace už je ale složitější a není příliš zdokumentovaná, proto jsem se jí dále nevěnoval. Pro vykreslování grafických primitiv je možné volat poskytnuté funkce, jako je např. \texttt{nk\_fill\_rect} pro vykreslení obdélníka.
+	Knihovna má připravenou strukturu \texttt{nk\_text\_edit}, která by měla umožnit definovat robustnější textové pole s podporou schránky a historie změn. Její konfigurace už je ale složitější a není příliš zdokumentovaná, proto jsem se jí dále nevěnoval. Pro vykreslování grafických primitiv je možné volat poskytnuté funkce, jako je např. \texttt{nk\_fill\_rect} pro vykreslení obdélníka.
 	
 	\subsection{Knihovna microui}
 	
@@ -694,49 +694,73 @@
 	
 	\section{Implementace v knihovně egui}
 	
-	\temporary{(Zprovoznění minimálního projektu, závislosti, písma, ..., struktura projektu)}
+	Projekt v knihovně egui je založen na šabloně \textit{eframe template}. Jedná se v podstatě o minimální funkční projekt, který již obsahuje hlavní strukturu \texttt{App}. Ta má připravené metody \texttt{new} pro inicializaci a \texttt{update} pro kód hlavní smyčky. Správu závislostí a sestavení projektu řeší nástroj \textit{Cargo} a při kompilaci na obou cílových platformách se neobjevily žádné problémy.
+	
+	Stejně jako v aplikaci s Dear ImGui jsem zde použil OpenGL jako backend. Pro správu nativního okna je interně použita knihovna \textit{winit}. Oproti předchozímu projektu, kde bylo v určitých situacích nutné pracovat přímo s knihovnou GLFW, je zde práce s backendem abstrahována. Pro změnu názvu okna nebo reakci na pokus o jeho zavření se tedy volají připravené metody z knihovny egui.
+	
+	Jako písmo jsem opět použil font Inconsolata. Výchozí písmo knihovny egui je sice dobře čitelné a podporuje velké množství znaků, chtěl jsem ale mít společné písmo napříč všemi třemi aplikacemi.
+	
+	Struktura projektu je také podobná s řešením v Dear ImGui. Tím je myšleno rozdělení logiky do konkrétních adresářů a souborů. V jazyce Rust se zdá být častější umísťování související logiky do jediného souboru, a tak projekt není v tomto ohledu příliš „idiomatický“.
+	
+	Jazyk Rust nemá klíčové slovo \texttt{static}, které by šlo použít uvnitř metody podobně jako v jazyce C++. Z toho důvodu jsou všechny proměnné, které si musí držet hodnotu přes více průchodů smyčkou, součástí hlavní struktury \texttt{App}. Pro lepší členění by bylo nutné jednotlivé části GUI rozdělit do samostatných struktur.
 	
 	\subsection{Tvorba uživatelského rozhraní v knihovně egui}
 	
-	\temporary{(State machine?, MainMenuBar, MainWIN, IDs?, Layout, Podokna Textedit <|> Canvas, Status bar (červené písmo, dlouhý error, tooltip))}
+	V knihovně egui se pro definici uživatelského rozhraní používá vnořování uzávěrů. Kód \ref{_tag_code_eguitoppanel} porovnává tento přístup s přístupem použitým v knihovně Dear ImGui. Je zde vytvořena hlavní lišta nabídek, která v nabídce \textit{File} obsahuje akci \textit{Exit} pro ukončení aplikace. V egui se pracuje se strukturami \texttt{Context} pro obecná volání knihovny a \texttt{Ui} pro pokládání ovládacích prvků. Je třeba zmínit, že v této práci používám verzi knihovny 0.33. V březnu 2026 totiž vyšla verze 0.34, která v tomto ohledu přináší drobné změny.
+	
+	\begin{code}[ht]
+		\lstinputlisting[language=RustEguiClosure]{code/egui_panel_top.rs}
+		\caption{egui a Dear ImGui: uzávěry a stavový automat}
+		\label{_tag_code_eguitoppanel}
+	\end{code}
+	
+	Na prvním řádku ukázkového kódu je vytvořen horní panel okna. Protože takových panelů může být více, je třeba dodat unikátní identifikátor v podobě řetězce. Toto volání není součástí žádného nemodálního okna, a tak je panel vytvořen v okně hostitelském.
+	
+	Metodě pro zobrazení panelu je předán uzávěr, jehož vstupní parametr je typu \texttt{Ui} a je zvykem jej pojmenovávat jako \texttt{ui}. Metoda o řádek níže, která slouží k vykreslení lišty nabídek, přijímá stejný typ uzávěru. Předchozí proměnná \texttt{ui} je překryta, protože je v tomto uzávěru pro „novou“ proměnnou použit stejný název. Nemůže se tak stát, že programátor použije některou z vnějších struktur typu \texttt{Ui}, což je v tomto případě žádoucí.
+	
+	Pak lze již vykreslovat ovládací prvky v liště nabídek: nejprve nabídku \textit{File} a v ní tlačítko s ikonou a popiskem. Pro zobrazení ikon opět používám písmo od \textit{Pictogrammers} a soubor s konstantami z repozitáře \textit{IconFontCppHeaders}. Abych mohl spojit znak ikony se zbylým řetězcem již během kompilace, musím použít  \texttt{concatcp}, což je makro třetí strany. Řádek sloužící k ukončení aplikace ukazuje, jak obě knihovny řeší volání backendu.
+	
+	Pro vytvoření hlavního obsahu okna je nejprve stejným způsobem zobrazen panel typu \texttt{CentralPanel}. V jeho uzávěru pak už lze vykreslovat ovládací prvky. \temporary{buď ui.label aspol., nebo ui.add(...); ID nejsou takový problém; layout - horizontal, rtl, co se stane když se widgety nevejdou? scrollarea; jak je vyřešeno Textedit <|> Canvas; stavový řádek}
+	
+	\temporary{\\ NĚKDE ZMÍNIT STYL APLIKACE, JAK JSEM SI ZMĚNIL VELIKOST A BARVU PÍSMA PROTOŽE\dots}
 	
 	\subsection{Víceřádkové textové pole v knihovně egui}
 	
-	\temporary{(problémy, err hghlght, syntax hghlght, showcase)}
+	\temporary{\\ (problémy, err hghlght, syntax hghlght, showcase)}
 	
 	\subsection{Vykreslení diagramu v knihovně egui}
 	
-	\temporary{(ImDrawList?, hloubka, jak funguje canvas, RMB/MW→úprava souřadnic?)}
+	\temporary{\\ (ImDrawList?, hloubka, jak funguje canvas, RMB/MW→úprava souřadnic?)}
 	
 	\subsection{Další funkce aplikace v knihovně egui}
 	
-	\temporary{(cursorpos, inputint, colorpicker, dropdown, ctrl+z?, ikonky, slider (vpravo, range), ghostdnd, save/load diag, [*]cesta, unsavedwarn, darkmode, SVG)}
+	\temporary{\\ (cursorpos, inputint, colorpicker, dropdown, ctrl+z?, ikonky, slider (vpravo, range), ghostdnd, save/load diag, [*]cesta, unsavedwarn, darkmode, SVG)}
 	
 	\section{Implementace v knihovně Qt}
 	
-	\temporary{(Zprovoznění minimálního projektu, závislosti, písma, ..., struktura projektu)}
+	\temporary{\\ (Zprovoznění minimálního projektu, závislosti, písma, ..., struktura projektu)}
 	
 	\subsection{Tvorba uživatelského rozhraní v knihovně Qt}
 	
-	\temporary{(State machine?, MainMenuBar, MainWIN, IDs?, Layout, Podokna Textedit <|> Canvas, Status bar (červené písmo, dlouhý error, tooltip))}
+	\temporary{\\ (State machine?, MainMenuBar, MainWIN, IDs?, Layout, Podokna Textedit <|> Canvas, Status bar (červené písmo, dlouhý error, tooltip))}
 	
 	\subsection{Víceřádkové textové pole v knihovně Qt}
 	
-	\temporary{(problémy, err hghlght, syntax hghlght, showcase)}
+	\temporary{\\ (problémy, err hghlght, syntax hghlght, showcase)}
 	
 	\subsection{Vykreslení diagramu v knihovně Qt}
 	
-	\temporary{(ImDrawList?, hloubka, jak funguje canvas, RMB/MW→úprava souřadnic?)}
+	\temporary{\\ (ImDrawList?, hloubka, jak funguje canvas, RMB/MW→úprava souřadnic?)}
 	
 	\subsection{Další funkce aplikace v knihovně Qt}
 	
-	\temporary{(cursorpos, inputint, colorpicker, dropdown, ctrl+z?, ikonky, slider (vpravo, range), ghostdnd, save/load diag, [*]cesta, unsavedwarn, darkmode, SVG)}
+	\temporary{\\ (cursorpos, inputint, colorpicker, dropdown, ctrl+z?, ikonky, slider (vpravo, range), ghostdnd, save/load diag, [*]cesta, unsavedwarn, darkmode, SVG)}
 	
 	\chapter{Porovnání přístupů a ukázkových aplikací}
 	
 	\section{Porovnání přístupů IMGUI a RMGUI z pohledu aplikačního kódu}
 	
-	\temporary{\\ IMGUI\\ :: Kompletní pořadí operací ve smyčce a případy, kdy bylo potřeba dát si na pořadí pozor.\\ :: Unsavedwarn modal je dobrý příkladem, modaly jsou celkově zvláštní, v Qt zprvu dávají větší smysl, ale zase je to hodně psaní\\ :: MultiLineTextEdit je problémový widget\\ RMGUI\\ :: Callback hell\\ :: „Ukecané“\\ :: Synchronizace stavů}
+	\temporary{\\ IMGUI\\ :: Kompletní pořadí operací ve smyčce a případy, kdy bylo potřeba dát si na pořadí pozor.\\ :: Unsavedwarn modal je dobrý příkladem, modaly jsou celkově zvláštní, v Qt zprvu dávají větší smysl, ale zase je to hodně psaní\\ :: MultiLineTextEdit je problémový widget\\ :: Rychlost vývoje! \\ RMGUI\\ :: Callback hell\\ :: „Ukecané“\\ :: Synchronizace stavů}
 	
 	\section{Benchmark}
 	
@@ -773,6 +797,14 @@
 	\begin{figure}[ht]
 		\centering
 		\includegraphics[width=\textwidth]{img/bench/nodes_DUR_txoff.pdf}
+		\caption{Benchmark...}
+	\end{figure}
+	
+	\temporary{\\ Jiné zařízení, stejný trend\dots}
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{img/bench/nodes_trend.pdf}
 		\caption{Benchmark...}
 	\end{figure}
 	

@@ -29,25 +29,21 @@
 
 ### Implementace v egui
 
-* Prozatím jen nesetříděné poznámky:
-  * Oproti no dependency Dear ImGui má egui určitě nějaké závislosti
+* Vycházím z egui (eframe) project template, která je od stejného autora, jako je samotná knihovna
+  * Template už zde má připravenou struct App, glow renderer, ...
   * Beru glow místo wgpu, ať máme oboje OpenGL; eframe pak pro okna používá winit?
-  * TOMLEDIT místo TOML, kvůli source position
-  * Cargo oproti CMake neumí kopírovat soubory do build složky
-  * Vycházím z egui project template, která je od stejného autora, jako je samotná knihovna
-    * Template už zde má připravenou struct App, glow renderer, ...
-    * Dear ImGui je děláno primárně pro přidání debug okýnek do existující aplikace (zjednodušeně řečeno). Tady to spíše vypadá, že je prioritou tvorba samostatných „běžných, user-facing“ desktop/web aplikací. Běží na tom Rerun.io od stejného autora.
-  * Moje struktura projektu asi není úplně Rust idiomatická, snažím se to mít stejné jako v Cpp projektu
-  * Klíčové slovo static v Rustu nelze použít uvnitř funkce jako v C++, takže buď musí být všechny hodnoty součástí struct App, nebo musím přijít s modulárnějším přístupem.
+* TOMLEDIT místo TOML, kvůli source position
+* Moje struktura projektu asi není úplně Rust idiomatická, ale snažím se to mít stejné jako v Cpp projektu
+* Klíčové slovo static v Rustu nelze použít uvnitř funkce jako v C++, takže buď musí být všechny hodnoty součástí struct App, nebo musím přijít s modulárnějším přístupem.
+
+* Další nesetříděné poznámky:
   * Umí `ui.with_layout(egui::Layout::right_to_left ... {})`
   * Defaultní light theme mělo šedý text na bílém pozadí → změněno na černý text pro lepší čitelnost (pro dark mode byl font zase zesvětlen).
-  * Podporuje přes 30 druhů kurzoru (GLFW 3.3.10 umí 10), všechny ale asi fungují jen na webu? Alespoň na Windows je grabbing stejný jako move (čtyřsměrná šipka namísto ruky).
-  * Defaultní font podporuje řadu emoji, a to monochrome, takže lze použít jako ikonky. Toto funguje, i když přepíši defaultní font na Inconsolata, který emoji nepodporuje (pracuje se s prioritou). Každopádně symboly nemají konzistentní vizuální identitu a neexistuje emoji např. pro elipsu, nebo odlišení _save_ od _save as_, prostě jen disketa. Takže může se hodit, ale na seriózní ikony raději použít alternativu.
+  * Defaultní font podporuje řadu emoji, a jsou monochrome, takže je lze použít jako ikonky. Toto funguje, i když přepíši defaultní font na Inconsolata, který emoji nepodporuje (pracuje se s prioritou). Každopádně symboly nemají konzistentní vizuální identitu a neexistuje emoji např. pro elipsu, nebo odlišení _save_ od _save as_, prostě jen disketa. Takže může se hodit, ale na seriózní ikony raději použít alternativu.
   * Vypadá to, že abych zprovoznil horizontal scroll u default text editoru, [musím použít syntax highlighting](https://github.com/emilk/egui/discussions/4871); a u něj nelze z kódu nastavit barevné schéma, takže opět máme světlé barvy na světlém pozadí, -_-
   * Nemá připraveno funkci tlačítka click and hold? Např. změna velikosti fontu text editoru, že bych držel + a ono to postupně přičítalo.
   * Error highlight na texteditoru nemusí řešit scroll, je to celé uvnitř scrollarea.
   * 3rd party text editor neumí error highlight, ale umí našeptávat ♥.
-  * Barevné prostory: rgba_premul vs. rgba_unmul vs. srgba.
   * Ctrl+Z funguje i po zásahu do source stringu ("toolbar canvas interaction").
   * V Cpp od TOML knihovny dostávám umístění v kódu jako row+char_in_row, což se hodí pro Error Highlight, zde dostávám char_total, což se hodí při toolbar canvas interaction.
   * Egui painter neumí přepínat Z, pouze malířův algoritmus → implementována prioritní fronta draw commands.
@@ -83,14 +79,3 @@
 
 * Zkusil jsem v Dear ImGui neparsovat TOML každý frame, ale jen, když je potřeba; na výkonu se to nepodepsalo
 * Syntax highlight také nemá patrný vliv na výkon
-
-## Jak by tato práce mohla pokračovat
-
-* Co se týče diagram editoru:
-  * Kombinovat wysiwy\[GM\] je v praxi problematické, raději se soustředit na jedno z nich, v tomto případě spíš _text→diagram_
-  * => Návrh vlastního jazyka
-* Co se týče porovnání knihoven:
-  * Porovnat pomocné programy pro návrh GUI (Qt Creator, [ImRAD](https://github.com/tpecholt/imrad))
-  * Export do WebAssembly (EMSCRIPTEN apod.)
-  * Možnosti přístupnosti jako screen reader
-  * Lokalizace

@@ -10,7 +10,7 @@ constexpr auto step_size = 2;
 ImGui::InputInt("##spinbox", &m_number, step_size);
 m_number = std::clamp(m_number, number_min, number_max);
 
-// --- egui (rust)  --- --- --- --- --- --- --- --- --- --- --- ---
+// --- egui (Rust)  --- --- --- --- --- --- --- --- --- --- --- ---
 ui.horizontal(|ui| {
     ui.add(egui::DragValue::new(&mut m_number));
     if ui.button("-").clicked() {

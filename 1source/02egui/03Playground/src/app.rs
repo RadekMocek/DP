@@ -2,6 +2,7 @@ pub struct MyApp {
     pub do_show_win_input_tests: bool,
     pub do_show_win_input_problem: bool,
     pub do_show_win_canvas: bool,
+    pub do_show_win_random_tests: bool,
     pub do_show_win_textedit: bool,
     pub do_show_win_textedit2: bool,
     pub test_text: String,
@@ -18,8 +19,9 @@ impl Default for MyApp {
             do_show_win_input_tests: false,
             do_show_win_input_problem: false,
             do_show_win_canvas: false,
+            do_show_win_random_tests: false,
             do_show_win_textedit: false,
-            do_show_win_textedit2: true,
+            do_show_win_textedit2: false,
             test_text: String::from("aabbccddeeffgghhiijjkkllmmnnooqqpprrssttuuvvwwxxyyzz"),
             test_text2: String::from(
                 "abcde ABCDE\nfghij FGHIJ fghij FGHIJ\nklmno KLMNO klmno KLMNO klmno KLMNO\npqrst PQRST pqrst PQRST pqrst PQRST pqrst PQRST\nuvwxyz UVWXYZ uvwxyz UVWXYZ uvwxyz UVWXYZ uvwxyz UVWXYZ uvwxyz UVWXYZ\něščřžýáíé ĚŠČŘŽÝÁÍÉ ěščřžýáíé ĚŠČŘŽÝÁÍÉ ěščřžýáíé ĚŠČŘŽÝÁÍÉ ěščřžýáíé ĚŠČŘŽÝÁÍÉ ěščřžýáíé ĚŠČŘŽÝÁÍÉ ěščřžýáíé ĚŠČŘŽÝÁÍÉ\n☺ ☻ ♥ ♦ ♣ ♠\n😀\n0 1 2 3 4 5 6 7 8 9",
