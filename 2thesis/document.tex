@@ -118,6 +118,7 @@
 		\textbf{MVVM} & \textit{model–view–viewmodel}, architektonický vzor \\
 		\textbf{OS} & \textit{operační systém} \\
 		\textbf{RMGUI} & \textit{retained mode graphical user interface}, grafické uživatelské rozhraní v režimu soběstačného vykreslování \\
+		\textbf{SDL} & \textit{Simple DirectMedia Layer}, multiplatformní multimediální knihovna \\
 		\textbf{SVG} & \textit{Scalable Vector Graphics}, standard pro popis vektorové grafiky \\
 		\textbf{TOML} & \textit{Tom's Obvious Minimal Language}, jazyk pro popis struktury dat \\
 		\textbf{WPF} & \textit{Windows Presentation Foundation}, knihovna umožňující tvorbu GUI aplikací pro operační systém Windows \\
@@ -245,13 +246,13 @@
 	\subsection{Knihovna egui}
 	
 	Egui \cite{online_eguidocs} je knihovna pro tvorbu GUI s přístupem IMGUI implementovaná v jazyce Rust. Její kód je napsán v edici jazyka \textit{Rust 2024} a používá několik dalších závislostí. Knihovna je psaná tak, aby šla integrovat do
-	existujícího projektu s libovolným backendem. Od stejného autora je k dispozici také knihovna \textit{eframe}, která slouží jako oficiální „framework“ pro knihovnu egui. Tento framework podporuje dva backendy: OpenGL s využitím knihovny \textit{glow} a WebGPU s využitím knihovny \textit{wgpu}. Kromě tří hlavních desktopových systémů umožňuje také kompilaci pro OS Android a do webové aplikace pomocí WebAssembly. K dispozici je ještě balík \textit{egui\_extras}, který přidává další funkce. Je ale označen jako experimentální a nese s sebou větší množství závislostí.
+	existujícího projektu s libovolným backendem. Od stejného autora je k dispozici také knihovna \textit{eframe}, která slouží jako oficiální „framework“ pro knihovnu egui. Tento framework podporuje dva backendy: OpenGL s využitím knihovny \textit{glow} a WebGPU s využitím knihovny \textit{wgpu}. Kromě tří hlavních desktopových systémů umožňuje \textit{eframe} také kompilaci pro OS Android a do webové aplikace pomocí WebAssembly. K dispozici je ještě balík \textit{egui-extras}, který přidává další funkce. Je ale označen jako experimentální a nese s sebou větší množství závislostí.
 	
-	Pro přidání uživatelského rozhraní do existující interaktivní aplikace je opět k dispozici nemodální dialogové okno. K tvorbě GUI aplikace, která má zabírat celý prostor hostitelského okna, pak lze použít tzv. panely. Ty umožňují rozdělit rozhraní na oblasti typu „horní lišta“, „spodní lišta“, nebo „hlavní obsah“. Panely mohou takto rozdělovat libovolné okno, tedy i to hostitelské. Do panelů pak lze umisťovat vhodné ovládací prvky.
+	Pro přidání uživatelského rozhraní do existující interaktivní aplikace je opět k dispozici nemodální dialogové okno. K tvorbě GUI aplikace, která má zabírat celý prostor hostitelského okna, pak lze použít tzv. panely. Ty umožňují rozdělit rozhraní na oblasti typu „horní lišta“, „spodní lišta“, nebo „hlavní obsah“. Panely mohou takto rozdělovat libovolné okno včetně toho hostitelského. Do panelů pak již lze umísťovat vybrané ovládací prvky.
 	
-	Knihovna je z velké části zdokumentovaná a pokud tedy programátor narazí na neznámou funkci, neměl by být problém dohledat její význam. Obtížnější mohou být situace, kdy si programátor není jist, jaké funkce přesně použít pro vyřešení konkrétního problému. K dispozici je však několik ukázkových projektů, které pokrývají alespoň základní funkce knihovny. Případné problémy lze řešit v sekci diskuzí na platformě GitHub. I zde je k dispozici řada komunitních doplňků a integrací pro různé backendy.
+	Knihovna je z velké části zdokumentovaná a pokud programátor narazí na neznámou funkci, neměl by být problém dohledat její význam. Obtížnější mohou být situace, kdy si programátor není jist, jaké funkce přesně použít pro vyřešení konkrétního problému. K dispozici je však několik ukázkových projektů, které pokrývají alespoň základní funkce knihovny. Případné problémy lze řešit v sekci diskuzí na platformě GitHub. I zde je k dispozici řada komunitních doplňků a integrací pro různé backendy.
 	
-	Egui poskytuje ovládací prvek víceřádkového textového pole, který lze zobrazit voláním metody \texttt{multiline} u struktury \texttt{TextEdit}. Textové pole vykresluje obsah řetězce, který dostává jako měnitelnou (\textit{mutable}) referenci na typ \texttt{String}. Z pohledu počtu podporovaných funkcí konkuruje tento ovládací prvek textovému poli z knihovny Dear ImGui. K dispozici jsou všechny zmíněné klávesové zkratky a výchozí písmo podporuje všechny české znaky. Ve své základní podobě prvek nepodporuje zvýrazňování syntaxe a automaticky zalamuje dlouhé řádky bez možnosti zobrazení horizontální posuvné lišty. Balík \textit{egui\_extras} pak obsahuje modul pro zvýrazňování syntaxe.
+	Egui poskytuje ovládací prvek víceřádkového textového pole, který lze zobrazit voláním metody \texttt{multiline} ze struktury \texttt{TextEdit}. Textové pole vykresluje obsah řetězce, který dostává jako měnitelnou (\textit{mutable}) referenci na typ \texttt{String}. Z pohledu počtu podporovaných funkcí konkuruje tento ovládací prvek textovému poli z knihovny Dear ImGui. K dispozici jsou všechny zmíněné klávesové zkratky a výchozí písmo podporuje všechny české znaky. Ve své základní podobě prvek nepodporuje zvýrazňování syntaxe a automaticky zalamuje dlouhé řádky bez možnosti zobrazení horizontální posuvné lišty. Balík \textit{egui-extras} pak obsahuje modul pro zvýrazňování syntaxe.
 	
 	K vykreslování grafických primitiv je možné využít pomocnou strukturu \texttt{Painter}, která slouží pro kreslení tvarů a textu v určité oblasti. Výběr tvarů je podobný jako u struktury \texttt{ImDrawList} v knihovně Dear ImGui.
 	
@@ -269,16 +270,15 @@
 	
 	\subsection{Knihovna microui}
 	
-	Microui \cite{online_microui} je knihovna pro tvorbu GUI s přístupem IMGUI implementovaná v jazyce C.
+	Microui \cite{online_microui} je knihovna pro tvorbu GUI s přístupem IMGUI implementovaná v jazyce C. Jedná se o minimalistickou knihovnu, jejíž kód má zhruba 1100 řádků a lze jej integrovat do projektu s libovolným backendem. Jediné poskytnuté oficiální řešení je základní integrace s OpenGL v kombinaci s knihovnou SDL. Jelikož má knihovna Microui minimální rozsah, tak je základní popis a ukázky kódu v jejím repozitáři dostatečnou dokumentací.
 	
-	% COMMUNITY FORK? (abandoned??): https://github.com/rxi/microui/issues/79
-	%                  				 https://github.com/microui-community/microui
+	Ovládací prvky lze v Microui vykreslovat přímo do „prázdného“ hostitelského okna, je ale možné vytvářet i nemodální dialogová okna. Víceřádkové textové pole není podporováno a k dispozici je pouze jednořádková varianta, kterou lze vykreslit voláním funkce \texttt{mu\_textbox}. V tomto poli lze pouze přidávat nebo ubírat znaky. S textovým kurzorem není možné pohybovat a k dispozici nejsou ani žádné jiné funkce. České znaky nejsou podporovány a bez dodání vlastní logiky není možné importovat jiné písmo.
 	
 	\subsection{Knihovna raygui}
 	
 	Raygui je knihovna pro tvorbu GUI s přístupem IMGUI implementovaná v jazyce C.
 	
-	% * https://github.com/raysan5/rguilayout
+	% * --> https://github.com/raysan5/rguilayout <--
 	% * Editable multiline textbox not supported
 	
 	\subsection{Knihovna Gio}
@@ -295,7 +295,7 @@
 	
 	Qt \cite{online_qt} je knihovna pro tvorbu GUI s přístupem RMGUI implementovaná v jazyce C++. Společnost \textit{Qt Group} zastřešuje vývoj knihovny a poskytuje k ní různé komerční i open-source licence. Z toho nejvíce permisivní licencí je LGPL. Jedná se o široce používanou knihovnu, a proto je v této práci vybrána jako zástupce přístupu~RMGUI.
 	
-	Existuje více způsobů, jak pomocí knihovny Qt definovat uživatelské rozhraní. Časté je použití programu \textit{Qt Creator}, který obsahuje vizuální editor. Jelikož je z výše uvedených knihoven Dear ImGui jediná, pro kterou existují vizuální editory, zaměřuji se v této práci na definici uživatelského rozhraní z aplikačního kódu. I v knihovně Qt bude tedy GUI definováno pomocí jazyka C++.
+	Existuje více způsobů, jak pomocí knihovny Qt definovat uživatelské rozhraní. Časté je použití programu \textit{Qt Creator}, který obsahuje vizuální editor. Jelikož jsou z výše uvedených knihoven Dear ImGui a raygui jediné, pro které existují vizuální editory, zaměřuji se v této práci na definici uživatelského rozhraní z aplikačního kódu. I v knihovně Qt bude tedy GUI definováno pomocí jazyka C++.
 	
 	\chapter{Návrh ukázkové aplikace}
 	
@@ -469,7 +469,7 @@
 
 	\subsection{Víceřádkové textové pole v knihovně Dear ImGui}
 
-	Jakmile je vytvořeno podokno, které má sloužit jako rodič víceřádkového textového pole, stačí mezi jeho párovými metodami zavolat metodu \texttt{InputTextMultiline} pro jeho vykreslení. Vlastnosti tohoto ovládacího prvku byly představeny v rešerši (sekce~\ref{Chapter2SectionDearImGui}). Během implementace ukázkové aplikace se objevily určité obtíže, které s tímto ovládacím prvkem souvisí.
+	Jakmile je vytvořeno podokno, které má sloužit jako rodič víceřádkového textového pole, stačí mezi jeho párovými metodami zavolat metodu \texttt{InputTextMultiline} pro jeho vykreslení. Vlastnosti tohoto ovládacího prvku byly představeny v rešerši. Během implementace ukázkové aplikace se objevily určité obtíže, které s tímto ovládacím prvkem souvisí.
 	
 	Knihovna Dear ImGui v základu umožňuje ovládat uživatelské rozhraní pomocí klávesnice. Klávesou \textit{Tab} tak lze přepínat, jaký z interaktivních prvků je aktuálně vybraný. Metodě pro vykreslení textového pole je proto předán příznak \texttt{AllowTabInput}, aby při psaní textu nebylo možné klávesou \textit{Tab} ovládací prvek opustit. Místo toho je do textu vložen znak tabulátoru a toto chování není možné přenastavit např. na vložení čtyř mezer.
 	
@@ -706,7 +706,7 @@
 	
 	\subsection{Tvorba uživatelského rozhraní v knihovně egui}
 	
-	V knihovně egui se pro definici uživatelského rozhraní používá vnořování uzávěrů. Kód \ref{_tag_code_eguitoppanel} porovnává tento přístup s přístupem použitým v knihovně Dear ImGui. Je zde vytvořena hlavní lišta nabídek, která v nabídce \textit{File} obsahuje akci \textit{Exit} pro ukončení aplikace. V egui se pracuje se strukturami \texttt{Context} pro obecná volání knihovny a \texttt{Ui} pro pokládání ovládacích prvků. Je třeba zmínit, že v této práci používám verzi knihovny 0.33. V březnu 2026 totiž vyšla verze 0.34, která v tomto ohledu přináší drobné změny.
+	V knihovně egui se pro definici uživatelského rozhraní používá vnořování uzávěrů\footnote{Uzávěr (\textit{closure}) je v jazyce Rust anonymní funkce, která dokáže pracovat s proměnnými definovanými ve stejném rozsahu platnosti, v jakém je definován samotný uzávěr \cite{book_rust}.}. Kód \ref{_tag_code_eguitoppanel} porovnává tento přístup s přístupem použitým v knihovně Dear ImGui. Je zde vytvořena hlavní lišta nabídek, která v nabídce \textit{File} obsahuje akci \textit{Exit} pro ukončení aplikace. V egui se pracuje se dvěma typy struktur: \texttt{Context} pro obecná volání knihovny a \texttt{Ui} pro pokládání ovládacích prvků. Je třeba zmínit, že v této práci používám verzi knihovny 0.33. V březnu 2026 totiž vyšla verze 0.34, která v tomto ohledu přináší drobné změny.
 	
 	\begin{code}[ht]
 		\lstinputlisting[language=RustEguiClosure]{code/egui_panel_top.rs}
@@ -720,17 +720,54 @@
 	
 	Pak lze již vykreslovat ovládací prvky v liště nabídek: nejprve nabídku \textit{File} a v ní tlačítko s ikonou a popiskem. Pro zobrazení ikon opět používám písmo od \textit{Pictogrammers} a soubor s konstantami z repozitáře \textit{IconFontCppHeaders}. Abych mohl spojit znak ikony se zbylým řetězcem již během kompilace, musím použít  \texttt{concatcp}, což je makro třetí strany. Řádek sloužící k ukončení aplikace ukazuje, jak obě knihovny řeší volání backendu.
 	
-	Pro vytvoření hlavního obsahu okna je nejprve stejným způsobem zobrazen panel typu \texttt{CentralPanel}. V jeho uzávěru pak už lze vykreslovat ovládací prvky. \temporary{buď ui.label aspol., nebo ui.add(...); ID nejsou takový problém; layout - horizontal, rtl, co se stane když se widgety nevejdou? scrollarea; jak je vyřešeno Textedit <|> Canvas; stavový řádek}
+	Pro vytvoření hlavního obsahu okna je nejprve stejným způsobem zobrazen panel typu \texttt{CentralPanel}. V jeho uzávěru pak už lze vykreslovat ovládací prvky voláním metod struktury \texttt{Ui}. Obrázek \ref{_tag_img_EguiLayout} ukazuje, jak lze definovat základní rozložení. Ovládací prvky se implicitně pokládají pod sebe, pomocí dodatečných uzávěrů lze ale snadno prvky pokládat vedle sebe včetně možnosti zarovnání zprava.
 	
-	\temporary{\\ NĚKDE ZMÍNIT STYL APLIKACE, JAK JSEM SI ZMĚNIL VELIKOST A BARVU PÍSMA PROTOŽE\dots}
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{img/egui_layout}
+		\caption{egui: rozložení ovládacích prvků}
+		\label{_tag_img_EguiLayout}
+	\end{figure}
+	
+	Na obrázku je vidět zdrojový kód daného rozložení, který využívá zvýrazňování syntaxe z balíku \textit{egui-extras}. Barevné schéma použité pro zvýrazňování může uživatel editovat za běhu pomocí výběru barev. Neexistuje však veřejný způsob, jak tyto barvy měnit z aplikačního kódu. Při startu aplikace je tak vždy použito výchozí barevné schéma, které nemá příliš dobré poměry kontrastu.
+	
+	Jak je vidět, v této knihovně není problém s kolizí identifikátorů, pokud mají např. dvě tlačítka stejný textový popisek. V určitých případech, jako je tvorba nemodálního okna nebo horního panelu, je ale nutné poskytnout unikátní název, jinak knihovna nemůže korektně operovat. Takové chyby jsou také hlášeny za běhu, ale oproti chybám v Dear ImGui nejsou příliš čitelné (obrázek \ref{_tag_img_EguiIDConflict}). Pro zobrazení dvou oken se stejným názvem je možné při jejich definici explicitně specifikovat identifikátor, potom již nebude pro tento účel použit název okna.
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=.7\textwidth]{img/egui_id_conflict}
+		\caption{egui: dvě okna se stejným názvem}
+		\label{_tag_img_EguiIDConflict}
+	\end{figure}	
+	
+	V ukázkové aplikaci je rozložení textového editoru a kreslicího plátna řešeno podobně jako v projektu s Dear ImGui. Nejprve je zjištěna zbývající volná oblast v daném okně. Podle jejích rozměrů jsou odvozeny pozice a rozměry dvou podoblastí, které jsou vytvořeny metodou \texttt{new\_child} struktury \texttt{Ui}. Místo neviditelného tlačítka je pomocí metody \texttt{interact} vytvořena oblast, ve které lze kontrolovat události jako kliknutí tlačítka myši.
+	
+	% Stavový řádek pro hlášení chyb v popisu diagramu se nachází ve svém vlastním spodním panelu.
 	
 	\subsection{Víceřádkové textové pole v knihovně egui}
 	
-	\temporary{\\ (problémy, err hghlght, syntax hghlght, showcase)}
+	Ovládací prvek víceřádkového textového pole v knihovně egui sám o sobě nedokáže zobrazit posuvné lišty. Jejich vykreslení je zde řešeno tak, že je celý prvek umístěn do struktury \texttt{ScrollArea}, což je oblast, která pro svůj veškerý obsah poskytuje posuvné lišty. Textové pole tedy nijak neřeší, jak zobrazit pouze část svého obsahu a jak s obsahem posouvat. Ovládací prvek je vykreslen celý a pokud se nevejde do svého vyhrazeného prostoru, tak je „useknut“. S posunutím vertikální lišty se uvnitř textového pole nic nepohybuje, a místo toho se posouvá celá oblast struktury \texttt{ScrollArea}. Stejně jako v Dear ImGui je při definici textového pole potřeba specifikovat, aby stisk klávesy \textit{Tab} během psaní nevedl k vybrání dalšího interaktivního prvku. I zde je pak s tímto nastavením po stisku klávesy vložen znak tabulátoru bez možnosti přepnutí na vkládání mezer.
+
+	Do projektu jsem přidal balík \textit{egui-extras}, aby bylo možné v textovém poli zvýrazňovat syntax. Zvýrazňování lze zapnout pouze pro podporované jazyky a není možné definovat vlastní pravidla. Jazyk TOML je sice podporovaný, ale využívá pouze tří barev. Jak bylo zmíněno výše, barevné schéma nelze změnit z aplikačního kódu, a tak je použito do výchozí, které má světlém režimu špatný kontrast. V \mbox{„boilerplate“} kódu, který je nutný ke zprovoznění zvýrazňování, je možné vypnout zalamování dlouhých řádků a díky tomu vynutit zobrazení horizontální posuvné lišty.
+
+	% Během implementace jsem i u tohoto prvku přišel na určité problémy.
+
+	Zvýraznění nahlášené chyby v textovém poli je zde opět řešeno vykreslením poloprůhledného červeného obdélníka. Knihovna \textit{toml-edit}, kterou zde používám, vrací pozice objektů ve vstupním textu jako absolutní index. Ten je třeba pomocí počítání znaků nového řádku převést na číslo řádku a čísla sloupců nahlášené chyby. V tomto případě není potřeba řešit stav posunu, protože vykreslený obdélník je posouván zároveň s textovým polem jakožto součást struktury \texttt{ScrollArea}. K pozici obdélníka také nepřičítám vnitřní okraj (\textit{padding}) textového pole, a proto je vykreslen s mírným posunem doleva nahoru. Hodnotu okraje se mi totiž nepodařilo nijak zjistit. S měnící se velikostí písma se navíc nekonzistentně mění i tato hodnota, a tak není možné ji změřit a nastavit napevno.
+	
+	Pro porovnání jsem do aplikace přidal doplněk třetí strany \textit{egui-code-editor}. Jedná se o modifikaci výchozího víceřádkového textového pole, která umožňuje definovat vlastní pravidla pro zvýrazňování syntaxe. U dodaných klíčových slov je možné nastavit jejich barvu a zároveň pro ně funguje našeptávání.
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{img/egui_textedits}
+		\caption{egui: víceřádkové textové pole}
+		\label{_tag_img_EguiTextedits}
+	\end{figure}
 	
 	\subsection{Vykreslení diagramu v knihovně egui}
 	
 	\temporary{\\ (ImDrawList?, hloubka, jak funguje canvas, RMB/MW→úprava souřadnic?)}
+	
+	\temporary{SVG zmínit tady?}
 	
 	\subsection{Další funkce aplikace v knihovně egui}
 	
@@ -763,6 +800,8 @@
 	\temporary{\\ IMGUI\\ :: Kompletní pořadí operací ve smyčce a případy, kdy bylo potřeba dát si na pořadí pozor.\\ :: Unsavedwarn modal je dobrý příkladem, modaly jsou celkově zvláštní, v Qt zprvu dávají větší smysl, ale zase je to hodně psaní\\ :: MultiLineTextEdit je problémový widget\\ :: Rychlost vývoje! \\ RMGUI\\ :: Callback hell\\ :: „Ukecané“\\ :: Synchronizace stavů}
 	
 	\section{Benchmark}
+	
+	\temporary{Zmínit HW/SW, zmínit toolchain}
 	
 	\subsection{Benchmark nodes}
 	

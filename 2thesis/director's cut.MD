@@ -26,25 +26,17 @@
     * Umožňuje snadno dělat UI, které se mění v čase
     * Máme kontrolu nad pořadím akcí
     * Někdy je ale potřeba se zamyslet, kam vlastně kus kódu do hlavní smyčky umístit (zde můžu zmínit mou implementaci dialogu varujícího před neuloženým souborem)
+* __Viz [problems](https://github.com/RadekMocek/DiagramPche_DearImGui?tab=readme-ov-file#problems)__
 
 ### Implementace v egui
 
-* Vycházím z egui (eframe) project template, která je od stejného autora, jako je samotná knihovna
-  * Template už zde má připravenou struct App, glow renderer, ...
-  * Beru glow místo wgpu, ať máme oboje OpenGL; eframe pak pro okna používá winit?
-* TOMLEDIT místo TOML, kvůli source position
-* Moje struktura projektu asi není úplně Rust idiomatická, ale snažím se to mít stejné jako v Cpp projektu
-* Klíčové slovo static v Rustu nelze použít uvnitř funkce jako v C++, takže buď musí být všechny hodnoty součástí struct App, nebo musím přijít s modulárnějším přístupem.
-
+* Error highlight na texteditoru nemusí řešit scroll, je to celé uvnitř scrollarea.
+* 3rd party text editor neumí error highlight, ale umí našeptávat ♥.
 * Další nesetříděné poznámky:
-  * Umí `ui.with_layout(egui::Layout::right_to_left ... {})`
   * Defaultní light theme mělo šedý text na bílém pozadí → změněno na černý text pro lepší čitelnost (pro dark mode byl font zase zesvětlen).
   * Defaultní font podporuje řadu emoji, a jsou monochrome, takže je lze použít jako ikonky. Toto funguje, i když přepíši defaultní font na Inconsolata, který emoji nepodporuje (pracuje se s prioritou). Každopádně symboly nemají konzistentní vizuální identitu a neexistuje emoji např. pro elipsu, nebo odlišení _save_ od _save as_, prostě jen disketa. Takže může se hodit, ale na seriózní ikony raději použít alternativu.
-  * Vypadá to, že abych zprovoznil horizontal scroll u default text editoru, [musím použít syntax highlighting](https://github.com/emilk/egui/discussions/4871); a u něj nelze z kódu nastavit barevné schéma, takže opět máme světlé barvy na světlém pozadí, -_-
-  * Nemá připraveno funkci tlačítka click and hold? Např. změna velikosti fontu text editoru, že bych držel + a ono to postupně přičítalo.
-  * Error highlight na texteditoru nemusí řešit scroll, je to celé uvnitř scrollarea.
-  * 3rd party text editor neumí error highlight, ale umí našeptávat ♥.
-  * Ctrl+Z funguje i po zásahu do source stringu ("toolbar canvas interaction").
+  * Nemá připravenou funkci tlačítka click and hold? Např. změna velikosti fontu text editoru, že bych držel + a ono to postupně přičítalo.
+  * Ctrl+Z funguje i po zásahu do source stringu, stále to ale není ideální.
   * V Cpp od TOML knihovny dostávám umístění v kódu jako row+char_in_row, což se hodí pro Error Highlight, zde dostávám char_total, což se hodí při toolbar canvas interaction.
   * Egui painter neumí přepínat Z, pouze malířův algoritmus → implementována prioritní fronta draw commands.
   * PROBLÉM: Obecně se knihovny liší ve výšce řádku textu (projevuje se u nodes s víceřádkovým textem), zde to ale navíc vypadá, že to není konzistentní při zoomování (tedy výška řádku se mění s velikostí vykreslovaného písma?)

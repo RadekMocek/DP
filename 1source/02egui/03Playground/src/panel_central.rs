@@ -16,22 +16,6 @@ impl MyApp {
             self.win_textedit2(&mut ui);
 
             // --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-            if ui.button("Tlačítko").clicked() {
-                println!("A");
-            }
-            if ui.button("Tlačítko").clicked() {
-                println!("B");
-            }
-
-            ui.horizontal(|ui| {
-                ui.label("1");
-                ui.label("2");
-                ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                    ui.label("3");
-                    ui.label("4");
-                });
-            });
         });
     }
 }
