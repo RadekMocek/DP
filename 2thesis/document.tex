@@ -117,6 +117,7 @@
 		\textbf{MSVC} & \textit{Microsoft Visual C++}, překladač pro jazyky C a C++ \\
 		\textbf{MVVM} & \textit{model–view–viewmodel}, architektonický vzor \\
 		\textbf{OS} & \textit{operační systém} \\
+		\textbf{RFD} & \textit{Rusty File Dialogs}, knihovna v jazyce Rust pro zobrazení nativních dialogových oken \\
 		\textbf{RMGUI} & \textit{retained mode graphical user interface}, grafické uživatelské rozhraní v režimu soběstačného vykreslování \\
 		\textbf{SDL} & \textit{Simple DirectMedia Layer}, multiplatformní multimediální knihovna \\
 		\textbf{SVG} & \textit{Scalable Vector Graphics}, standard pro popis vektorové grafiky \\
@@ -270,26 +271,29 @@
 	
 	\subsection{Knihovna microui}
 	
-	Microui \cite{online_microui} je knihovna pro tvorbu GUI s přístupem IMGUI implementovaná v jazyce C. Jedná se o minimalistickou knihovnu, jejíž kód má zhruba 1100 řádků a lze jej integrovat do projektu s libovolným backendem. Jediné poskytnuté oficiální řešení je základní integrace s OpenGL v kombinaci s knihovnou SDL. Jelikož má knihovna Microui minimální rozsah, tak je základní popis a ukázky kódu v jejím repozitáři dostatečnou dokumentací.
+	Microui \cite{online_microui} je knihovna pro tvorbu GUI s přístupem IMGUI implementovaná v jazyce C. Jedná se o minimalistickou knihovnu, jejíž kód má zhruba 1100 řádků a lze jej integrovat do projektu s libovolným backendem. Jediné oficiálně poskytnuté řešení je integrace pro OpenGL v kombinaci s knihovnou SDL. Jelikož má knihovna Microui minimální rozsah, tak je základní popis a ukázky kódu v jejím repozitáři dostatečnou dokumentací.
 	
 	Ovládací prvky lze v Microui vykreslovat přímo do „prázdného“ hostitelského okna, je ale možné vytvářet i nemodální dialogová okna. Víceřádkové textové pole není podporováno a k dispozici je pouze jednořádková varianta, kterou lze vykreslit voláním funkce \texttt{mu\_textbox}. V tomto poli lze pouze přidávat nebo ubírat znaky. S textovým kurzorem není možné pohybovat a k dispozici nejsou ani žádné jiné funkce. České znaky nejsou podporovány a bez dodání vlastní logiky není možné importovat jiné písmo.
 	
 	\subsection{Knihovna raygui}
 	
-	Raygui je knihovna pro tvorbu GUI s přístupem IMGUI implementovaná v jazyce C.
+	Raygui \cite{online_raygui} je jednohlavičková knihovna pro tvorbu GUI s přístupem IMGUI implementovaná v jazyce C. Knihovna byla vytvořena primárně jako modul do projektu \textit{raylib}, lze ji ale integrovat s libovolným backendem. Knihovna nemá žádnou dokumentaci, ale její zdrojový kód je dostatečně okomentovaný.
 	
-	% * --> https://github.com/raysan5/rguilayout <--
-	% * Editable multiline textbox not supported
+	Ovládací prvky lze v raygui vykreslovat přímo do prázdného hostitelského okna a funkce pro zobrazení dodatečných dialogových oken jsou omezené. Jedná se o jedinou knihovnu v této rešerši, která neposkytuje žádnou formu rozložení, a tak je nutné pozice a velikosti všech ovládacích prvků definovat absolutně. Od stejného autora je pak k dispozici vizuální editor \textit{rGuiLayout}.%, který je pravděpodobně zamýšleným způsobem, jak v raygui navrhovat uživatelská rozhraní.
+	
+	Víceřádkové textové pole není podporováno a k dispozici je pouze jednořádková varianta, kterou lze vykreslit voláním funkce \texttt{GuiTextBox}. V tomto poli lze kromě přidávání a ubírání znaků také měnit pozici textového kurzoru. Po importování vlastního písma a nastavení správných rozsahů lze vykreslovat české znaky.
 	
 	\subsection{Knihovna Gio}
 	
-	Gio je knihovna pro tvorbu GUI s přístupem IMGUI implementovaná v jazyce Go.
+	Gio \cite{online_gioui} je knihovna pro tvorbu GUI s přístupem IMGUI implementovaná v jazyce Go.
 	
-	% * https://github.com/oligo/gioview
+	//TODO
 	
 	\subsection{Knihovna dvui}
 	
 	Dvui je knihovna pro tvorbu GUI s přístupem IMGUI implementovaná v jazyce Zig.
+	
+	//TODO
 	
 	\section{Knihovna Qt}
 	
@@ -473,7 +477,7 @@
 	
 	Knihovna Dear ImGui v základu umožňuje ovládat uživatelské rozhraní pomocí klávesnice. Klávesou \textit{Tab} tak lze přepínat, jaký z interaktivních prvků je aktuálně vybraný. Metodě pro vykreslení textového pole je proto předán příznak \texttt{AllowTabInput}, aby při psaní textu nebylo možné klávesou \textit{Tab} ovládací prvek opustit. Místo toho je do textu vložen znak tabulátoru a toto chování není možné přenastavit např. na vložení čtyř mezer.
 	
-	Další klávesou pro navigaci je \textit{Alt}, která slouží pro skok do záhlaví okna a lišty nabídek. Hlavní okno má záhlaví skryto a lišta je umístěna v samostatném okně, i přesto ale stisk klávesy \textit{Alt} ruší interakci s textovým polem. Protože se v této práci z časových důvodů dále nevěnuji navigaci pomocí klávesnice a klávesovým zkratkám, vypnul jsem tyto funkce v aplikaci globálně.
+	Další klávesou pro navigaci je \textit{Alt}, která slouží pro skok do záhlaví okna a lišty nabídek. Hlavní okno má záhlaví skryto a lišta je umístěna v samostatném okně, i přesto ale stisk klávesy \textit{Alt} ruší interakci s textovým polem. Protože se v této práci dále nevěnuji navigaci pomocí klávesnice a klávesovým zkratkám, vypnul jsem tyto funkce v aplikaci globálně.
 
 	Jak již bylo zmíněno, ve víceřádkovém textovém poli nelze zobrazit horizontální posuvnou lištu. Posouvat pohled je možné pouze s využitím kláves pro změnu pozice textového kurzoru. Při pokusu o posunutí pomocí klávesy \textit{Shift} a kolečka myši jsem objevil drobnou vizuální chybu. Tímto způsobem sice bylo možné text horizontálně posouvat, ale jen do chvíle, kdy počáteční písmena „narazila“ na okraj ovládacího prvku. Kolečkem myši bylo tedy možné v podstatě jen vynulovat vnitřní okraj (\textit{padding}) textového pole. Tuto chybu jsem nahlásil jako \href{https://github.com/ocornut/imgui/issues/9249}{\textit{issue \#9249}} na platformě GitHub a ve verzi 1.92.6 byla opravena autorem knihovny.
 
@@ -669,7 +673,7 @@
 	\begin{figure}[ht]
 		\centering
 		\includegraphics[width=.94\textwidth]{img/dear_dark}
-		\caption{Dear ImGui: aplikace v tmavém režimu, nastavení vzhledu}
+		\caption{Dear ImGui: aplikace v tmavém režimu, okno s nastavením}
 		\label{_tag_img_DearDARK}
 	\end{figure}	
 	
@@ -718,7 +722,7 @@
 	
 	Metodě pro zobrazení panelu je předán uzávěr, jehož vstupní parametr je typu \texttt{Ui} a je zvykem jej pojmenovávat jako \texttt{ui}. Metoda o řádek níže, která slouží k vykreslení lišty nabídek, přijímá stejný typ uzávěru. Předchozí proměnná \texttt{ui} je překryta, protože je v tomto uzávěru pro „novou“ proměnnou použit stejný název. Nemůže se tak stát, že programátor použije některou z vnějších struktur typu \texttt{Ui}, což je v tomto případě žádoucí.
 	
-	Pak lze již vykreslovat ovládací prvky v liště nabídek: nejprve nabídku \textit{File} a v ní tlačítko s ikonou a popiskem. Pro zobrazení ikon opět používám písmo od \textit{Pictogrammers} a soubor s konstantami z repozitáře \textit{IconFontCppHeaders}. Abych mohl spojit znak ikony se zbylým řetězcem již během kompilace, musím použít  \texttt{concatcp}, což je makro třetí strany. Řádek sloužící k ukončení aplikace ukazuje, jak obě knihovny řeší volání backendu.
+	Pak lze již vykreslovat ovládací prvky v liště nabídek: nejprve nabídku \textit{File} a v ní tlačítko s ikonou a popiskem. Pro zobrazení ikon opět používám písmo od \mbox{\textit{Pictogrammers}} a soubor s konstantami z repozitáře \textit{IconFontCppHeaders}. Abych mohl spojit znak ikony se zbylým řetězcem již během kompilace, musím použít  \texttt{concatcp}, což je makro třetí strany. Řádek sloužící k ukončení aplikace ukazuje, jak obě knihovny řeší volání backendu.
 	
 	Pro vytvoření hlavního obsahu okna je nejprve stejným způsobem zobrazen panel typu \texttt{CentralPanel}. V jeho uzávěru pak už lze vykreslovat ovládací prvky voláním metod struktury \texttt{Ui}. Obrázek \ref{_tag_img_EguiLayout} ukazuje, jak lze definovat základní rozložení. Ovládací prvky se implicitně pokládají pod sebe, pomocí dodatečných uzávěrů lze ale snadno prvky pokládat vedle sebe včetně možnosti zarovnání zprava.
 	
@@ -729,9 +733,9 @@
 		\label{_tag_img_EguiLayout}
 	\end{figure}
 	
-	Na obrázku je vidět zdrojový kód daného rozložení, který využívá zvýrazňování syntaxe z balíku \textit{egui-extras}. Barevné schéma použité pro zvýrazňování může uživatel editovat za běhu pomocí výběru barev. Neexistuje však veřejný způsob, jak tyto barvy měnit z aplikačního kódu. Při startu aplikace je tak vždy použito výchozí barevné schéma, které nemá příliš dobré poměry kontrastu.
+	Na obrázku je vidět zdrojový kód daného rozložení, který využívá zvýrazňování syntaxe z balíku \textit{egui-extras}. Barevné schéma, které je použité pro zvýrazňování, může uživatel editovat za běhu pomocí výběru barev. Neexistuje však veřejný způsob, jak tyto barvy měnit z aplikačního kódu. Při startu aplikace je tak vždy použito výchozí barevné schéma.%, které nemá příliš dobré poměry kontrastu.
 	
-	Jak je vidět, v této knihovně není problém s kolizí identifikátorů, pokud mají např. dvě tlačítka stejný textový popisek. V určitých případech, jako je tvorba nemodálního okna nebo horního panelu, je ale nutné poskytnout unikátní název, jinak knihovna nemůže korektně operovat. Takové chyby jsou také hlášeny za běhu, ale oproti chybám v Dear ImGui nejsou příliš čitelné (obrázek \ref{_tag_img_EguiIDConflict}). Pro zobrazení dvou oken se stejným názvem je možné při jejich definici explicitně specifikovat identifikátor, potom již nebude pro tento účel použit název okna.
+	V knihovně egui není problém s kolizí identifikátorů, pokud mají např. dvě tlačítka stejný textový popisek. V určitých případech, jako je tvorba nemodálního okna nebo horního panelu, je ale nutné poskytnout unikátní název, jinak knihovna nemůže korektně operovat. Takové chyby jsou také hlášeny za běhu, ale oproti chybám v Dear ImGui nejsou příliš čitelné (obrázek \ref{_tag_img_EguiIDConflict}). Pro zobrazení dvou oken se stejným názvem je možné při jejich definici explicitně specifikovat identifikátor, potom již nebude pro tento účel použit název okna.
 	
 	\begin{figure}[ht]
 		\centering
@@ -746,15 +750,17 @@
 	
 	\subsection{Víceřádkové textové pole v knihovně egui}
 	
-	Ovládací prvek víceřádkového textového pole v knihovně egui sám o sobě nedokáže zobrazit posuvné lišty. Jejich vykreslení je zde řešeno tak, že je celý prvek umístěn do struktury \texttt{ScrollArea}, což je oblast, která pro svůj veškerý obsah poskytuje posuvné lišty. Textové pole tedy nijak neřeší, jak zobrazit pouze část svého obsahu a jak s obsahem posouvat. Ovládací prvek je vykreslen celý a pokud se nevejde do svého vyhrazeného prostoru, tak je „useknut“. S posunutím vertikální lišty se uvnitř textového pole nic nepohybuje, a místo toho se posouvá celá oblast struktury \texttt{ScrollArea}. Stejně jako v Dear ImGui je při definici textového pole potřeba specifikovat, aby stisk klávesy \textit{Tab} během psaní nevedl k vybrání dalšího interaktivního prvku. I zde je pak s tímto nastavením po stisku klávesy vložen znak tabulátoru bez možnosti přepnutí na vkládání mezer.
+	Ovládací prvek víceřádkového textového pole v knihovně egui sám o sobě nedokáže zobrazit posuvné lišty. Jejich vykreslení je zde řešeno tak, že je celý prvek umístěn do struktury \texttt{ScrollArea}, což je oblast, která poskytuje posuvné lišty pro svůj veškerý obsah. Textové pole tedy nijak neřeší, jak zobrazit pouze část svého obsahu a jak s obsahem posouvat. Ovládací prvek je vykreslen celý, a pokud se nevejde do svého vyhrazeného prostoru, tak je „useknut“. S posunutím vertikální lišty se uvnitř textového pole nic nepohybuje, a místo toho se posouvá celá oblast struktury \texttt{ScrollArea}.
+	
+	Stejně jako v Dear ImGui je při definici textového pole potřeba specifikovat, aby stisk klávesy \textit{Tab} během psaní nevedl k vybrání dalšího interaktivního prvku. I v knihovně egui je pak s tímto nastavením po stisku klávesy vložen znak tabulátoru bez možnosti přepnutí na vkládání mezer. Oproti projektu v Dear ImGui se mi zde nepodařilo přijít na to, jak vypnout navigaci pomocí kláves globálně.
 
-	Do projektu jsem přidal balík \textit{egui-extras}, aby bylo možné v textovém poli zvýrazňovat syntax. Zvýrazňování lze zapnout pouze pro podporované jazyky a není možné definovat vlastní pravidla. Jazyk TOML je sice podporovaný, ale využívá pouze tří barev. Jak bylo zmíněno výše, barevné schéma nelze změnit z aplikačního kódu, a tak je použito do výchozí, které má světlém režimu špatný kontrast. V \mbox{„boilerplate“} kódu, který je nutný ke zprovoznění zvýrazňování, je možné vypnout zalamování dlouhých řádků a díky tomu vynutit zobrazení horizontální posuvné lišty.
+	Do projektu jsem dále přidal balík \textit{egui-extras}, aby bylo možné v textovém poli zvýrazňovat syntax. Zvýrazňování lze zapnout pouze pro podporované jazyky a není možné definovat vlastní pravidla. Jazyk TOML sice podporovaný je, ale využívá pouze tří barev a zvýrazňovány jsou pak i neočekávané parametry. Jak bylo zmíněno výše, barevné schéma nelze změnit z aplikačního kódu, a tak je použito to výchozí, které má ve světlém režimu špatný poměr kontrastu mezi popředím a pozadím. V \mbox{„boilerplate“} kódu, který je nutný ke zprovoznění zvýrazňování, je možné vypnout zalamování dlouhých řádků a díky tomu vynutit zobrazení horizontální posuvné lišty.
 
 	% Během implementace jsem i u tohoto prvku přišel na určité problémy.
 
-	Zvýraznění nahlášené chyby v textovém poli je zde opět řešeno vykreslením poloprůhledného červeného obdélníka. Knihovna \textit{toml-edit}, kterou zde používám, vrací pozice objektů ve vstupním textu jako absolutní index. Ten je třeba pomocí počítání znaků nového řádku převést na číslo řádku a čísla sloupců nahlášené chyby. V tomto případě není potřeba řešit stav posunu, protože vykreslený obdélník je posouván zároveň s textovým polem jakožto součást struktury \texttt{ScrollArea}. K pozici obdélníka také nepřičítám vnitřní okraj (\textit{padding}) textového pole, a proto je vykreslen s mírným posunem doleva nahoru. Hodnotu okraje se mi totiž nepodařilo nijak zjistit. S měnící se velikostí písma se navíc nekonzistentně mění i tato hodnota, a tak není možné ji změřit a nastavit napevno.
+	Zvýraznění nahlášené chyby v textovém poli je zde opět řešeno vykreslením poloprůhledného červeného obdélníka. Knihovna \textit{toml-edit}, kterou zde používám, vrací pozice objektů ve vstupním textu jako absolutní index. Ten je třeba pomocí počítání znaků nového řádku převést na čísla řádku a sloupce nahlášené chyby. V tomto případě není potřeba řešit stav posunu, protože vykreslený obdélník je posouván zároveň s textovým polem jakožto součást struktury \texttt{ScrollArea}. K pozici obdélníka také nepřičítám vnitřní okraj (\textit{padding}) textového pole, a proto je vykreslen s mírným posunem doleva nahoru. Hodnotu okraje se mi totiž nepodařilo nijak zjistit. S měnící se velikostí písma se navíc nekonzistentně mění i tato hodnota, a tak není možné ji změřit a nastavit „napevno“.
 	
-	Pro porovnání jsem do aplikace přidal doplněk třetí strany \textit{egui-code-editor}. Jedná se o modifikaci výchozího víceřádkového textového pole, která umožňuje definovat vlastní pravidla pro zvýrazňování syntaxe. U dodaných klíčových slov je možné nastavit jejich barvu a zároveň pro ně funguje našeptávání.
+	Pro porovnání jsem do aplikace přidal doplněk třetí strany \textit{egui-code-editor}. Jedná se o modifikaci výchozího víceřádkového textového pole, která umožňuje definovat vlastní pravidla pro zvýrazňování syntaxe. U dodaných klíčových slov je možné nastavit jejich barvu a zároveň pro ně funguje našeptávání. Obrázek \ref{_tag_img_EguiTextedits} porovnává výchozí ovládací prvek s prvkem třetí strany ve světlém a tmavém režimu.
 	
 	\begin{figure}[ht]
 		\centering
@@ -765,13 +771,41 @@
 	
 	\subsection{Vykreslení diagramu v knihovně egui}
 	
-	\temporary{\\ (ImDrawList?, hloubka, jak funguje canvas, RMB/MW→úprava souřadnic?)}
+	Vykreslení diagramu podle vstupního dokumentu v jazyce TOML funguje na stejném principu jako v předchozím projektu. Struktura \texttt{Parser} provede první fázi převodu, která je nezávislá na knihovně egui, a pak je zpracování předáno do struktury \texttt{App}, kde jsou dopočítány přesné souřadnice objektů v diagramu.% uzlů a bodů cest.
 	
-	\temporary{SVG zmínit tady?}
+	V projektu s Dear ImGui bylo možné po zjištění souřadnic rovnou začít vykreslovat grafická primitiva a hloubka uzlů definovaná parametrem \textit{z} se řešila pomocí kanálů, které struktura \texttt{ImDrawList} podporuje. V egui ale struktura \texttt{Painter} žádný takový mechanismus nemá a je podporován pouze „malířův algoritmus“ \cite{online_eguizorder}. Z toho důvodu jsou finální informace pro vykreslení zabaleny do nové struktury a přidány do prioritní fronty, která své prvky řadí podle parametru \textit{z}. Po zpracování všech objektů v diagramu jsou prvky z fronty postupně vybírány a vykreslovány.
+	
+	Prvky přidávané do této kolekce implementují určitý \textit{trait} (rozhraní v jazyce Rust) a využívá se tak polymorfismu. Kromě metody pro vykreslení pomocí struktury \texttt{Painter} implementují také metodu použitou při tvorbě dokumentu ve formátu SVG. Ten je zde také tvořen během průchodu smyčkou a u jednotlivých prvků fronty je v tomto případě kromě metody \texttt{draw} volána i metoda \texttt{draw\_svg}. To v kombinaci s použitím modernějšího balíku \textit{svg} vede na značně čistší implementaci exportu do formátu SVG, než jaká je v předchozím projektu.
+
+	Samotné vykreslování a interakce s kreslicím plátnem fungují podobně jako v Dear ImGui. Plátno je oblast, která v okně zbyla po přidání textového pole, a metodou \texttt{allocate\_painter} struktury \texttt{Ui} je tato oblast vyhrazena pro kreslení.
 	
 	\subsection{Další funkce aplikace v knihovně egui}
+
+	Do aplikace jsem dále přidal panel nástrojů. Zde je zobrazena pozice kurzoru v textovém poli, kterou je v tomto případě možné zjistit i z výchozího ovládacího prvku. Opět je ovšem nutné převést absolutní pozici kurzoru na čísla řádku a sloupce.
+		
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{img/toolbars}
+		\caption{Dear ImGui a egui: hlavní a sekundární panel nástrojů}
+		\label{_tag_img_Toolbars}
+	\end{figure}
 	
-	\temporary{\\ (cursorpos, inputint, colorpicker, dropdown, ctrl+z?, ikonky, slider (vpravo, range), ghostdnd, save/load diag, [*]cesta, unsavedwarn, darkmode, SVG)}
+	Ovládací prvky výběr barev a rozbalovací seznam fungují podobně jako v Dear ImGui. U seznamu je opět nastavena pevná šířka, aby se neměnila podle délky aktuálně vybrané položky. Na obrázku \ref{_tag_img_Toolbars} je vidět, jak je po vykreslení seznamu zbytek prvků v horizontálním rozložení posunut dolů. Tento vizuální problém byl již nahlášen jiným uživatelem jako \href{https://github.com/emilk/egui/issues/7412}{\textit{issue \#7412}} na platformě GitHub a zatím nebyl oficiálně vyřešen.
+	
+	Celočíselné vstupní pole pro změnu velikosti písma je realizováno pomocí prvku \texttt{DragValue}, jehož hodnotu lze měnit tažením myši, nebo přepsáním jeho textu. K tomuto prvku jsem přidal dvě tlačítka a po jejich vykreslení řeším velikost kroku a omezení rozsahu, viz kód \ref{_tag_code_NumericUpDown}. Změna velikosti písma je řešena pomocí uzávěru, který je předán metodě \texttt{scope} struktury \texttt{Ui}. V tomto uzávěru je přenastaven styl aplikace tak, aby velikost písma odpovídala nastavené hodnotě. Pak je vykresleno textové pole a s koncem uzávěru je upravený styl aplikace zahozen.
+	
+	% U tlačítek v egui nelze nastavit, aby byla po jejich delším držení opakovaně volána metoda reagující na jejich stisk
+	
+	V sekundárním panelu pod kreslicím plátnem se v pravé části nachází posuvník pro změnu úrovně přiblížení. Zarovnání vpravo je dosaženo uzávěrem, který již byl zmíněn. U posuvníku v egui je možné nastavit jeho rozsah i velikost kroku, a tak je kód pro jeho umístění i logiku oproti předchozímu projektu stručnější.
+	
+	Na podobném principu, jako v projektu s knihovnou Dear ImGui, pak fungují tlačítka pro přidání nového uzlu do diagramu a funkce přepínání mezi světlým a tmavým režimem. Pro nativní dialogy je použita knihovna \textit{RFD} a práce se soubory využívá funkcí ze standardní knihovny jazyka Rust.%změna textu v záhlaví okna či reakce na pokus o jeho uzavření je řešena připravenými metodami z knihovny egui.
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{img/egui_light_dark}
+		\caption{egui: aplikace ve světlém a tmavém režimu, okno s nastavením}
+		\label{_tag_img_eguiDARK}
+	\end{figure}
 	
 	\section{Implementace v knihovně Qt}
 	

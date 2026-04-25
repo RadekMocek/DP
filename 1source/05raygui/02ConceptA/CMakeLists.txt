@@ -13,6 +13,7 @@ add_executable(RayguiApp "RayguiApp.c")
 
 if(MSVC)
 	target_compile_definitions(RayguiApp PUBLIC _CRT_SECURE_NO_WARNINGS)
+	set_target_properties("${CMAKE_PROJECT_NAME}" PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup") # No console
 endif()
 
 target_include_directories(RayguiApp PRIVATE

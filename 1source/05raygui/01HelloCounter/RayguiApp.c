@@ -5,7 +5,7 @@
 
 int main()
 {
-    InitWindow(640, 480, "raygui - Hello counter");
+    InitWindow(640, 480, "raygui :: Hello counter");
     SetTargetFPS(60);
 
     int counter = 1;

@@ -30,16 +30,11 @@
 
 ### Implementace v egui
 
-* Error highlight na texteditoru nemusí řešit scroll, je to celé uvnitř scrollarea.
-* 3rd party text editor neumí error highlight, ale umí našeptávat ♥.
-* Další nesetříděné poznámky:
-  * Defaultní light theme mělo šedý text na bílém pozadí → změněno na černý text pro lepší čitelnost (pro dark mode byl font zase zesvětlen).
-  * Defaultní font podporuje řadu emoji, a jsou monochrome, takže je lze použít jako ikonky. Toto funguje, i když přepíši defaultní font na Inconsolata, který emoji nepodporuje (pracuje se s prioritou). Každopádně symboly nemají konzistentní vizuální identitu a neexistuje emoji např. pro elipsu, nebo odlišení _save_ od _save as_, prostě jen disketa. Takže může se hodit, ale na seriózní ikony raději použít alternativu.
-  * Nemá připravenou funkci tlačítka click and hold? Např. změna velikosti fontu text editoru, že bych držel + a ono to postupně přičítalo.
-  * Ctrl+Z funguje i po zásahu do source stringu, stále to ale není ideální.
-  * V Cpp od TOML knihovny dostávám umístění v kódu jako row+char_in_row, což se hodí pro Error Highlight, zde dostávám char_total, což se hodí při toolbar canvas interaction.
-  * Egui painter neumí přepínat Z, pouze malířův algoritmus → implementována prioritní fronta draw commands.
-  * PROBLÉM: Obecně se knihovny liší ve výšce řádku textu (projevuje se u nodes s víceřádkovým textem), zde to ale navíc vypadá, že to není konzistentní při zoomování (tedy výška řádku se mění s velikostí vykreslovaného písma?)
+* Defaultní light theme mělo šedý text na bílém pozadí → změněno na černý text pro lepší čitelnost (pro dark mode byl font zase zesvětlen).
+* Defaultní font podporuje řadu emoji, a jsou monochrome, takže je lze použít jako ikonky. Toto funguje, i když přepíši defaultní font na Inconsolata, který emoji nepodporuje (pracuje se s prioritou). Každopádně symboly nemají konzistentní vizuální identitu a neexistuje emoji např. pro elipsu, nebo odlišení _save_ od _save as_, prostě jen disketa. Takže může se hodit, ale na seriózní ikony raději použít alternativu.
+* Ctrl+Z funguje i po zásahu do source stringu, stále to ale není ideální.
+* V Cpp od TOML knihovny dostávám umístění v kódu jako row+char_in_row, což se hodí pro Error Highlight, zde dostávám char_total, což se hodí při toolbar canvas interaction.
+* PROBLÉM: Obecně se knihovny liší ve výšce řádku textu (projevuje se u nodes s víceřádkovým textem), zde to ale navíc vypadá, že to není konzistentní při zoomování (tedy výška řádku se mění s velikostí vykreslovaného písma?)
 * __Viz [problems](https://github.com/RadekMocek/DiagramPche_egui?tab=readme-ov-file#problems)__
 
 ### Implementace v Qt
