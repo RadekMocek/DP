@@ -34,17 +34,17 @@
 * Defaultní font podporuje řadu emoji, a jsou monochrome, takže je lze použít jako ikonky. Toto funguje, i když přepíši defaultní font na Inconsolata, který emoji nepodporuje (pracuje se s prioritou). Každopádně symboly nemají konzistentní vizuální identitu a neexistuje emoji např. pro elipsu, nebo odlišení _save_ od _save as_, prostě jen disketa. Takže může se hodit, ale na seriózní ikony raději použít alternativu.
 * Ctrl+Z funguje i po zásahu do source stringu, stále to ale není ideální.
 * V Cpp od TOML knihovny dostávám umístění v kódu jako row+char_in_row, což se hodí pro Error Highlight, zde dostávám char_total, což se hodí při toolbar canvas interaction.
-* PROBLÉM: Obecně se knihovny liší ve výšce řádku textu (projevuje se u nodes s víceřádkovým textem), zde to ale navíc vypadá, že to není konzistentní při zoomování (tedy výška řádku se mění s velikostí vykreslovaného písma?)
+* PROBLÉM: Obecně se knihovny liší ve výšce řádku textu (projevuje se u nodes s víceřádkovým textem), zde to ale navíc vypadá, že to není konzistentní při zoomování (tedy výška řádku se mění s velikostí vykreslovaného písma)
 * __Viz [problems](https://github.com/RadekMocek/DiagramPche_egui?tab=readme-ov-file#problems)__
 
 ### Implementace v Qt
 
-* Prozatím jen nesetříděné poznámky:
+* Při psaní v textovém poli a stisku AltGr se občas vloží náhodný znak (alespoň na CZ klávesnici a Windows). Jedná se o zajímavý Qt problém, který se děje např. i v [TeXStudiu](https://github.com/texstudio-org/texstudio/issues/164).
+
+* TODO?:
+  * Umí SVG export out-of-the-box
   * Používám QGraphicsView+QGraphicsScene; view řeší scrolling, přidává scrollbary; později změněno
-    * Teoreticky bych mohl místo QGraphicsScene použít custom widget s paint event a všechno si kreslit na něj; tohle je ale častější způsob
-  * Při psaní v textovém poli a stisku AltGr se občas vloží náhodný znak (alespoň na CZ klávesnici a Windows)
-    * Jedná se o zajímavý Qt problém, který se děje např. i v [TeXStudiu](https://github.com/texstudio-org/texstudio/issues/164)
-  * Složitější rozchodit lokálně, Qt je velká knihovna
+    * Teoreticky bych mohl místo QGraphicsScene použít custom widget s paint event a všechno si kreslit na něj; tohle je ale častější způsob  
   * Automatic MOC for target při každé kompilaci; při přidání nového .cpp souboru občas nutno smazat celou build složku, jinak chyba
     * Auto MOC může dělat problémy při <kbd>F2</kbd> (snaží se přejmenovávat i ve vygenerovaných souborech)
   * Hodně maker, které ve finále vedou na nic; velmi specifické použití nebo pro označení kusů kódu (signal, emit, slot)
@@ -52,12 +52,7 @@
     * Dragndrop nové node do scény je dobrý příklad toho, kdy Qt začíná být opruz → zdůvodnit
   * Společná nastavení v Preferences window, např. source font size → pro aplikování změn je pro mě nejjednodušší editovat hodnotu již existujícího widgetu, který má pak callback, jež opravdu změní velikost písma
   * Přidat parametr do signálu znamená aktualizovat signatury dvou funkcí; Ctrl+Click na funkci nejde k definici ale k MOC
-  * __<https://www.qtcentre.org/threads/27134-QTextEdit-s-textChanged()-signal>__
-  * Také je potřeba dávat si pozor na pořadí operací, např. `m_source->clear();`, pak až `m_is_source_dirty = false;`
-  * Dodatek k parsování/vykreslování:
-    * Umí SVG export out-of-the-box
-    * Umí vykreslit elipsu podle bounding rect, je potřeba nastavit painter pen a brush
-    * Cesty definované pomocí kolekce bodů: kolekce musí obsahovat dvojice, které budou spojeny, tedy až na start a cíl jsou zde všechny body dvakrát
+  * Nejen v IMGUI je potřeba dávat si pozor na pořadí operací: např. `m_source->clear();`, pak až `m_is_source_dirty = false;`
 * __Viz [problems](https://github.com/RadekMocek/DiagramPche_Qt?tab=readme-ov-file#problems)__
 
 ## Porovnání výsledků
@@ -66,3 +61,4 @@
 
 * Zkusil jsem v Dear ImGui neparsovat TOML každý frame, ale jen, když je potřeba; na výkonu se to nepodepsalo
 * Syntax highlight také nemá patrný vliv na výkon
+* QString neumí reserve, tak alespoň přidávám po "dávkách"

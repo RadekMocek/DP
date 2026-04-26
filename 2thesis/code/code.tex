@@ -16,7 +16,6 @@
     , prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}}
 }
 
-
 % TOML and JSON comparison
 \lstdefinelanguage{TOMLxJSON}{
     , string = [b]"
@@ -25,18 +24,15 @@
     , comment = [l]\#
 }
 
-
 % HelloCounter Qt
 \lstdefinelanguage{CppQt}[]{C++}{
     , morendkeywords = {init, QHBoxLayout, QPushButton, addWidget, connect, QLabel, number, on_button_decrement_clicked, on_button_increment_clicked, on_counter_update, setEnabled, setVisible}
 }
 
-
-% HelloCounter ImGUI
+% HelloCounter IMGUI
 \lstdefinelanguage{CppImGui}[]{C++}{
     , morendkeywords = {update, Begin, BeginDisabled, Button, EndDisabled, Text, End}
 }
-
 
 % Porovnání knihoven: celočíselné vstupní pole
 \lstdefinelanguage{CppNumericUpDown}[]{C++}{
@@ -48,13 +44,11 @@
         }
 }
 
-
 % Dear: GUICombo
 \lstdefinelanguage{CppDearComboSlider}[]{C++}{
     , morekeywords = {constexpr}    
     , morendkeywords = {PushItemWidth, GUICombo, PopItemWidth, SetCursorPosX, GetCursorPosX, GetContentRegionAvail, SliderInt}
 }
-
 
 % PseudoRust
 \lstdefinelanguage{Rust}{
@@ -63,7 +57,6 @@
     , keywords = {as,async,await,break,const,continue,crate,dyn,else,enum,extern,false,fn,for,if,impl,in,let,loop,match,mod,move,mut,pub,ref,return,self,Self,static,struct,super,trait,true,type,unsafe,use,where,while}
 }
 
-
 % egui x dear: closure x statemach
 \lstdefinelanguage{RustEguiClosure}[]{Rust}{ 
     , morendkeywords = {
@@ -71,6 +64,16 @@
         BeginMainMenuBar, BeginMenu, MenuItem, glfwSetWindowShouldClose, EndMenu, EndMainMenuBar
     }
     , alsoletter = {!, .}
+}
+
+% Qt :: MainMenuBar
+\lstdefinelanguage{CppQtTopBar}[]{C++}{
+    , morendkeywords = {QPointer, QMenuBar, setMenuBar, addMenu, addAction, Icon, connect, triggered, close}
+}
+
+% Qt :: QTimer
+\lstdefinelanguage{CppQtQTimer}[]{C++}{
+    , morendkeywords = {GUIMainWindow, QPlainTextEdit, Highlighter, document, QTimer, singleShot, setWindowModified}
 }
 
 % Highlight českých znaků
@@ -99,7 +102,6 @@
 	^^00}
 \lst@RestoreCatcodes
 \makeatother
-
 
 % Do prostředí {code} obalíme zdrojové kódy
 \usepackage{caption}
