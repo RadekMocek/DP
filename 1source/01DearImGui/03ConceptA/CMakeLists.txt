@@ -21,6 +21,7 @@ add_executable(ImguiApp
 
 if(MSVC)
 	target_compile_definitions(ImguiApp PUBLIC _CRT_SECURE_NO_WARNINGS)
+	set_target_properties("${CMAKE_PROJECT_NAME}" PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup") # No console
 endif()
 
 target_link_libraries(ImguiApp PRIVATE

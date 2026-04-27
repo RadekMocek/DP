@@ -49,16 +49,16 @@ void Canvas::paintEvent(QPaintEvent* event)
 
     const auto padding = node_padding_horizontal * zoom_level;
 
-    for (const auto& [_x, _y, text] : nodes) {
-        const auto rect = font_metrics.boundingRect(text);
+    for (const auto& [nx, ny, ntext] : nodes) {
+        const auto rect = font_metrics.boundingRect(ntext);
         const auto width = rect.width();
         const auto height = rect.height();
 
-        const auto x = (_x + origin.x()) * zoom_level;
-        const auto y = (_y + origin.y()) * zoom_level;
+        const auto x = (nx + origin.x()) * zoom_level;
+        const auto y = (ny + origin.y()) * zoom_level;
 
         painter.drawRect(x - padding, y, width + 2 * padding, height);
-        painter.drawText(QPoint(x, y + static_cast<int>(height * .75)), text);
+        painter.drawText(QPoint(x, y + static_cast<int>(height * 0.75f)), ntext);
     }
 }
 

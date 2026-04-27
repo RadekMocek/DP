@@ -1,7 +1,3 @@
-# DP draft
-
-## Implementace
-
 ### Implementace v Dear ImGui
 
 * GLFW 3.3.10 vs. 3.4.0
@@ -40,25 +36,23 @@
 ### Implementace v Qt
 
 * Při psaní v textovém poli a stisku AltGr se občas vloží náhodný znak (alespoň na CZ klávesnici a Windows). Jedná se o zajímavý Qt problém, který se děje např. i v [TeXStudiu](https://github.com/texstudio-org/texstudio/issues/164).
-
 * TODO?:
   * Umí SVG export out-of-the-box
   * Používám QGraphicsView+QGraphicsScene; view řeší scrolling, přidává scrollbary; později změněno
-    * Teoreticky bych mohl místo QGraphicsScene použít custom widget s paint event a všechno si kreslit na něj; tohle je ale častější způsob  
   * Automatic MOC for target při každé kompilaci; při přidání nového .cpp souboru občas nutno smazat celou build složku, jinak chyba
     * Auto MOC může dělat problémy při <kbd>F2</kbd> (snaží se přejmenovávat i ve vygenerovaných souborech)
   * Hodně maker, které ve finále vedou na nic; velmi specifické použití nebo pro označení kusů kódu (signal, emit, slot)
   * PROBLÉM: když draguju button, přestanou se "hlásit" některé věci: QGraphicsView underMouse() vrací vždy false; mouseMoveEvent se nespouští;
     * Dragndrop nové node do scény je dobrý příklad toho, kdy Qt začíná být opruz → zdůvodnit
   * Společná nastavení v Preferences window, např. source font size → pro aplikování změn je pro mě nejjednodušší editovat hodnotu již existujícího widgetu, který má pak callback, jež opravdu změní velikost písma
+    * Dlaší dobrý příklad: kolečko myši edituje hodnotu posuvníku
   * Přidat parametr do signálu znamená aktualizovat signatury dvou funkcí; Ctrl+Click na funkci nejde k definici ale k MOC
   * Nejen v IMGUI je potřeba dávat si pozor na pořadí operací: např. `m_source->clear();`, pak až `m_is_source_dirty = false;`
 * __Viz [problems](https://github.com/RadekMocek/DiagramPche_Qt?tab=readme-ov-file#problems)__
 
-## Porovnání výsledků
-
 ### Benchmark
 
+* Smyčka vs. QCoro
 * Zkusil jsem v Dear ImGui neparsovat TOML každý frame, ale jen, když je potřeba; na výkonu se to nepodepsalo
 * Syntax highlight také nemá patrný vliv na výkon
 * QString neumí reserve, tak alespoň přidávám po "dávkách"

@@ -10,20 +10,6 @@ impl MyApp {
         // Painter is our canvas
         let (response, painter) = ui.allocate_painter(ui.available_size(), egui::Sense::drag());
 
-        // Origin ([0,0]) of the canvas in screen space coordinates, which painter uses
-        let origin = egui::pos2(
-            response.rect.min.x + self.scrolling.x,
-            response.rect.min.y + self.scrolling.y,
-        );
-
-        // Handle mouse events
-        /*
-        let pointer_pos_in_canvas;
-        if let Some(pointer_pos) = response.interact_pointer_pos() {
-            pointer_pos_in_canvas = pointer_pos - origin;
-        }
-        */
-
         // RMB to move canvas ("scrolling")
         if response.drag_started_by(egui::PointerButton::Secondary) {
             self.is_canvas_dragged = true;
@@ -35,10 +21,11 @@ impl MyApp {
             self.is_canvas_dragged = false;
         }
 
-        // LMB to move nodes
-        if response.drag_started_by(egui::PointerButton::Primary) {
-            //TODO
-        }
+        // Origin ([0,0]) of the canvas in screen space coordinates, which painter uses
+        let origin = egui::pos2(
+            response.rect.min.x + self.scrolling.x,
+            response.rect.min.y + self.scrolling.y,
+        );
 
         // Parse every line of the "code" in text editor
         for line in self.code.lines() {
