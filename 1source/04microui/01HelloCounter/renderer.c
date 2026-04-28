@@ -11,8 +11,8 @@ static GLfloat  vert_buf[BUFFER_SIZE *  8];
 static GLubyte color_buf[BUFFER_SIZE * 16];
 static GLuint  index_buf[BUFFER_SIZE *  6];
 
-static int width  = 800;
-static int height = 600;
+static int width  = 640;
+static int height = 480;
 static int buf_idx;
 
 static SDL_Window *window;
@@ -21,7 +21,7 @@ static SDL_Window *window;
 void r_init(void) {
   /* init SDL window */
   window = SDL_CreateWindow(
-      "microui :: HelloCounter", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+      "microui", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
     width, height, SDL_WINDOW_OPENGL);
   SDL_GL_CreateContext(window);
 

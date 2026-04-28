@@ -182,7 +182,10 @@ func transformedKitchen(gtx layout.Context, th *material.Theme) layout.Dimension
 }
 
 var (
-	editor     = new(widget.Editor)
+	editor = &widget.Editor{
+		WrapPolicy: text.WrapHeuristically,
+	}
+
 	lineEditor = &widget.Editor{
 		SingleLine: true,
 		Submit:     true,

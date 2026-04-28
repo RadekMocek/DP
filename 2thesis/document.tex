@@ -25,7 +25,7 @@
 \usepackage{caption}
 % Tabulky
 \usepackage{enumitem} % Umožní prostředí NiceTabular používat vlastní footnotes
-\usepackage{nicematrix} % Posyktuje prostředí NiceTabular
+\usepackage{nicematrix} % Poskytuje prostředí NiceTabular
 
 % Zdrojové kódy (konfigurace je v externím souboru, který je sem vložen)
 \input{code/code}
@@ -92,10 +92,10 @@
 	\listoffigures
 	
 	% Seznam tabulek
-	\listoftables
+	{\let\clearpage\relax \listoftables}
 	
 	% Seznam zdrojových kódů
-	\listofcodes
+	{\let\clearpage\relax \listofcodes}
 	
 	\clearpage
 	
@@ -235,7 +235,7 @@
 	
 	Knihovna nemá žádnou oficiální dokumentaci, která by pokrývala všechny její funkce. Poskytuje ale metodu pro zobrazení ukázkového okna, které obsahuje dostupné ovládací prvky v různých nastaveních. Nastavením ovládacího prvku se v tomto případě myslí dodání proměnné s určitými příznaky (\textit{flags}). U textového pole existují např. příznaky typu „pouze pro čtení“ nebo „zalamuj dlouhé řádky“. Najde-li programátor v ukázkovém okně chtěnou funkci, její implementaci pak snadno dohledá ve zdrojovém kódu tohoto okna. Pomoci mohou také občasné komentáře ve zdrojovém kódu samotné knihovny, nebo dokumentace některé z odvozených knihoven. I přes absenci oficiální dokumentace nebývá díky relativně velké komunitě problém najít odpovědi na základní problémy. Velká komunita okolo knihovny Dear ImGui se projevuje také existencí řady doplňků. Časté jsou doplňky pro animace, grafy, prohlížení souborů, nebo pokročilejší textové editory.
 	
-	Dear ImGui poskytuje ovládací prvek víceřádkového textového pole, který lze zobrazit voláním metody \texttt{InputTextMultiline}. Oproti ostatním knihovnám s přístupem IMGUI má textové pole v této knihovně relativně hodně funkcí. Ve své výchozí podobě vykresluje obsah staticky alokovaného pole znaků, součástí knihovny je ale i volitelná implementace pro \texttt{std::string}. Je-li použito vlastní písmo, které podporuje české znaky, není pak problém tyto znaky zobrazit v textovém poli. Výchozí písmo, které je součástí knihovny, totiž všechny české znaky neobsahuje. Zvýrazňování syntaxe tento ovládací prvek nepodporuje, veškerý text může mít pouze jednu společnou barvu.
+	Dear ImGui poskytuje ovládací prvek víceřádkového textového pole, který lze zobrazit voláním metody \texttt{InputTextMultiline}. Oproti většině ostatních knihoven s přístupem IMGUI má zdejší textové pole relativně hodně funkcí. Ve své výchozí podobě vykresluje obsah staticky alokovaného pole znaků, součástí knihovny je ale i volitelná implementace pro \texttt{std::string}. Je-li použito vlastní písmo, které podporuje české znaky, není pak problém tyto znaky zobrazit v textovém poli. Výchozí písmo, které je součástí knihovny, totiž všechny české znaky neobsahuje. Zvýrazňování syntaxe tento ovládací prvek nepodporuje, veškerý text může mít pouze jednu společnou barvu.
 	
 	V textovém poli je možné myší označovat text a ten pak pomocí klávesových zkratek vyjmout, kopírovat, nebo vložit. Klávesami kurzorových šipek lze posouvat textovým kurzorem (kadetem), kdy se s přidržením klávesy \textit{Ctrl} přeskakují celá slova a s klávesou \textit{Shift} se text označuje. Klávesu \textit{Ctrl} lze také použít v kombinaci s klávesou \textit{Backspace} nebo \textit{Delete} pro mazání celých slov. Dále jsou k dispozici klávesové zkratky pro zrušení poslední změny (\textit{undo}) a její obnovení (\textit{redo}).
 	
@@ -264,9 +264,9 @@
 	
 	Nuklear poskytuje ovládací prvek víceřádkového textového pole, který lze zobrazit voláním funkce \texttt{nk\_edit\_string\_zero\_terminated}. Ten vykresluje obsah staticky alokovaného pole znaků. Po specifikování správných rozsahů a importování vhodného písma dokáže knihovna vykreslovat české znaky. Textové pole umožňuje pohybovat s textovým kurzorem a označovat text pomocí myši. Označené znaky pak lze hromadně smazat.
 	
-	Textové pole nepodporuje některé běžné klávesy, jako je např. \textit{Home} a \textit{End}. Výše zmíněné klávesové zkratky také nejsou k dispozici. Z posuvných lišt je opět vykreslena pouze ta vertikální a zalamování dlouhých řádků není podporováno. U některých kláves je problém, že ihned po svém stisknutí berou vstup jako „opakovaný“. Chovají se tedy tak, jakoby uživatel klávesu držel. Toto se děje mimo jiné u klávesy \textit{Backspace}, a je proto např. obtížné smazat jen jeden znak v textu.
-		
-	Knihovna má připravenou strukturu \texttt{nk\_text\_edit}, která by měla umožnit definovat robustnější textové pole s podporou schránky a historie změn. Její konfigurace už je ale složitější a není příliš zdokumentovaná, proto jsem se jí dále nevěnoval. Pro vykreslování grafických primitiv je možné volat poskytnuté funkce, jako je např. \texttt{nk\_fill\_rect} pro vykreslení obdélníka.
+	Textové pole nepodporuje některé běžné klávesy, jako je např. \textit{Home} a \textit{End}. Výše zmíněné klávesové zkratky také nejsou k dispozici. Z posuvných lišt je opět vykreslena pouze ta vertikální a zalamování dlouhých řádků není podporováno. U některých kláves je problém, že ihned po svém stisknutí berou vstup jako „opakovaný“. Chovají se tedy tak, jakoby uživatel klávesu držel. Toto se děje mimo jiné u klávesy \textit{Backspace}, a je proto např. obtížné smazat jen jeden znak v textu.	Knihovna má dále připravenou strukturu \texttt{nk\_text\_edit}, která by měla umožnit definovat robustnější textové pole s podporou schránky a historie změn. Její konfigurace už je ale složitější a není příliš zdokumentovaná, proto jsem se jí dále nevěnoval.
+	
+	%Pro vykreslování grafických primitiv je možné volat poskytnuté funkce, jako je např. \texttt{nk\_fill\_rect} pro vykreslení obdélníka.
 	
 	\subsection{Knihovna microui}
 	
@@ -284,15 +284,26 @@
 	
 	\subsection{Knihovna Gio}
 	
-	Gio \cite{online_gioui} je knihovna pro tvorbu GUI s přístupem IMGUI implementovaná v jazyce Go. Knihovna se zaměřuje výhradně na tvorbu běžných aplikací pro koncové uživatele, a nelze ji tak snadno integrovat do existujícího projektu.
+	Gio \cite{online_gioui} je knihovna pro tvorbu GUI s přístupem IMGUI implementovaná v jazyce Go. Knihovna se zaměřuje výhradně na tvorbu běžných aplikací pro koncové uživatele, a nelze ji tak snadno integrovat do existujícího projektu. Práce s backendem je před programátorem skryta a ovládací prvky se vykreslují přímo do hostitelského okna. Ke knihovně existuje automaticky generovaná dokumentace podle definic ve zdrojovém kódu. Na oficiálním webu jsou k dispozici i ukázkové kódy, které ovšem nejsou příliš dobře uspořádané.
 	
-	\temporary{\\ * Děláno pro user-facing apps (nikoliv dev tools), různé OS. Jaký je backend (před programátorem skryto, stačí)\\ * Rovnou kreslíme do hl. okna, jak na dodatečná okna? \\ * Dokumentace \\ * Textové pole \\ * Netradiční, ukecané}
+	Gio poskytuje ovládací prvek víceřádkového textového pole v podobě struktury zvané \texttt{Editor}, která automaticky zalamuje dlouhé řádky. Vertikální posuvná lišta není k dispozici, a tak lze s textem posouvat pouze kolečkem myši nebo změnou pozice textového kurzoru. Textové pole umožňuje zrušení a obnovení poslední změny a výchozí písmo podporuje všechny české znaky. Je také možné označovat text a manipulovat s ním, ale nelze přeskakovat či mazat celá slova. Zvýrazňování syntaxe není k dispozici.
+	
+	V knihovně Gio se styl psaní aplikační kódu nejvíce odlišuje od ostatních zmíněných knihoven. Před hlavní smyčkou je nejprve nutné definovat všechny ovládací prvky, které se v aplikaci vyskytují. Ve hlavní smyčce jsou pak oddělené fáze aktualizace stavu a vykreslení. Do první fáze patří např. obsluha stisknutých tlačítek. V druhé fázi se definuje rozložení a vzhled ovládacích prvků.
+	
+	Rozložení ovládacích prvků se definuje relativně robustním způsobem pomocí vnořování anonymních funkcí. I pro vytvoření menší aplikace je tak potřeba větší množství kódu. Např. u demonstrační aplikace čítače s pozdravem (obrázek \ref{_tag_img_HelloCounter}) bylo pro definici rozložení čtyř ovládacích prvků potřeba více než 40 řádků kódu.
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{img/HelloCounter}
+		\caption{Knihovny Nuklear, microui, raygui a Gio ve svém výchozím vzhledu}
+		\label{_tag_img_HelloCounter}
+	\end{figure}
 	
 	\subsection{Knihovna dvui}
 	
-	Dvui \cite{online_dvui} je knihovna pro tvorbu GUI s přístupem IMGUI implementovaná v jazyce Zig. Knihovna je psaná tak, aby šla integrovat do existujícího projektu s libovolným backendem, ale zároveň cílí i na tvorbu běžných aplikací pro koncové uživatele. Ovládací prvky lze tedy vykreslovat přímo do hostitelského okna, nebo do dodatečných nemodálních oken.
+	Dvui \cite{online_dvui} je knihovna pro tvorbu GUI s přístupem IMGUI implementovaná v jazyce Zig. Knihovna je psaná tak, aby šla integrovat do existujícího projektu s libovolným backendem, ale zároveň cílí i na tvorbu běžných aplikací pro koncové uživatele. Ovládací prvky lze tedy vykreslovat přímo do hostitelského okna, nebo do dodatečných nemodálních oken. Podle definic ve zdrojovém kódu existuje ke knihovně automaticky generovaná dokumentace. Dále jsou k dispozici ukázkové kódy, které pokrývají její základní funkce.
 	
-	\temporary{\\ * Děláno pro apps nebo dev tools? Jaký je backend?\\ * Rovnou kreslíme do hl. okna?, jak na dodatečná okna? \\ * Dokumentace \\ * Textové pole}
+	Dvui poskytuje ovládací prvek víceřádkového textového pole, který lze zobrazit voláním metody \texttt{textEntry}. Tento ovládací prvek je relativně schopný. Dokáže zobrazit obě posuvné lišty a volitelně zapnout zalamování řádků. Je možné označovat text, manipulovat s ním a přeskakovat či mazat celá slova. Při zvolení vhodného písma není problém s vykreslováním českých znaků. Textové pole nepodporuje zrušení a obnovení poslední změny. K dispozici není také zvýrazňování syntaxe. 
 	
 	\section{Knihovna Qt}
 	
@@ -808,11 +819,11 @@
 	
 	\section{Implementace v knihovně Qt}
 	
-	Aplikace využívající knihovnu Qt je psaná v jazyce C++ a pro její sestavení opět využívám nástroje CMake a Ninja. Knihovna Qt je relativně velká, a mít zdrojové kódy všech závislostí jako součást projektu proto není vhodné. Z toho důvodu jsem zvolil časté řešení, kdy se na stroj vývojáře nainstaluje celé SDK a cesta k němu je předána programu CMake. Při distribuci hotové aplikace jsou pak potřebné komponenty knihovny Qt obvykle dodávány jako samostatné soubory, které se linkují dynamicky.
+	Aplikace využívající knihovnu Qt je psaná v jazyce C++ a pro její sestavení opět využívám nástroje CMake a Ninja. Knihovna Qt je relativně velká, a proto není vhodné mít zdrojové kódy všech závislostí jako součást projektu. Z toho důvodu jsem zvolil časté řešení, kdy se na stroj vývojáře nainstaluje celé SDK a cesta k němu je předána programu CMake. Při distribuci hotové aplikace jsou pak potřebné komponenty knihovny Qt obvykle dodávány jako samostatné soubory, které se linkují dynamicky.
 	
 	%Díky tomu, že knihovna Qt pokrývá velkou řadu funkcí, nemá tento projekt příliš mnoho dalších závislostí. Kromě knihoven, které slouží k měření výkonu, je zde opět knihovna toml++ pro zpracování vstupního dokumentu,
 	
-	Struktura projektu je zde odlišná od předchozích dvou aplikací.	Definice hlavního okna se nachází ve vlastní třídě \texttt{GUIMainWindow}, která dědí z třídy \texttt{QMainWindow} poskytnuté knihovnou. V konstruktoru vlastní třídy je postupně definováno veškeré rozhraní hlavního okna. Pro pokládání ovládacích prvků jsou k dispozici různé typy rozložení. Zde je použito vertikální rozložení \texttt{QVBoxLayout}, v němž se pod sebou nachází \texttt{QSplitter} a \texttt{QLabel}. První objekt zapouzdřuje víceřádkové textové pole s kreslicím plátnem a umožňuje uživateli měnit poměr jejich šířek. Druhý objekt je pak textový popisek reprezentující stavový řádek.
+	Struktura projektu je zde odlišná od předchozích dvou aplikací.	Definice hlavního okna se nachází ve vlastní třídě \texttt{GUIMainWindow}, která dědí z třídy \texttt{QMainWindow} poskytnuté knihovnou. V konstruktoru vlastní třídy je postupně definováno veškeré rozhraní hlavního okna. Pro pokládání ovládacích prvků jsou k dispozici různé typy rozložení. Zde je použito vertikální rozložení \texttt{QVBoxLayout}, v němž se pod sebou nachází \texttt{QSplitter} a \texttt{QLabel}. První objekt zapouzdřuje víceřádkové textové pole s kreslicím plátnem a umožňuje uživateli měnit poměr jejich šířek. Druhý objekt je textový popisek reprezentující stavový řádek.
 	
 	Všechny ovládací prvky a rozložení jsou vytvářeny klíčovým slovem \texttt{new} a odkaz na ně je tedy uchován v proměnných typu ukazatele (\textit{pointer}). O životní cyklus objektů se sice stará knihovna Qt, i přes to může programátor v určitých případech napsat „nebezpečný“ kód. Příkladem je pokus o odstranění již odstraněného objektu z grafické scény, nebo špatné použití dynamického přetypování. Na přidané ovládací prvky jsou navěšeny callback metody, a pokud je potřeba s nimi pracovat i v jiných částech kódu, musí být jejich ukazatel členem třídy \texttt{GUIMainWindow}.
 	
@@ -820,7 +831,9 @@
 	
 	Stejně jako v předchozích případech zde nelze snadno nastavit, aby stisk klávesy \textit{Tab} vkládal mezery namísto znaku tabulátoru. Výchozí šířka odsazení je zde navíc o velikosti osmi znaků. Zvýrazňování chyb je zde řešeno pomocí pomyslného textového kurzoru. Ten se chová jako stavový automat a jeho pozice je nejprve nastavena na začátek nahlášené chyby. Poté je zvýrazněna patřičná část textu a barva zvýraznění je nastavena na červenou.
 	
-	Zvýrazňování syntaxe je zde řešeno vytvořením vlastní třídy, která dědí z třídy \texttt{QSyntaxHighlighter}. V konstruktoru vlastní třídy jsou definována očekávaná klíčová slova a k nim příslušné barvy. Instanci této třídy se pak v metodě \texttt{setDocument} předá ukazatel na dokument, který lze získat z textového pole. V tomto řešení není možné snadno nastavit, aby se s přepnutím aplikace do tmavého režimu změnilo i barevné schéma pro zvýrazňování syntaxe. Nejjednodušší způsob, na který jsem přišel, je mít pro každé téma aplikace samostatnou třídu a přepínat mezi nimi.
+	Zvýrazňování syntaxe je zde řešeno vytvořením vlastní třídy, která dědí z třídy \texttt{QSyntaxHighlighter}. V jejím konstruktoru jsou definována očekávaná klíčová slova a k nim příslušné barvy. Následně se z víceřádkového textového pole získá ukazatel na jeho dokument, a ten je metodou \texttt{setDocument} předán instanci „zvýrazňovače“.
+	
+	V tomto řešení není možné snadno nastavit, aby se s přepnutím aplikace do tmavého režimu změnilo i barevné schéma pro zvýrazňování syntaxe. Nejjednodušší způsob, na který jsem přišel, je mít pro každé téma aplikace samostatnou třídu a přepínat mezi nimi.
 	
 	\begin{figure}[ht]
 		\centering
@@ -839,9 +852,9 @@
 		\label{_tag_code_QtQTimer}
 	\end{code}
 	
-	Příčinou tohoto chování je třída pro zvýrazňování syntaxe. Po tom, co „zvýrazňovač“ dostane odkaz na textové pole, v něm provede určité změny. I když se obsahově dokument nijak nezmění, pro zavolání callback metody to stačí. Snadným řešením by tak mělo být na konci konstruktoru označit dokument jako nezměněný. Jak se ale ukázalo, změny dokumentu probíhají až po dokončení logiky konstruktoru v interní smyčce knihovny Qt. Proto jsem musel na konci konstruktoru spustit časovač \texttt{QTimer}, který má po svém uběhnutí označit dokument jako nezměněný. Doba trvání časovače může být nastavena na 0 milisekund, protože obsluha časovačů probíhá v interní smyčce až poté, co je obsloužen zvýrazňovač.
+	Příčinou tohoto chování je třída pro zvýrazňování syntaxe. Po tom, co zvýrazňovač dostane odkaz na textové pole, v něm provede určité změny. I když se obsahově dokument nijak nezmění, pro zavolání callback metody to stačí. Snadným řešením by tak mělo být na konci konstruktoru označit dokument jako nezměněný. Jak se ale ukázalo, změny dokumentu probíhají až po dokončení logiky konstruktoru v interní smyčce knihovny Qt. Proto jsem musel na konci konstruktoru spustit časovač \texttt{QTimer}, který má po svém uběhnutí označit dokument jako nezměněný (kód \ref{_tag_code_QtQTimer}). Doba trvání časovače může být nastavena na 0 milisekund, protože obsluha časovačů probíhá v interní smyčce až poté, co je obsloužen zvýrazňovač.
 	
-	Řešení s časovačem muselo být použito i v okně nastavení. Zde může uživatel vypnout zvýrazňování syntaxe, nebo přepnout aplikaci do tmavého režimu, což vede i na přepnutí zvýrazňovače. V obou těchto případech je tedy dokument opět označen jako upravený. Na obrázku \ref{_tag_img_qtStar} je vidět, jak přepnutí vzhledu aplikace přidá znak hvězdičky do záhlaví okna. V dalším snímku indikátor již není, protože se spustila logika časovače. 
+	Řešení s časovačem muselo být použito i v okně nastavení. Zde může uživatel vypnout zvýrazňování syntaxe, nebo přepnout aplikaci do tmavého režimu, což vede i na přepnutí zvýrazňovače. V obou těchto případech je tedy dokument opět označen jako změněný. Na obrázku \ref{_tag_img_qtStar} je vidět, jak přepnutí vzhledu aplikace přidá znak hvězdičky do záhlaví okna. Na dalším snímku již indikátor není, protože byla provedena logika časovače. 
 	
 	\begin{figure}[ht]
 		\centering
@@ -854,92 +867,85 @@
 	
 	\subsection{Vykreslení diagramu v knihovně Qt}
 	
-	Pro realizaci kreslicího plátna by bylo možné vytvořit vlastní ovládací prvek děděním ze třídy \texttt{QWidget}. V něm by se pak přepsaly metody, které reagují na uživatelské interakce myší, společně s metodou \texttt{paintEvent}, kde by byl vykreslen diagram podobným způsobem jako v projektech s přístupem IMGUI. V této aplikaci ale využívám grafickou scénu knihovny Qt, což je běžně používaný prvek, který se objevuje i v ukázkových projektech oficiální dokumentace. Scéna je vytvořena děděním ze třídy \texttt{QGraphicsScene}.
+	Pro realizaci kreslicího plátna by bylo možné vytvořit vlastní ovládací prvek děděním ze třídy \texttt{QWidget}. V něm by se pak přepsaly metody, které reagují na uživatelské interakce myší, společně s metodou \texttt{paintEvent}, která by se starala o vykreslení diagramu. Jednalo by se o „nižší“ přístup, který se více podobá řešením z předchozích dvou projektů. V této aplikaci ale využívám grafickou scénu knihovny Qt, což je běžně používaný prvek, který se objevuje i v ukázkových projektech oficiální dokumentace. Scéna je vytvořena děděním ze třídy \texttt{QGraphicsScene}.
 	
 	Jakmile uživatel upraví vstupní dokument popisující diagram, spustí se výše zmíněná callback metoda. Obsah textového pole je předán třídě \texttt{Parser}, která provede první fázi zpracování stejně jako v předchozích dvou projektech. Následně jsou za pomoci knihovny Qt dopočítány přesné souřadnice uzlů a pro každý z nich je vytvořena instance vlastní třídy, která dědí z \texttt{QGraphicsItem}.
 	
-	Každý prvek ve scéně musí implementovat dvě metody. První metoda se stará o jeho vykreslení pomocí instance třídy \texttt{QPainter}, jejíž ukazatel je jedním ze vstupních parametrů. Třída poskytuje metody pro vykreslování primitiv, jako je např. \texttt{drawRect} pro vykreslení obdélníka. Druhá metoda, kterou je potřeba implementovat, vrací obdélníkovou oblast ohraničující tento prvek. Veškeré vykreslování musí probíhat právě v této oblasti. U prvků ve scéně je možné nastavit jejich hloubku metodou \texttt{setZValue}, takže není třeba řešit dodatečné řazení.
+	Každý prvek ve scéně musí implementovat dvě metody. První metoda se stará o jeho vykreslení pomocí instance třídy \texttt{QPainter}, která poskytuje metody pro vykreslování grafických primitiv. Druhá metoda, kterou je potřeba implementovat, vrací obdélníkovou oblast ohraničující tento prvek. Veškeré vykreslování musí probíhat právě v této oblasti. U prvků ve scéně je možné nastavit jejich hloubku metodou \texttt{setZValue}, takže není třeba řešit dodatečné řazení.
 	
-	Pro každý objekt diagramu je vytvořena instance takovéto třídy a ukazatel na ní je předán grafické scéně, která od té chvíle přebírá nad objektem kontrolu. Scéna se pak stará o to, jaké objekty jsou podle aktuálního pohledu na plátno vidět, a ty případně vykreslí. Pokud je vstupní dokument jakkoliv změněn, pak je celá scéna vyčištěna a následně znovu vybudována. Logika, která by hlídala, jaké uzly ve scéně se změnily a jaké byly přidány či odebrány, by byla zbytečně komplexní a náchylná na chyby. Dokud ovšem není vstupní dokument upraven, tak je obsah scény neměnný. To je rozdíl oproti projektům v Dear ImGui, kdy je zpracování vstupu a následné vykreslení součást každého průchodu hlavní smyčkou.
+	Pro každý objekt diagramu je vytvořena instance takovéto třídy a ukazatel na ní je předán grafické scéně, která od té chvíle přebírá nad objektem kontrolu. Scéna podle aktuálního pohledu na plátno určuje, jaké objekty jsou viditelné, a mají tedy být vykresleny. Pokud je vstupní dokument jakkoliv změněn, pak je celá scéna vyčištěna a následně znovu vybudována. Logika, která by hlídala, jaké uzly ve scéně se změnily a jaké byly přidány či odebrány, by byla zbytečně komplexní a náchylná na chyby. Dokud ovšem není vstupní dokument upraven, tak je obsah scény neměnný. To je rozdíl oproti projektům s přístupem IMGUI, kde je zpracování vstupu a následné vykreslení součást každého průchodu hlavní smyčkou.
 	
 	Aby mohla být grafická scéna použita, musí být ještě celá „zabalena“ do další vlastní třídy, která dědí z \texttt{QGraphicsView}. Tato třída reprezentuje pohled na danou scénu a ve výchozím nastavení ji vykresluje s posuvnými lištami. Lišty jsou v tomto případě skryty a velikost pohledu je nastavena na velké číslo, aby chování odpovídalo předchozím projektům, kde pohled na plátno nemá žádné hranice.
 	
-	Třída obalující scénu dále implementuje logiku posouvání pohledu při držení pravého tlačítka myši. V projektech s přístupem IMGUI je podle pohybu myši upravena hodnota proměnné, která reprezentuje posun pohledu a přičítá se k souřadnicím pro vykreslení. Zde jsou podle pohybu myši upravovány hodnoty posuvných lišt. Lišty jsou sice skryty, ale stále určují pozici pohledu na scénu.
+	Třída obalující scénu dále implementuje logiku posouvání pohledu při držení pravého tlačítka myši. V projektech s přístupem IMGUI je podle pohybu myši upravena hodnota proměnné, která reprezentuje posun pohledu a přičítá se k souřadnicím všech objektů diagramu. Zde jsou podle pohybu myši upravovány hodnoty posuvných lišt, které jsou sice skryty, ale stále určují pozici pohledu na scénu.
 	
 	\subsection{Další funkce aplikace v knihovně Qt}
 	
-	\temporary{\\ * Scéna řeší klikání na nodes, nutno použít signály\\ * Po kliknutí na node lze měnit barvu, colorpicker se liší na různých platformách, i když je použito Fusion\\ * Přesuneme se o secondary toolbar: Slider je dobrý prvotní příklad problematiky synchronizace stavů, Viewer raději mění hodnotu slideru při MW (jinak umístit slider vpravo není takový problém?)\\ * Poté drag'n'drop\\ * SVG a save/load dialogy: Qt je ready}
+	V aplikaci je opět možné vybrat uzel diagramu kliknutím levého tlačítka myši. U vybraného uzlu pak lze měnit jeho barvu a tvar. Obsluha kliknutí se řeší v grafické scéně přepsáním metody \texttt{mousePressEvent}. Scéna dokáže vrátit kolekci objektů, které se nachází na určitých souřadnicích. Kolekce je seřazena podle parametru \textit{z}, a tak stačí její první prvek označit jako vybraný.
+	
+	Logika změny barvy a tvaru vybraného uzlu ale probíhá ve třídě hlavního okna, protože ta má odkaz na textové pole, jehož obsah je potřeba měnit. Scéna tedy potřebuje nějak oznámit oknu, na které nemá referenci, že byl vybrán určitý uzel. K tomu v knihovně Qt slouží tzv. signály, jejichž princip ukazuje Kód \ref{_tag_code_QtSignal}. Jakmile uživatel klikne na nějaký uzel ve scéně, tak je zavolána metoda \texttt{NodeClicked}, což lze chápat jako vyslání signálu. Interní smyčka knihovny Qt se pak stará o to, aby reakcí na vyslaný signál bylo spuštění metody \texttt{OnNodeClick} v hlavním okně.
+	
+	\begin{code}[ht]
+		\lstinputlisting[language=CppQtSignal]{code/qt_signal.cpp}
+		\caption{Qt: princip signálů}
+		\label{_tag_code_QtSignal}
+	\end{code}
+	
+	Po přijetí signálu si hlavní okno získá informace o uzlu, na který uživatel klikl, a aktualizuje podle nich panel nástrojů. Pro účel výběru barev má knihovna Qt předpřipravené dialogové okno. Do panelu nástrojů jsem umístil vlastní tlačítko, které dědí z třídy \texttt{QPushButton} a jehož barva odpovídá právě vybranému uzlu. Po kliknutí na toto tlačítko je zobrazen dialog výběru barev. Na obrázku \ref{_tag_img_qtColorpicker} je vidět, že i když je použit multiplatformní styl \textit{Fusion}, tak se vzhled tohoto dialogu liší v závislosti na platformě. Vybere-li uživatel novou barvu, pak je vyslán signál do hlavního okna, které odpovídajícím způsobem upraví obsah textového editoru, což díky navěšené callback metodě překreslí grafickou scénu.
 	
 	\begin{figure}[ht]
 		\centering
-		\includegraphics[width=.89\textwidth]{img/qt_colorpicker}
+		\includegraphics[width=.91\textwidth]{img/qt_colorpicker}
 		\caption{Qt: výběr barev v prostředích Windows 10 a Cinnamon}
 		\label{_tag_img_qtColorpicker}
 	\end{figure}
+	
+	Pod vykresleným diagramem se nachází čtveřice tlačítek pro přidání nového uzlu a posuvník pro změnu úrovně přiblížení vykresleného diagramu. V projektech s přístupem IMGUI byla proměnná reprezentující úroveň přiblížení členem hlavní třídy a její hodnota mohla být upravována ovládacím prvkem posuvníku i kolečkem myši. V tomto projektu je ale úroveň přiblížení držena na dvou místech: v grafické scéně, resp. ve třídě reprezentující pohled na tuto scénu, a jako součást stavu posuvníku.
+	
+	Tyto dvě hodnoty je potřeba nějak synchronizovat pomocí signálů, protože jedna se nachází ve „třídě pohledu“ a druhá v hlavním okně. Místo pokusu o obousměrnou synchronizaci jsem zvolil jednosměrný přístup. Posuvník má na sebe navěšenou callback metodu, která při změně jeho hodnoty změní úroveň přiblížení. Hlavní okno, a tedy i callback metoda, má přístup ke třídě pohledu, a tak může její hodnotu změnit napřímo. Hodnota ve třídě pohledu je ta, která určuje skutečné přiblížení vykreslené scény. Logika posuvníku je tímto tedy zprovozněna a zbývá vyřešit kolečko myši.
+	
+	Pokud uživatel otáčí kolečkem myši nad scénou, pak je volána metoda \texttt{wheelEvent} právě ve třídě pohledu. Než aby ale třída rovnou upravila svou hodnotu přiblížení a následně ji propagovala do posuvníku, vyšle pouze signál do hlavního okna. Po přijetí signálu hlavní okno odpovídajícím způsobem upraví hodnotu posuvníku, čímž se spustí jeho callback metoda, která se postará o zbytek.
+	
+	Zprovoznění tlačítek typu „táhni a pusť“ s sebou také neslo určité komplikace. Stejně jako v Dear ImGui a egui, jsou i v knihovně Qt poskytnuté \textit{drag and drop} funkce zbytečně komplexní pro scénář v ukázkové aplikaci. Proto jsem implementoval další typ tlačítka opět děděním z \texttt{QPushButton}. Tlačítko vysílá dva signály: jeden pro začátek tažení a druhý pro puštění. Tyto signály přijímá grafická scéna, kde jsem zamýšlel, že po prvním signálu do sebe přidá nový objekt náhledového uzlu. Dokud nepřijde druhý signál, tak aktualizuje pozici náhledového uzlu tak, aby se nacházel pod kurzorem myši. S druhým signálem pak scéna pošle signál do hlavního okna, aby patřičně změnilo vstupní dokument, a náhledový uzel smaže.
+	
+	Pro zjištění pozice kurzoru, která poslouží k určení souřadnic náhledového uzlu, jsem chtěl použít metodu \texttt{mouseMoveEvent} v grafické scéně, která se má zavolat při pohybu kurzoru nad scénou. Zde ale nastal problém: pokud uživatel táhne nějaké tlačítko, tak se tato metoda nikdy nezavolá. Další informace, kterou je potřeba znát, je zdali se při puštění tlačítka kurzor nachází nad plátnem. Je-li kurzor mimo plátno, tak to znamená, že se má operace přidání nového uzlu zrušit. Pro zjištění této informace by měla sloužit metoda \texttt{underMouse} ve třídě pohledu. Ta ale podléhá stejnému problému: při tažení tlačítka vrací vždycky \texttt{false} nehledě na pozici kurzoru.
+	
+	Logika přidání nového uzlu se tedy v tu chvíli nacházela ve čtyřech různých třídách: vlastní tlačítko, hlavní okno, scéna a pohled scénu. Z toho dvě části nefungovaly tak, jak jsem podle dokumentace očekával.
+	
+	\temporary{\\ Nezapomenout crash}
+	
+	\temporary{\\ * SVG a save/load dialogy: Qt je ready}	
 	
 	\chapter{Porovnání přístupů a ukázkových aplikací}
 	
 	\section{Porovnání přístupů IMGUI a RMGUI z pohledu funkcí a aplikačního kódu}
 	
-	\temporary{\\Šlo by zde zmínit modaly v IMGUI vs. trápení s preferences window u Qt\\ IMGUI (viz také egui a dvui readmes)\\ :: Kompletní pořadí operací ve smyčce a případy, kdy bylo potřeba dát si na pořadí pozor.\\ :: Unsavedwarn modal je dobrý příkladem, modaly jsou celkově zvláštní, v Qt zprvu dávají větší smysl, ale zase je to hodně psaní\\ :: MultiLineTextEdit je problémový widget\\ :: Rychlost vývoje! \\ RMGUI\\ :: Callback hell\\ :: „Ukecané“\\ :: Synchronizace stavů}
+	\temporary{pro začátek opět zdůraznit, že porovnávám dva IMGUI frameworky vs Qt; možností je ve skutečnosti mnohem víc...}
+	
+	\temporary{\\Šlo by zde zmínit modaly v IMGUI vs. trápení s preferences window u Qt\\ IMGUI (viz také egui a dvui readmes)\\ :: Kompletní pořadí operací ve smyčce a případy, kdy bylo potřeba dát si na pořadí pozor.\\ :: Unsavedwarn modal je dobrý příkladem, modaly jsou celkově zvláštní, v Qt zprvu dávají větší smysl, ale zase je to hodně psaní\\ :: MultiLineTextEdit je problémový widget\\ :: Rychlost vývoje! \\ RMGUI\\ :: Callback hell (footnote signal vs callback <-> já vs qt)\\ :: „Ukecané“\\ :: Synchronizace stavů}
 	
 	\section{Porovnání výkonu ukázkových aplikací}
 	
 	\temporary{(Zmínit HW/SW, zmínit toolchain, zmínit jak měřím RAM/CPU)}
 	
+	\begin{enumerate}
+		\item \temporary{Desktop Win10 22H2 x64 VS 17.14.29}
+		\item \temporary{Laptop Mint 2016 iGPU + dGPU}
+		\item \temporary{Laptop Mint 2011 iGPU}
+	\end{enumerate}
+	
 	\subsection{Porovnání výkonu při vykreslování diagramu}
 	
 	\temporary{(Popsat, jak benchmark probíhá, obrázek.)}
-	
 	\temporary{(Využití CPU: zde je vidět overhead u IMGUI a zároveň, jak je Qt v druhé fázi „dožene“.)}
-	
-	\begin{figure}[ht]
-		\centering
-		\includegraphics[width=\textwidth]{img/bench/nodes_CPU_shon.pdf}
-		\caption{Benchmark...}
-	\end{figure}
-	
 	\temporary{(Využití RAM: zde je vidět problém spotřeby RAM u egui.)}
-	
-	\begin{figure}[ht]
-		\centering
-		\includegraphics[width=\textwidth]{img/bench/nodes_RAM_shon.pdf}
-		\caption{Benchmark...}
-	\end{figure}
-	
 	\temporary{(Zpoždění: zde je opět vidět problém spotřeby RAM u egui.)}
-	
-	\begin{figure}[ht]
-		\centering
-		\includegraphics[width=\textwidth]{img/bench/nodes_DUR_shon.pdf}
-		\caption{Benchmark...}
-	\end{figure}
-	
 	\temporary{(Proto ukážeme ještě Zpoždění s vypnutým TXT editorem: zde je opět vidět narůstající zpoždění u Qt.)}
-	
-	\begin{figure}[ht]
-		\centering
-		\includegraphics[width=\textwidth]{img/bench/nodes_DUR_txoff.pdf}
-		\caption{Benchmark...}
-	\end{figure}
-	
 	\temporary{(Jiné zařízení, stejný trend\dots)}
-	
-	\begin{figure}[ht]
-		\centering
-		\includegraphics[width=\textwidth]{img/bench/nodes_trend.pdf}
-		\caption{Benchmark...}
-	\end{figure}
 	
 	\subsection{Porovnání výkonu při vykreslování ovládacích prvků}
 	
 	\temporary{(Popsat, jak benchmark probíhá, obrázek.)}
-	
-	\begin{figure}[ht]
-		\centering
-		\includegraphics[width=.95\textwidth]{img/bench/widgets.pdf}
-		\caption{Benchmark...}
-	\end{figure}
 	
 	\chapter{Závěr}
 	
@@ -950,24 +956,66 @@
 	
 	% Přílohy
 	\appendix
-	\chapter{Ukázkové kódy}\vspace{-1.085cm}
+	\chapter{Příloha}
+	
+	Praktická část této práce se nachází v několika repozitářích. Odkazy na tyto repozitáře se nachází na webu \temporary{radekmocek.github.io/DPDoc}, který zároveň obsahuje dokumentaci k použití jazyka pro popis diagramů. Obsah všech repozitářů jsem také nahrál jako přílohu do systému STAG.	
+	
+	{\let\clearpage\relax \chapter{Ukázkové kódy a výsledky porovnání výkonu ukázkových aplikací}}\vspace{-1.085cm}
 	
 	\begin{code}[H]
-		\lstinputlisting[language=CppQt]{code/hello_counter_rmgui.cpp}
-		\caption{Kód demonstrující přístup RMGUI s využitím knihovny Qt}
-		\label{_tag_code_HelloCounterQt}
-	\end{code}
-	
-	\begin{code}
 		\lstinputlisting[language=CppImGui]{code/hello_counter_imgui.cpp}
-		\caption{Kód demonstrující přístup IMGUI s využitím knihovny Dear ImGui}
+		\caption{Kód demonstrující přístup IMGUI v knihovně Dear ImGui}
 		\label{_tag_code_HelloCounterImGui}
-	\end{code}
+	\end{code}	
+
+	\begin{code}[H]
+		\vspace{2cm}
+		\lstinputlisting[language=CppQt]{code/hello_counter_rmgui.cpp}
+		\caption{Kód demonstrující přístup RMGUI v knihovně Qt}
+		\label{_tag_code_HelloCounterQt}
+	\end{code}	
 	
-	\begin{code}
+	\begin{code}[H]
+		\vspace{1cm}
 		\lstinputlisting[language=CppNumericUpDown]{code/numericupdown.cpp}
 		\caption{Porovnání knihoven: celočíselné vstupní pole}
 		\label{_tag_code_NumericUpDown}
 	\end{code}
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{img/bench/nodes_CPU_shon.pdf}
+		\caption{Benchmark...}
+	\end{figure}
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{img/bench/nodes_RAM_shon.pdf}
+		\caption{Benchmark...}
+	\end{figure}
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{img/bench/nodes_DUR_shon.pdf}
+		\caption{Benchmark...}
+	\end{figure}
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{img/bench/nodes_DUR_txoff.pdf}
+		\caption{Benchmark...}
+	\end{figure}
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{img/bench/nodes_trend.pdf}
+		\caption{Benchmark...}
+	\end{figure}
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=.95\textwidth]{img/bench/widgets.pdf}
+		\caption{Benchmark...}
+	\end{figure}
 	
 \end{document}

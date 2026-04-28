@@ -14,6 +14,7 @@ static void hello_counter(mu_Context* ctx)
     static char char_arr[1];
     static int show_another_window = 0;
 
+    //*
     if (mu_begin_window_ex(ctx, "Main Menu", mu_rect(0, 0, 800, 30),
         (MU_OPT_NOTITLE)))
     {
@@ -30,6 +31,7 @@ static void hello_counter(mu_Context* ctx)
 
         mu_end_window(ctx);
     }
+    //*/
 
     if (mu_begin_window_ex(ctx, "Hello Counter", mu_rect(0, 35, 800, 600),
         (MU_OPT_NOTITLE | MU_OPT_NOFRAME)))

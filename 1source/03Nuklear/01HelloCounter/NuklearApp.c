@@ -25,8 +25,8 @@
 #include "stb_image.h"
 
 /* macros */
-#define WINDOW_WIDTH 1200
-#define WINDOW_HEIGHT 800
+#define WINDOW_WIDTH 640
+#define WINDOW_HEIGHT 480
 
 #define MAX_VERTEX_MEMORY 512 * 1024
 #define MAX_ELEMENT_MEMORY 128 * 1024
@@ -67,6 +67,8 @@ hello_counter(struct nk_context* ctx, struct media* media, GLFWwindow* win)
     if (nk_begin(ctx, "Hello Counter", nk_rect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT),
         (NK_WINDOW_NO_SCROLLBAR | NK_WINDOW_NO_INPUT)))
     {
+        //*
+
         // .: MENUBAR :.
         nk_menubar_begin(ctx);
         nk_layout_row(ctx, NK_STATIC, 30, 1, (float[]) { 100 });
@@ -88,6 +90,8 @@ hello_counter(struct nk_context* ctx, struct media* media, GLFWwindow* win)
         // .: VERTICAL SPACE :.
         nk_layout_row_dynamic(ctx, 20, 0);
         
+        //*/
+
         // .: ROW :: Counter :.
         nk_layout_row(ctx, NK_STATIC, 30, 3, (float[]) { 60, 40, 60 });
         
@@ -448,7 +452,7 @@ int main(int argc, char* argv[])
 #ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
-    win = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Nuklear :: Hello Counter", NULL, NULL);
+    win = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Nuklear", NULL, NULL);
     glfwMakeContextCurrent(win);
     glfwSetWindowUserPointer(win, &ctx);
     glfwSetCharCallback(win, text_input);

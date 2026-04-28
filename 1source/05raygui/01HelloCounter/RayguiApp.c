@@ -5,7 +5,7 @@
 
 int main()
 {
-    InitWindow(640, 480, "raygui :: Hello counter");
+    InitWindow(640, 480, "raygui");
     SetTargetFPS(60);
 
     int counter = 1;
@@ -18,27 +18,36 @@ int main()
         ClearBackground(GetColor(GuiGetStyle(DEFAULT, BACKGROUND_COLOR)));
         //----------------------------------------------------------------------------------
 
-        GuiStatusBar((Rectangle) { 0, 0, (float)GetScreenWidth(), 21 }, "");
+        int status_bar_height = 21;
+
+        //*
+        GuiStatusBar((Rectangle) { 0, 0, (float)GetScreenWidth(), status_bar_height }, "");
 
         GuiCheckBox((Rectangle) { 5, 3, 15, 15 }, "Pop-up", & show_popup_window);
+        //*/
+
+        int padding = 16;
+
+        int x = padding;
+        int y = padding + status_bar_height;
 
         if (counter == 1) GuiSetState(STATE_DISABLED);
-        if (GuiButton((Rectangle) { 24, 45, 50, 30 }, "-")) {
+        if (GuiButton((Rectangle) { x, y, 50, 30 }, "-")) {
             counter--;
         }
         GuiSetState(STATE_NORMAL);
 
         sprintf(buf, "%d", counter);
-        GuiLabel((Rectangle) { 79, 45, 10, 30 }, buf);
+        GuiLabel((Rectangle) { x + 55, y, 10, 30 }, buf);
 
         if (counter == 5) GuiSetState(STATE_DISABLED);
-        if (GuiButton((Rectangle) { 94, 45, 50, 30 }, "+")) {
+        if (GuiButton((Rectangle) { x + 70, y, 50, 30 }, "+")) {
             counter++;
         }
         GuiSetState(STATE_NORMAL);
 
         if (counter == 3) {
-            GuiLabel((Rectangle) { 24, 75, 50, 30 }, "Hello!");
+            GuiLabel((Rectangle) { x, y + 25, 50, 30 }, "Hello!");
         }
 
         if (show_popup_window) {

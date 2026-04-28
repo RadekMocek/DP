@@ -20,7 +20,7 @@ func main() {
 	go func() {
 		window := new(app.Window)
 
-		window.Option(app.Title("Hello Counter in Gio"))
+		window.Option(app.Title("Gio"))
 
 		err := run(window)
 		if err != nil {
