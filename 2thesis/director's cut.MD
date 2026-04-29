@@ -40,10 +40,7 @@
 * Automatic MOC for target při každé kompilaci; při přidání nového .cpp souboru občas nutno smazat celou build složku, jinak chyba
   * Auto MOC může dělat problémy při <kbd>F2</kbd> (snaží se přejmenovávat i ve vygenerovaných souborech)
   * Přidat parametr do signálu znamená aktualizovat signatury dvou funkcí; Ctrl+Click na funkci nejde k definici ale k MOC
-* TODO?:
-  * Umí SVG export out-of-the-box
-  * PROBLÉM: když draguju button, přestanou se "hlásit" některé věci: QGraphicsView underMouse() vrací vždy false; mouseMoveEvent se nespouští;
-  * Nejen v IMGUI je potřeba dávat si pozor na pořadí operací: např. `m_source->clear();`, pak až `m_is_source_dirty = false;`
+* Nejen v IMGUI je potřeba dávat si pozor na pořadí operací: např. `m_source->clear();`, pak až `m_is_source_dirty = false;`
 * __Viz [problems](https://github.com/RadekMocek/DiagramPche_Qt?tab=readme-ov-file#problems)__
 
 ### Benchmark

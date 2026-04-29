@@ -30,7 +30,7 @@ def device_name(dev: Device):
         case Device.WIN:
             return "Win10 Desktop"
         case Device.LIN:
-            return "Mint laptop 2016"
+            return "Mint laptop 2015"
         case Device.LING:
             return "Mint laptop, dedicated GPU"
         case Device.OLD:

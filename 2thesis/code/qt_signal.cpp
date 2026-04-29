@@ -5,7 +5,7 @@ class GUIMainWindow : public QMainWindow {
     void OnNodeClick(const std::string& id);
 }
 GUIMainWindow::GUIMainWindow() {
-    m_scene = new GUIScene(scene_font, this);
+    m_scene = new GUIScene( ... );
     connect(m_scene, &GUIScene::NodeClicked,
             this, &GUIMainWindow::OnNodeClick);
 }

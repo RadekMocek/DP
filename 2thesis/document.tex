@@ -69,9 +69,10 @@
 	
 	% Klíčová slova česky
 	\begin{keywordsCZ}
-		Klíčová, slova, česky.
+		grafické uživatelské rozhraní, Dear ImGui, egui, Qt, editor diagramů
 	\end{keywordsCZ}
-	\clearpage
+	
+	\smallskip
 	
 	% Abstrakt anglicky
 	\begin{abstractEN}		
@@ -82,7 +83,7 @@
 	
 	% Klíčová slova anglicky
 	\begin{keywordsEN}
-		\begin{english}English, keywords.\end{english}
+		\begin{english}graphical user interface, Dear ImGui, egui, Qt, diagram editor\end{english}
 	\end{keywordsEN}
 	
 	% Obsah
@@ -823,7 +824,7 @@
 	
 	%Díky tomu, že knihovna Qt pokrývá velkou řadu funkcí, nemá tento projekt příliš mnoho dalších závislostí. Kromě knihoven, které slouží k měření výkonu, je zde opět knihovna toml++ pro zpracování vstupního dokumentu,
 	
-	Struktura projektu je zde odlišná od předchozích dvou aplikací.	Definice hlavního okna se nachází ve vlastní třídě \texttt{GUIMainWindow}, která dědí z třídy \texttt{QMainWindow} poskytnuté knihovnou. V konstruktoru vlastní třídy je postupně definováno veškeré rozhraní hlavního okna. Pro pokládání ovládacích prvků jsou k dispozici různé typy rozložení. Zde je použito vertikální rozložení \texttt{QVBoxLayout}, v němž se pod sebou nachází \texttt{QSplitter} a \texttt{QLabel}. První objekt zapouzdřuje víceřádkové textové pole s kreslicím plátnem a umožňuje uživateli měnit poměr jejich šířek. Druhý objekt je textový popisek reprezentující stavový řádek.
+	Struktura projektu je zde odlišná od předchozích dvou aplikací.	Definice hlavního okna se nachází ve vlastní třídě \texttt{GUIMainWindow}, která dědí ze třídy \texttt{QMainWindow} poskytnuté knihovnou. V konstruktoru vlastní třídy je postupně definováno veškeré rozhraní hlavního okna. Pro pokládání ovládacích prvků jsou k dispozici různé typy rozložení. Zde je použito vertikální rozložení \texttt{QVBoxLayout}, v němž se pod sebou nachází \texttt{QSplitter} a \texttt{QLabel}. První objekt zapouzdřuje víceřádkové textové pole s kreslicím plátnem a umožňuje uživateli měnit poměr jejich šířek. Druhý objekt je textový popisek reprezentující stavový řádek.
 	
 	Všechny ovládací prvky a rozložení jsou vytvářeny klíčovým slovem \texttt{new} a odkaz na ně je tedy uchován v proměnných typu ukazatele (\textit{pointer}). O životní cyklus objektů se sice stará knihovna Qt, i přes to může programátor v určitých případech napsat „nebezpečný“ kód. Příkladem je pokus o odstranění již odstraněného objektu z grafické scény, nebo špatné použití dynamického přetypování. Na přidané ovládací prvky jsou navěšeny callback metody, a pokud je potřeba s nimi pracovat i v jiných částech kódu, musí být jejich ukazatel členem třídy \texttt{GUIMainWindow}.
 	
@@ -831,7 +832,7 @@
 	
 	Stejně jako v předchozích případech zde nelze snadno nastavit, aby stisk klávesy \textit{Tab} vkládal mezery namísto znaku tabulátoru. Výchozí šířka odsazení je zde navíc o velikosti osmi znaků. Zvýrazňování chyb je zde řešeno pomocí pomyslného textového kurzoru. Ten se chová jako stavový automat a jeho pozice je nejprve nastavena na začátek nahlášené chyby. Poté je zvýrazněna patřičná část textu a barva zvýraznění je nastavena na červenou.
 	
-	Zvýrazňování syntaxe je zde řešeno vytvořením vlastní třídy, která dědí z třídy \texttt{QSyntaxHighlighter}. V jejím konstruktoru jsou definována očekávaná klíčová slova a k nim příslušné barvy. Následně se z víceřádkového textového pole získá ukazatel na jeho dokument, a ten je metodou \texttt{setDocument} předán instanci „zvýrazňovače“.
+	Zvýrazňování syntaxe je zde řešeno vytvořením vlastní třídy, která dědí ze třídy \texttt{QSyntaxHighlighter}. V jejím konstruktoru jsou definována očekávaná klíčová slova a k nim příslušné barvy. Následně se z víceřádkového textového pole získá ukazatel na jeho dokument, a ten je metodou \texttt{setDocument} předán instanci „zvýrazňovače“.
 	
 	V tomto řešení není možné snadno nastavit, aby se s přepnutím aplikace do tmavého režimu změnilo i barevné schéma pro zvýrazňování syntaxe. Nejjednodušší způsob, na který jsem přišel, je mít pro každé téma aplikace samostatnou třídu a přepínat mezi nimi.
 	
@@ -869,13 +870,13 @@
 	
 	Pro realizaci kreslicího plátna by bylo možné vytvořit vlastní ovládací prvek děděním ze třídy \texttt{QWidget}. V něm by se pak přepsaly metody, které reagují na uživatelské interakce myší, společně s metodou \texttt{paintEvent}, která by se starala o vykreslení diagramu. Jednalo by se o „nižší“ přístup, který se více podobá řešením z předchozích dvou projektů. V této aplikaci ale využívám grafickou scénu knihovny Qt, což je běžně používaný prvek, který se objevuje i v ukázkových projektech oficiální dokumentace. Scéna je vytvořena děděním ze třídy \texttt{QGraphicsScene}.
 	
-	Jakmile uživatel upraví vstupní dokument popisující diagram, spustí se výše zmíněná callback metoda. Obsah textového pole je předán třídě \texttt{Parser}, která provede první fázi zpracování stejně jako v předchozích dvou projektech. Následně jsou za pomoci knihovny Qt dopočítány přesné souřadnice uzlů a pro každý z nich je vytvořena instance vlastní třídy, která dědí z \texttt{QGraphicsItem}.
+	Jakmile uživatel upraví vstupní dokument popisující diagram, spustí se výše zmíněná callback metoda. Obsah textového pole je předán třídě \texttt{Parser}, která provede první fázi zpracování stejně jako v předchozích dvou projektech. Následně jsou za pomoci knihovny Qt dopočítány přesné souřadnice uzlů a pro každý z nich je vytvořena instance vlastní třídy, která dědí ze třídy \texttt{QGraphicsItem}.
 	
-	Každý prvek ve scéně musí implementovat dvě metody. První metoda se stará o jeho vykreslení pomocí instance třídy \texttt{QPainter}, která poskytuje metody pro vykreslování grafických primitiv. Druhá metoda, kterou je potřeba implementovat, vrací obdélníkovou oblast ohraničující tento prvek. Veškeré vykreslování musí probíhat právě v této oblasti. U prvků ve scéně je možné nastavit jejich hloubku metodou \texttt{setZValue}, takže není třeba řešit dodatečné řazení.
+	Každý prvek ve scéně musí implementovat dvě metody. První metoda se stará o jeho vykreslení pomocí instance třídy \texttt{QPainter}, která poskytuje metody pro vykreslování grafických primitiv. Druhá metoda, kterou je potřeba implementovat, vrací obdélníkovou oblast ohraničující tento prvek. Veškeré vykreslování musí probíhat právě v této oblasti. U prvků ve scéně je možné nastavit jejich hloubku metodou \texttt{setZValue}, takže není potřeba řešit dodatečné řazení.
 	
 	Pro každý objekt diagramu je vytvořena instance takovéto třídy a ukazatel na ní je předán grafické scéně, která od té chvíle přebírá nad objektem kontrolu. Scéna podle aktuálního pohledu na plátno určuje, jaké objekty jsou viditelné, a mají tedy být vykresleny. Pokud je vstupní dokument jakkoliv změněn, pak je celá scéna vyčištěna a následně znovu vybudována. Logika, která by hlídala, jaké uzly ve scéně se změnily a jaké byly přidány či odebrány, by byla zbytečně komplexní a náchylná na chyby. Dokud ovšem není vstupní dokument upraven, tak je obsah scény neměnný. To je rozdíl oproti projektům s přístupem IMGUI, kde je zpracování vstupu a následné vykreslení součást každého průchodu hlavní smyčkou.
 	
-	Aby mohla být grafická scéna použita, musí být ještě celá „zabalena“ do další vlastní třídy, která dědí z \texttt{QGraphicsView}. Tato třída reprezentuje pohled na danou scénu a ve výchozím nastavení ji vykresluje s posuvnými lištami. Lišty jsou v tomto případě skryty a velikost pohledu je nastavena na velké číslo, aby chování odpovídalo předchozím projektům, kde pohled na plátno nemá žádné hranice.
+	Aby mohla být grafická scéna použita, musí být ještě celá „zabalena“ do další vlastní třídy, která dědí z \texttt{QGraphicsView}. Tato třída reprezentuje pohled na danou scénu a ve výchozím nastavení ji vykresluje s posuvnými lištami. Lišty jsou v ukázkové aplikaci skryty a velikost výřezu scény, kde se může pohled pohybovat, je nastavena na velké číslo. Díky tomu odpovídá chování aplikace předchozím projektům, kde lze z pohledem posouvat „donekonečna“.
 	
 	Třída obalující scénu dále implementuje logiku posouvání pohledu při držení pravého tlačítka myši. V projektech s přístupem IMGUI je podle pohybu myši upravena hodnota proměnné, která reprezentuje posun pohledu a přičítá se k souřadnicím všech objektů diagramu. Zde jsou podle pohybu myši upravovány hodnoty posuvných lišt, které jsou sice skryty, ale stále určují pozici pohledu na scénu.
 	
@@ -883,7 +884,7 @@
 	
 	V aplikaci je opět možné vybrat uzel diagramu kliknutím levého tlačítka myši. U vybraného uzlu pak lze měnit jeho barvu a tvar. Obsluha kliknutí se řeší v grafické scéně přepsáním metody \texttt{mousePressEvent}. Scéna dokáže vrátit kolekci objektů, které se nachází na určitých souřadnicích. Kolekce je seřazena podle parametru \textit{z}, a tak stačí její první prvek označit jako vybraný.
 	
-	Logika změny barvy a tvaru vybraného uzlu ale probíhá ve třídě hlavního okna, protože ta má odkaz na textové pole, jehož obsah je potřeba měnit. Scéna tedy potřebuje nějak oznámit oknu, na které nemá referenci, že byl vybrán určitý uzel. K tomu v knihovně Qt slouží tzv. signály, jejichž princip ukazuje Kód \ref{_tag_code_QtSignal}. Jakmile uživatel klikne na nějaký uzel ve scéně, tak je zavolána metoda \texttt{NodeClicked}, což lze chápat jako vyslání signálu. Interní smyčka knihovny Qt se pak stará o to, aby reakcí na vyslaný signál bylo spuštění metody \texttt{OnNodeClick} v hlavním okně.
+	Logika změny barvy a tvaru vybraného uzlu ale probíhá ve třídě hlavního okna, protože ta má odkaz na textové pole, jehož obsah je potřeba měnit. Scéna tedy potřebuje nějak oznámit oknu, na které nemá referenci, že byl vybrán určitý uzel. K tomu v knihovně Qt slouží tzv. signály, jejichž princip ukazuje kód \ref{_tag_code_QtSignal}. Jakmile uživatel klikne na nějaký uzel ve scéně, tak je zavolána metoda \texttt{NodeClicked}, což lze chápat jako vyslání signálu. Interní smyčka knihovny Qt se pak stará o to, aby reakcí na vyslaný signál bylo spuštění metody \texttt{OnNodeClick} v hlavním okně.
 	
 	\begin{code}[ht]
 		\lstinputlisting[language=CppQtSignal]{code/qt_signal.cpp}
@@ -891,7 +892,7 @@
 		\label{_tag_code_QtSignal}
 	\end{code}
 	
-	Po přijetí signálu si hlavní okno získá informace o uzlu, na který uživatel klikl, a aktualizuje podle nich panel nástrojů. Pro účel výběru barev má knihovna Qt předpřipravené dialogové okno. Do panelu nástrojů jsem umístil vlastní tlačítko, které dědí z třídy \texttt{QPushButton} a jehož barva odpovídá právě vybranému uzlu. Po kliknutí na toto tlačítko je zobrazen dialog výběru barev. Na obrázku \ref{_tag_img_qtColorpicker} je vidět, že i když je použit multiplatformní styl \textit{Fusion}, tak se vzhled tohoto dialogu liší v závislosti na platformě. Vybere-li uživatel novou barvu, pak je vyslán signál do hlavního okna, které odpovídajícím způsobem upraví obsah textového editoru, což díky navěšené callback metodě překreslí grafickou scénu.
+	Po přijetí signálu si hlavní okno získá informace o uzlu, na který uživatel klikl, a aktualizuje podle nich panel nástrojů. Pro účel výběru barev má knihovna Qt předpřipravené dialogové okno. Do panelu nástrojů jsem umístil vlastní tlačítko, které dědí ze třídy \texttt{QPushButton} a jehož barva odpovídá právě vybranému uzlu. Po kliknutí na toto tlačítko je zobrazen dialog výběru barev. Na obrázku \ref{_tag_img_qtColorpicker} je vidět, že i když je použit multiplatformní styl \textit{Fusion}, tak se vzhled tohoto dialogu liší v závislosti na platformě. Vybere-li uživatel novou barvu, pak je vyslán signál do hlavního okna, které odpovídajícím způsobem upraví obsah textového pole, což díky navěšené callback metodě překreslí grafickou scénu.
 	
 	\begin{figure}[ht]
 		\centering
@@ -902,50 +903,71 @@
 	
 	Pod vykresleným diagramem se nachází čtveřice tlačítek pro přidání nového uzlu a posuvník pro změnu úrovně přiblížení vykresleného diagramu. V projektech s přístupem IMGUI byla proměnná reprezentující úroveň přiblížení členem hlavní třídy a její hodnota mohla být upravována ovládacím prvkem posuvníku i kolečkem myši. V tomto projektu je ale úroveň přiblížení držena na dvou místech: v grafické scéně, resp. ve třídě reprezentující pohled na tuto scénu, a jako součást stavu posuvníku.
 	
-	Tyto dvě hodnoty je potřeba nějak synchronizovat pomocí signálů, protože jedna se nachází ve „třídě pohledu“ a druhá v hlavním okně. Místo pokusu o obousměrnou synchronizaci jsem zvolil jednosměrný přístup. Posuvník má na sebe navěšenou callback metodu, která při změně jeho hodnoty změní úroveň přiblížení. Hlavní okno, a tedy i callback metoda, má přístup ke třídě pohledu, a tak může její hodnotu změnit napřímo. Hodnota ve třídě pohledu je ta, která určuje skutečné přiblížení vykreslené scény. Logika posuvníku je tímto tedy zprovozněna a zbývá vyřešit kolečko myši.
+	Tyto dvě hodnoty je potřeba nějak synchronizovat pomocí signálů, protože jedna se nachází ve „třídě pohledu“ a druhá v hlavním okně. Místo pokusu o obousměrnou synchronizaci jsem zvolil jednosměrný přístup. Posuvník má na sebe navěšenou callback metodu, která při změně jeho hodnoty změní úroveň přiblížení. Hlavní okno, a tedy i callback metoda, má přístup ke třídě pohledu, a tak může její hodnotu přiblížení změnit napřímo. Hodnota ve třídě pohledu je ta, která určuje skutečnou úroveň přiblížení vykreslené scény. Logika posuvníku je tímto tedy zprovozněna a zbývá vyřešit kolečko myši.
 	
-	Pokud uživatel otáčí kolečkem myši nad scénou, pak je volána metoda \texttt{wheelEvent} právě ve třídě pohledu. Než aby ale třída rovnou upravila svou hodnotu přiblížení a následně ji propagovala do posuvníku, vyšle pouze signál do hlavního okna. Po přijetí signálu hlavní okno odpovídajícím způsobem upraví hodnotu posuvníku, čímž se spustí jeho callback metoda, která se postará o zbytek.
+	Pokud uživatel otáčí kolečkem myši nad scénou, pak je volána metoda \texttt{wheelEvent} právě ve třídě pohledu. Než aby ale třída rovnou upravila svou hodnotu přiblížení a následně ji propagovala do posuvníku, vyšle pouze signál do hlavního okna. Po přijetí signálu upraví hlavní okno hodnotu posuvníku, čímž se spustí jeho callback metoda, která se postará o zbytek.
 	
-	Zprovoznění tlačítek typu „táhni a pusť“ s sebou také neslo určité komplikace. Stejně jako v Dear ImGui a egui, jsou i v knihovně Qt poskytnuté \textit{drag and drop} funkce zbytečně komplexní pro scénář v ukázkové aplikaci. Proto jsem implementoval další typ tlačítka opět děděním z \texttt{QPushButton}. Tlačítko vysílá dva signály: jeden pro začátek tažení a druhý pro puštění. Tyto signály přijímá grafická scéna, kde jsem zamýšlel, že po prvním signálu do sebe přidá nový objekt náhledového uzlu. Dokud nepřijde druhý signál, tak aktualizuje pozici náhledového uzlu tak, aby se nacházel pod kurzorem myši. S druhým signálem pak scéna pošle signál do hlavního okna, aby patřičně změnilo vstupní dokument, a náhledový uzel smaže.
+	Zprovoznění tlačítek typu „táhni a pusť“ s sebou také neslo určité komplikace. Stejně jako v Dear ImGui a egui, jsou i v knihovně Qt poskytnuté \textit{drag and drop} funkce zbytečně komplexní pro scénář v ukázkové aplikaci. Proto jsem implementoval další typ tlačítka, které vysílá dva signály: jeden pro začátek tažení a druhý pro jeho puštění. Tyto signály přijímá grafická scéna, kde jsem zamýšlel, že po prvním signálu do sebe přidá nový objekt náhledového uzlu. Dokud nepřijde druhý signál, tak aktualizuje pozici náhledového uzlu tak, aby se nacházel pod kurzorem myši. S druhým signálem pak scéna pošle signál do hlavního okna, aby patřičně změnilo vstupní dokument, a náhledový uzel smaže.
 	
-	Pro zjištění pozice kurzoru, která poslouží k určení souřadnic náhledového uzlu, jsem chtěl použít metodu \texttt{mouseMoveEvent} v grafické scéně, která se má zavolat při pohybu kurzoru nad scénou. Zde ale nastal problém: pokud uživatel táhne nějaké tlačítko, tak se tato metoda nikdy nezavolá. Další informace, kterou je potřeba znát, je zdali se při puštění tlačítka kurzor nachází nad plátnem. Je-li kurzor mimo plátno, tak to znamená, že se má operace přidání nového uzlu zrušit. Pro zjištění této informace by měla sloužit metoda \texttt{underMouse} ve třídě pohledu. Ta ale podléhá stejnému problému: při tažení tlačítka vrací vždycky \texttt{false} nehledě na pozici kurzoru.
+	Pro zjištění pozice kurzoru, která poslouží k určení souřadnic náhledového uzlu, jsem chtěl použít metodu \texttt{mouseMoveEvent} v grafické scéně, která se má zavolat při pohybu kurzoru nad scénou. Zde ale nastal problém: pokud uživatel táhne nějaké tlačítko, tak se tato metoda nikdy nezavolá. Další informace, kterou je potřeba znát, je zdali se při puštění tlačítka nachází kurzor nad plátnem. Je-li kurzor mimo plátno, tak to znamená, že se má operace přidání nového uzlu zrušit. Pro zjištění této informace by měla sloužit metoda \texttt{underMouse} ve třídě pohledu. Ta ale podléhá stejnému problému: při tažení tlačítka vrací vždycky \texttt{false} nehledě na pozici kurzoru.
 	
-	Logika přidání nového uzlu se tedy v tu chvíli nacházela ve čtyřech různých třídách: vlastní tlačítko, hlavní okno, scéna a pohled scénu. Z toho dvě části nefungovaly tak, jak jsem podle dokumentace očekával.
+	Logika přidání nového uzlu se tedy v tu chvíli nacházela ve čtyřech různých třídách: vlastní tlačítko, hlavní okno, scéna a pohled na scénu. Z toho dvě části nefungovaly tak, jak jsem podle dokumentace očekával. Proto musím v konstruktoru třídy pohledu volat metodu \texttt{installEventFilter}, což umožňuje reagovat na veškeré interní události knihovny přepsáním metody \texttt{eventFilter}. V této metodě je již možné získat souřadnice kurzoru myši, i když uživatel táhne tlačítko.
 	
-	\temporary{\\ Nezapomenout crash}
+	Metoda \texttt{eventFilter} je spouštěna s vysokou frekvencí a získané souřadnice kurzoru jsou počítány absolutně od levého horního rohu obrazovky. Třída pohledu má v sobě uložen ukazatel na grafickou scénu a zároveň poskytuje metody pro přepočet souřadnic. Pokud třída pohledu od scény zjistí, že uživatel právě pokládá nový uzel, přepočte absolutní souřadnice kurzoru na jeho souřadnice ve scéně. Ty jsou poslány zpět do scény, která podle nich posune náhledový uzel.
 	
-	\temporary{\\ * SVG a save/load dialogy: Qt je ready}	
+	Důvod, proč není metoda \texttt{eventFilter} implementována rovnou ve scéně, je ten, že grafická scéna nemá k dispozici metodu pro přepočet souřadnic kurzoru. Třída pohledu navíc obsahuje ukazatel na scénu, takže je snadné k ní odsud přistupovat. Opačný směr je mírně složitější, ale i v tomto řešení jsem jej nakonec musel využít. Jakmile uživatel pustí levé tlačítko myši, musí scéna zkontrolovat, zdali se nad ní nachází kurzor. To ale ve scéně zjistit nelze, a tak je nutné dotázat se třídy pohledu.
 	
+	Pokud třída pohledu potvrdí, že se kurzor nachází nad plátnem, je možné poslat signál hlavnímu oknu, aby do vstupního dokumentu přidalo definici nového uzlu. Po odeslání signálu jsem se snažil náhledový uzel ze scény smazat. Nedošlo mi ale, že změna vstupního dokumentu znamená kompletní vyčištění scény. Snažil jsem se tedy smazat neexistující objekt, což vedlo k pádu aplikace. Po opravení této chyby byl celý mechanismus již funkční.
+	
+	Implementace této funkce by se pravděpodobně dost usnadnila, pokud by byl nový uzel přidáván pomocí dvou kliknutí namísto tažení. Uživatel by např. stiskl tlačítko s obdélníkem a to by zůstalo „zamáčklé“. Druhým kliknutím do scény by se pak na toto místo přidal obdélníkový uzel. Chtěl jsem ale, aby se aplikace chovala co nejpodobněji předchozím projektům s přístupem IMGUI, kde implementace této funkce nebyla zdaleka tak problémová.
+
+	Co se naopak v knihovně Qt implementovalo velmi snadno, byl export diagramu do formátu SVG. Knihovna má totiž k dispozici třídu \texttt{QSvgGenerator}, která dokáže do tohoto formátu uložit obsah grafické scény. Další funkce, pro kterou má knihovna připravené řešení, je zobrazení nativního dialogu pro výběr souboru. V předchozích projektech je toto řešeno dodatečnou závislostí, zatímco v knihovně Qt je to záležitost volání jedné metody.
+		
 	\chapter{Porovnání přístupů a ukázkových aplikací}
 	
 	\section{Porovnání přístupů IMGUI a RMGUI z pohledu funkcí a aplikačního kódu}
 	
-	\temporary{pro začátek opět zdůraznit, že porovnávám dva IMGUI frameworky vs Qt; možností je ve skutečnosti mnohem víc...}
-	
-	\temporary{\\Šlo by zde zmínit modaly v IMGUI vs. trápení s preferences window u Qt\\ IMGUI (viz také egui a dvui readmes)\\ :: Kompletní pořadí operací ve smyčce a případy, kdy bylo potřeba dát si na pořadí pozor.\\ :: Unsavedwarn modal je dobrý příkladem, modaly jsou celkově zvláštní, v Qt zprvu dávají větší smysl, ale zase je to hodně psaní\\ :: MultiLineTextEdit je problémový widget\\ :: Rychlost vývoje! \\ RMGUI\\ :: Callback hell (footnote signal vs callback <-> já vs qt)\\ :: „Ukecané“\\ :: Synchronizace stavů}
+	\temporary{\\Pro začátek by šlo zmínit, že porovnávám dva IMGUI frameworky vs Qt; možností je ve skutečnosti mnohem víc...\\Šlo by zde zmínit modaly v IMGUI vs. trápení s preferences window u Qt\\ IMGUI (viz také egui a dvui readmes):\\ * Pořadí operací ve smyčce a případy, kdy bylo potřeba dát si na pořadí pozor.\\ * Unsavedwarn modal je dobrý příkladem, modaly jsou celkově zvláštní, v Qt zprvu dávají větší smysl, ale zase je to hodně psaní\\ * MultiLineTextEdit je problémový widget\\ * Rychlost vývoje! \\ RMGUI:\\ * Callback hell (footnote signal vs. callback <-> já vs. qt)\\ * „Ukecané“\\ * Synchronizace stavů}
 	
 	\section{Porovnání výkonu ukázkových aplikací}
 	
-	\temporary{(Zmínit HW/SW, zmínit toolchain, zmínit jak měřím RAM/CPU)}
-	
-	\begin{enumerate}
-		\item \temporary{Desktop Win10 22H2 x64 VS 17.14.29}
-		\item \temporary{Laptop Mint 2016 iGPU + dGPU}
-		\item \temporary{Laptop Mint 2011 iGPU}
+	V ukázkových aplikacích jsem implementoval dva testy pro srovnání jejich výkonu. První test sleduje výkon aplikace při vykreslování diagramu s velkým počtem uzlů a druhý test sleduje dobu potřebnou pro zobrazení dialogového okna s velkým množstvím ovládacích prvků.	Testy jsem provedl na třech zařízeních:	\begin{enumerate}
+		\item Stolní počítač s OS Windows 10 22H2 x64, CPU Intel Xeon E3-1270 v3 (\textbf{2013}) @ 3.5 GHz $\times$ 4, RAM 16 GB, dedikovaná GPU NVIDIA GeForce GTX 1060.
+		\item Laptop s OS Linux Mint 22.3 Cinnamon x64, CPU Intel Core i7-6700HQ (\textbf{2015}) @ 2.6 GHz $\times$ 4, RAM 16 GB. Na tomto zařízení byly testy provedeny dvakrát: jednou s dedikovanou GPU NVIDIA GeForce GTX 960M, podruhé s integrovanou GPU Intel HD Graphics 530.
+		\item Laptop s OS Linux Mint 22.3 Cinnamon x64, CPU Intel Core i5-2430M (\textbf{2011}) @ 2.4 GHz $\times$ 2, RAM 8 GB, integrovaná GPU Intel HD Graphics 3000.
 	\end{enumerate}
+	
+	Aplikace implementované v \textit{Dear ImGui} a \textit{Qt} jsou sestaveny na OS Windows pomocí programu Visual Studio 2022 ve verzi 17.14.29 a na OS Linux pomocí sady GCC ve verzi 13.3.0. Aplikace implementovaná v \textit{egui} je na obou systémech sestavena nástrojem rustc ve verzi 1.93.0.
+	
+	Celkové využití CPU na OS Windows získávám pomocí čítače s cestou\break\texttt{"\textbackslash Informace o procesoru(\_Total)\textbackslash Využití procesoru (\%)"}, který se nachází v rozhraní \textit{Performance Data Helper}. Využití operační paměti procesem získávám z atributu \texttt{WorkingSetSize} v rozhraní \textit{Process Status API}. Na OS Linux využívám jednohlavičkové knihovny, které tyto informace získávají z adresáře \texttt{/proc}.
 	
 	\subsection{Porovnání výkonu při vykreslování diagramu}
 	
-	\temporary{(Popsat, jak benchmark probíhá, obrázek.)}
-	\temporary{(Využití CPU: zde je vidět overhead u IMGUI a zároveň, jak je Qt v druhé fázi „dožene“.)}
-	\temporary{(Využití RAM: zde je vidět problém spotřeby RAM u egui.)}
-	\temporary{(Zpoždění: zde je opět vidět problém spotřeby RAM u egui.)}
-	\temporary{(Proto ukážeme ještě Zpoždění s vypnutým TXT editorem: zde je opět vidět narůstající zpoždění u Qt.)}
-	\temporary{(Jiné zařízení, stejný trend\dots)}
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=.92\textwidth]{img/bench1}
+		\caption{Benchmark...}
+	\end{figure}
+	
+	\temporary{\\ (Popsat, jak benchmark probíhá.)}
+	
+	\temporary{\\ (Využití CPU: zde je vidět overhead u IMGUI a zároveň,\\jak je Qt v druhé fázi „dožene“.)}
+	
+	\temporary{\\ (Využití RAM: zde je vidět problém spotřeby RAM u egui.)}
+	
+	\temporary{\\ (Zpoždění: zde je opět vidět problém spotřeby RAM u egui.)}
+	
+	\temporary{\\ (Proto ukážeme ještě Zpoždění s vypnutým TXT editorem:\\zde je nově vidět narůstající zpoždění u Qt.)}
+	
+	\temporary{\\ (Jiné zařízení, stejný trend\dots)}
 	
 	\subsection{Porovnání výkonu při vykreslování ovládacích prvků}
 	
-	\temporary{(Popsat, jak benchmark probíhá, obrázek.)}
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{img/bench2}
+		\caption{Benchmark...}
+	\end{figure}
 	
 	\chapter{Závěr}
 	
