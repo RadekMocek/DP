@@ -44,8 +44,8 @@ impl MyApp {
                 ui.checkbox(&mut self.do_fill_big_text, "Keep adding characters");
                 ui.checkbox(&mut self.do_show_big_text, "Show the textedit widget");
 
-                if self.do_fill_big_text && self.big_text.len() < 10_000_000 {
-                    self.big_text.push_str(&"A".repeat(10_000));
+                if self.do_fill_big_text && self.big_text.len() < 12_000_000 {
+                    self.big_text.push_str(&"A".repeat(20_000));
                 }
             });
     }

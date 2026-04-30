@@ -40,12 +40,4 @@
 * Automatic MOC for target při každé kompilaci; při přidání nového .cpp souboru občas nutno smazat celou build složku, jinak chyba
   * Auto MOC může dělat problémy při <kbd>F2</kbd> (snaží se přejmenovávat i ve vygenerovaných souborech)
   * Přidat parametr do signálu znamená aktualizovat signatury dvou funkcí; Ctrl+Click na funkci nejde k definici ale k MOC
-* Nejen v IMGUI je potřeba dávat si pozor na pořadí operací: např. `m_source->clear();`, pak až `m_is_source_dirty = false;`
 * __Viz [problems](https://github.com/RadekMocek/DiagramPche_Qt?tab=readme-ov-file#problems)__
-
-### Benchmark
-
-* Smyčka vs. QCoro
-* Zkusil jsem v Dear ImGui neparsovat TOML každý frame, ale jen, když je potřeba; na výkonu se to nepodepsalo
-* Syntax highlight také nemá patrný vliv na výkon
-* QString neumí reserve, tak alespoň přidávám po "dávkách"

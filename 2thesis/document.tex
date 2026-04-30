@@ -104,6 +104,7 @@
 	
 	\newenvironment{abbrList2}{\phantomsection
 		{\section*{Seznam zkratek}\addcontentsline{toc}{section}{Seznam zkratek}}
+		\renewcommand{\arraystretch}{1.309}
 		\noindent\tabularx{\linewidth}{@{}lX@{}}}
 	{\endtabularx
 		\clearpage}
@@ -111,13 +112,16 @@
 	\begin{abbrList2}
 		\textbf{ANTLR} & \textit{ANother Tool for Language Recognition}, nástroj pro generaci překladačů \\
 		\textbf{API} & \textit{application programming interface}, rozhraní pro programování aplikací \\
+		\textbf{CPU} & \textit{central processing unit}, procesor \\
 		\textbf{GCC} & \textit{GNU Compiler Collection}; sada překladačů pro jazyky C, C++ ad. \\
+		\textbf{GPU} & \textit{graphics processing unit}, grafický procesor \\
 		\textbf{GUI} & \textit{graphical user interface}, grafické uživatelské rozhraní \\
 		\textbf{IMGUI} & \textit{immediate mode graphical user interface}, grafické uživatelské rozhraní v režimu okamžitého vykreslování \\
 		\textbf{JSON} & \textit{JavaScript Object Notation}, jazyk pro popis struktury dat \\
 		\textbf{MSVC} & \textit{Microsoft Visual C++}, překladač pro jazyky C a C++ \\
 		\textbf{MVVM} & \textit{model–view–viewmodel}, architektonický vzor \\
 		\textbf{OS} & \textit{operační systém} \\
+		\textbf{RAM} & \textit{random-access memory}, operační paměť \\
 		\textbf{RFD} & \textit{Rusty File Dialogs}, knihovna v jazyce Rust pro zobrazení nativních dialogových oken \\
 		\textbf{RMGUI} & \textit{retained mode graphical user interface}, grafické uživatelské rozhraní v režimu soběstačného vykreslování \\
 		\textbf{SDL} & \textit{Simple DirectMedia Layer}, multiplatformní multimediální knihovna \\
@@ -912,7 +916,7 @@
 	\begin{figure}[ht]
 		\centering
 		\includegraphics[width=\textwidth]{img/diag/slider.pdf}
-			\caption{Princip změny úrovně přiblížení vykresleného diagramu}
+		\caption{Princip změny úrovně přiblížení vykresleného diagramu}
 		\label{_tag_img_QtSlider}
 	\end{figure}
 	
@@ -940,27 +944,30 @@
 	
 	Z pohledu dostupných funkcí je knihovna Qt více připravená k tvorbě „běžných“ aplikací pro koncové uživatele. V aplikačním kódu lze snadno upravit text v záhlaví okna, nastavit ikonu aplikace, nebo zobrazit nativní dialogové okno. Pro vykreslení diagramu, nebo jiné libovolné grafiky, je zde připravena grafická scéna, která umožňuje svůj obsah exportovat do formátu SVG.
 	
-	Víceřádkové textové pole je jeden ze standardních ovládacích prvků, ale i tak má knihovna Qt v tomto ohledu náskok. Použité knihovny s přístupem IMGUI jsou v aktivním vývoji, a tak se toto může časem zlepšit, aktuálně jsou však dostupná řešení pro textová pole zatížena drobnými chybami a chybějícími funkcemi. V knihovnách s IMGUI je oproti Qt jednodušší přepínat mezi barevnými styly aplikace a lépe se mi zde pracovalo s fontem ikon.
+	Víceřádkové textové pole je jeden ze standardních ovládacích prvků, ale i tak má knihovna Qt v tomto ohledu náskok. Použité knihovny s přístupem IMGUI jsou v aktivním vývoji, a tak se toto může časem zlepšit, momentálně jsou však dostupná řešení pro textová pole zatížena drobnými chybami a chybějícími funkcemi. V knihovnách s přístupem IMGUI bylo naopak jednodušší přepínat mezi barevnými styly aplikace a lépe se mi zde pracovalo s fontem ikon.
 	
-	Co se týče vzhledu, tak aplikace využívající přístup IMGUI by měly vypadat vždy stejně nehledě na cílovou platformu. Knihovna Qt může na některých místech využívat nativní ovládací prvky poskytnuté operačním systémem, a na jiných místech může vykreslovat vlastní prvky, které tento vzhled imitují. I při použití multiplatformního vzhledu \textit{Fusion} se může stát, že bude vzhled určitých částí aplikace platformně závislý.
+	Co se týče vzhledu, tak aplikace využívající přístup IMGUI by měly vypadat vždy stejně nehledě na cílovou platformu. Knihovna Qt může na některých místech využívat nativní ovládací prvky poskytnuté operačním systémem, a na jiných místech vykreslovat vlastní prvky, které tento vzhled imitují. I při použití multiplatformního vzhledu \textit{Fusion} se může stát, že bude vzhled určitých částí aplikace platformně závislý.
 
-	Knihovny s přístupem RMGUI mají obvykle k dispozici robustnější řešení pro rozložení ovládacích prvků. V knihovně Qt např. není problém umístit ovládací prvky do pravidelné mřížky, která aktualizuje rozměry svých řádků a sloupců na základě velikosti okna aplikace. Funkce pro „responsivní“ rozložení jsou v knihovnách s přístupem IMGUI často omezené.		
+	Knihovny s přístupem RMGUI mají obvykle k dispozici robustnější řešení pro rozložení ovládacích prvků. V knihovně Qt není např. problém umístit ovládací prvky do pravidelné mřížky, která aktualizuje rozměry svých řádků a sloupců na základě velikosti okna aplikace. Funkce pro „responzivní“ rozložení jsou v knihovnách s přístupem IMGUI často omezené.		
 
 	Hlavní rozdíl mezi přístupy IMGUI a RMGUI je v principu psaní aplikačního kódu. Přístup IMGUI je o programování v nekonečné smyčce, kdy je knihovně na základě stavu aplikace popsáno, jak má být vykresleno uživatelské rozhraní. Přístup RMGUI je o programování callback metod a synchronizaci stavů.
 	
-	Při programování v nekonečné smyčce může hrát roli pořadí provedených operací. V ukázkové aplikaci se např. nachází logika, která zajišťuje, aby nemohl být vybrán neexistující uzel. Uživatel totiž může kliknout na uzel diagramu, čímž ho vybere, a následně jeho definici smazat ze vstupního dokumentu. Zmíněná logika zjistí, že identifikátor vybraného uzlu se v dokumentu  již nenachází, a výběr zruší. Součástí funkce \textit{drag and drop}, kdy uživatel přetáhne na plátno nový uzel, by mělo být vybrání nově přidaného uzlu. Pokud je ale tato funkce obsloužena výše popsanou logikou, tak je výběr nově přidaného uzlu okamžitě zrušen. Třída \texttt{Parser} jej totiž ještě nezpracovala, a tak je jeho identifikátor vyhodnocen jako neexistující. Prohozením pořadí těchto dvou operací se problém vyřeší.
+	Při programování v nekonečné smyčce může hrát roli pořadí provedených operací. V ukázkové aplikaci se např. nachází logika, která zajišťuje, aby nemohl být vybrán neexistující uzel. Uživatel totiž může kliknout na uzel diagramu, čímž ho vybere, a následně jeho definici smazat ze vstupního dokumentu. Zmíněná logika zjistí, že identifikátor vybraného uzlu se v dokumentu  již nenachází, a výběr zruší. Součástí funkce \textit{drag and drop}, kdy uživatel přetáhne na plátno nový uzel, by pak mělo být vybrání nově přidaného uzlu. Pokud je ale tato funkce obsloužena před výše popsanou logikou, tak je výběr nově přidaného uzlu okamžitě zrušen. Třída \texttt{Parser} jej totiž ještě nezpracovala, a tak je jeho identifikátor vyhodnocen jako neexistující. Prohozením pořadí těchto dvou operací se problém vyřeší.	
 	
-	\temporary{[!] Nejen v IMGUI je potřeba dávat si pozor na pořadí operací}
+	Při práci s callback metodami a se signály v knihovně Qt může také dojít k nečekanému chování aplikace. Pro textové pole je např. dostupný callback \texttt{textChanged}. Ten volá dodanou metodu, jakmile uživatel změní obsah textového pole. V pozdější fázi vývoje může programátor chtít v určité situaci měnit obsah textového pole z aplikačního kódu, a zde je nutné si uvědomit, že zmíněná callback metoda bude opět spuštěna. Pokud je tělo metody složitější, tak může spouštěním dalších callback metod docházet k „dominovému efektu“, který vede na nečekané chování aplikace a hůře se ladí. V ukázkové aplikaci je celkem 60krát volána funkce \texttt{connect}, takže práce s callback metodami a signály je v každé větší aplikaci nevyhnutelná.
 	
-	Při práci s callback metodami a se signály v knihovně Qt může také dojít k nečekanému chování aplikace.
+	I v knihovně Qt je někdy potřeba řešit pořadí provedených operací: funkce pro vytvoření nového dokumentu musí nejdříve vyčistit textové pole a až poté nastavit dokument jako nezměněný. Vyčištění pole se totiž také bere jako změna obsahu, takže v opačném pořadí by u nového dokumentu bylo nastaveno, že obsahuje neuložené změny. Situace se dále komplikuje, pokud jsou callback metody nečekaně volány z interní smyčky knihovny, jako tomu bylo u zvýrazňovače syntaxe. Programátor nad tímto nemá přímou kontrolu a tyto problémy se opět hůře ladí. Komplikací také je, když funkce dodané knihovnou, na které se programátor spoléhá, přestanou v určitých chvílích fungovat. Příkladem je zjištění pozice kurzoru při tažení tlačítka. Přístup IMGUI je v tomto ohledu obvykle méně abstraktní, a tyto problémy se v něm proto nevyskytují.
 	
-	\temporary{Dále v Qt horší synchronizace stavů}
+	S přístupem RMGUI přichází také problematika synchronizace stavů. V panelu nástrojů ukázkové aplikace lze měnit velikost písma v textovém poli. Pokud by se stejné celočíselné vstupní pole mělo nacházet i v okně s nastavením, bylo by nutné tyto dva ovládací prvky synchronizovat mezi sebou a zároveň se skutečnou hodnotou, která je součástí stavu textového pole. V přístupu IMGUI je velikost písma uchována na jednom místě a podle její hodnoty jsou vykresleny všechny dotčené ovládací prvky. Vykreslení složitějších prvků lze pak snadno zabalit do znovupoužitelných funkcí.	
 	
-	\temporary{IMGUI == rychlost vývoje (méně ukecané, funkce viz dvui), Qt je ukecané}
+	Obecně vede přístup IMGUI na kratší kód a rychlejší vývoj uživatelských rozhraní, což bylo naznačeno v rešerši u demonstračního kódu čítače s pozdravem. Tato vlastnost se potvrdila během implementace ukázkové aplikace. Rozdíl byl nejvíce patrný při definici uživatelského rozhraní dodatečných oken. Příkladem je záložka nastavení na obrázku \ref{_tag_img_settings} se zdrojovým kódem \ref{_tag_code_settings}.
 	
-	Obecně vede přístup IMGUI na kratší kód a rychlejší vývoj uživatelských rozhraní.
-	
-	\temporary{trápení s preferences window u Qt}
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=.82\textwidth]{img/settings}
+		\caption{Dear ImGui a Qt: záložka \textit{Zobrazení} v okně s nastavením}
+		\label{_tag_img_settings}
+	\end{figure}
 	
 	\section{Porovnání výkonu ukázkových aplikací}
 	
@@ -976,31 +983,48 @@
 	
 	\subsection{Porovnání výkonu při vykreslování diagramu}
 	
+	Porovnání výkonu při vykreslování diagramu probíhá ve třech fázích. V první fázi se v diagramu nachází pouze jeden uzel, což by mělo reprezentovat aplikaci v „klidovém“ stavu. V druhé fázi jsou do vstupního dokumentu postupně přidávány definice nových uzlů, a diagram je tedy ve všech třech aplikacích pravidelně překreslován. Na konci druhé fáze se v diagramu nachází zhruba 13 tisíc uzlů. V poslední fázi se do diagramu již nic nepřidává, ale všechny uzly z předchozí fáze zůstávají vykresleny.
+	
+	Během tohoto procesu je každých 300 ms posouván pohled a měněna úroveň přiblížení kreslicího plátna. V druhé fázi je s tímto intervalem do diagramu přidávána nová várka uzlů. Každých 900 ms je pak zaznamenáno celkové využití procesoru systémem a využití operační paměti daným procesem. Dále se zaznamenává skutečná doba trvání mezi jednotlivými měřeními, jelikož může při vyšší zátěži docházet ke zpoždění. Obrázek \ref{_tag_img_bench1} ukazuje, jak vypadá část diagramu během poslední fáze měření výkonu.
+	
 	\begin{figure}[ht]
 		\centering
 		\includegraphics[width=.92\textwidth]{img/bench1}
-		\caption{Benchmark...}
+		\caption{Benchmark vykreslení diagramu: ukázka}
+		\label{_tag_img_bench1}
 	\end{figure}
 	
-	\temporary{\\ (Popsat, jak benchmark probíhá.)}
+	Obrázky \ref{_bench_1_cpu_shon}, \ref{_bench_1_ram_shon} a \ref{_bench_1_dur_shon} ukazují grafy s průběhem využití procesoru, využití operační paměti a doby trvání mezi dvěma měřeními. Jedná se o hodnoty naměřené na zařízení č. 2: laptop (2015) s integrovanou grafickou kartou. Jak je vidět na využití procesoru (\ref{_bench_1_cpu_shon}), knihovny Dear ImGui a egui mají vyšší režijní náklady (\textit{overhead}) než knihovna Qt. Jejich spotřeba se ale příliš nemění mezi jednotlivými fázemi a knihovna Qt je v průběhu druhé fáze „dožene“.
 	
-	\temporary{\\ (Využití CPU: zde je vidět overhead u IMGUI a zároveň,\\jak je Qt v druhé fázi „dožene“.)}
+	Při měření využití operační paměti (\ref{_bench_1_ram_shon}) se ukázalo, že knihovna egui s přibývajícími uzly diagramu zabírá stále více paměti. To jsem nejdřív považoval za chybu v ukázkové aplikaci, po bližším průzkumu jsem ale zjistil, že se jedná o problém s textovým polem v knihovně egui (obrázek \ref{_tag_img_eguiRAM}). Velká spotřeba operační paměti se pak projevuje i na naměřeném zpoždění (\ref{_bench_1_dur_shon}).
+		
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=.92\textwidth]{img/egui_ram_issue}
+		\caption{egui: textové pole a využití operační paměti}
+		\label{_tag_img_eguiRAM}
+	\end{figure}
 	
-	\temporary{\\ (Využití RAM: zde je vidět problém spotřeby RAM u egui.)}
+	Benchmark jsem dále spustil se skrytým víceřádkovým textovým polem a obrázek \ref{_bench_1_dur_txoff} ukazuje graf naměřeného zpoždění. Zde je u knihovny Qt vidět přibývající zpoždění ve druhé fázi měření. Logika měření výkonu se v knihovně Qt nachází v samostatném koprogramu (\textit{coroutine}), zatímco v Dear ImGui a egui je součástí hlavní smyčky. To se projevuje na kolísání doby trvání mezi měřeními ve třetí fázi.
 	
-	\temporary{\\ (Zpoždění: zde je opět vidět problém spotřeby RAM u egui.)}
-	
-	\temporary{\\ (Proto ukážeme ještě Zpoždění s vypnutým TXT editorem:\\zde je nově vidět narůstající zpoždění u Qt.)}
-	
-	\temporary{\\ (Jiné zařízení, stejný trend\dots)}
+	Grafy z důvodu přehlednosti obsahují záznam pouze jednoho měření. Naměřené hodnoty na ostatních zařízeních však vykazovaly stejné trendy, což je vidět na obrázku \ref{_bench_1_trend}. Benchmark jsem také zkusil spustit s vypnutým zvýrazňováním syntaxe, na výsledcích se to však nijak neprojevilo. Nakonec jsem zkusil aplikaci v knihovně Dear ImGui upravit tak, aby zpracovávala vstupní dokument jen tehdy, jsou-li v něm provedeny nějaké změny. Toto se na naměřené spotřebě opět nijak neprojevilo.
 	
 	\subsection{Porovnání výkonu při vykreslování ovládacích prvků}
+	
+	Druhé porovnání výkonu spočívá ve zobrazení dialogového okna, které obsahuje velké množství ovládacích prvků. Měří se, jak dlouho trvá takové okno zobrazit a zase zavřít. Okno nejprve obsahuje jednu „dávku“ ovládacích prvků, v níž se nachází několik textových popisků a polí, běžných a zaškrtávacích tlačítek, přepínačů (\textit{radio button}) a posuvníků. Celkem se v jedné dávce nachází 172 ovládacích prvků. Obrázek \ref{_tag_img_bench2} ukazuje výřez okna ve všech třech knihovnách.	
 	
 	\begin{figure}[ht]
 		\centering
 		\includegraphics[width=\textwidth]{img/bench2}
-		\caption{Benchmark...}
+		\caption{Benchmark ovládacích prvků v Dear ImGui, egui a Qt}
+		\label{_tag_img_bench2}
 	\end{figure}
+	
+	Doba potřebná pro zobrazení a zavření okna je měřena vždy desetkrát. Začíná se na jedné dávce a po každých deseti měřeních  je počet dávek zdvojnásoben. Měření končí, jakmile se na zobrazení okna čeká déle než 15 vteřin.	
+	
+	Obrázek \ref{_bench_2} ukazuje výsledky měření. Aplikace v Qt končí u 88 tisíc dávek a její spotřeba operační paměti se mírně zvyšuje. Aplikace v egui je v tomto ohledu sice rychlejší, ale opět je zde problém se spotřebou operační paměti. V této knihovně jsem zkusil také zobrazovat pouze „prázdné“ ovládací prvky bez žádného textu, ale na výsledcích se to neprojevilo. Aplikace v Dear ImGui se dostává do řádu desítek milionů dávek a jako jediná si drží téměř konstantní spotřebu operační paměti.% okolo 100 MiB. Zároveň tato aplikace jako jediná v okně automaticky zobrazuje vertikální posuvnou lištu.
+	
+	Z výsledků vyplývá, že knihovny s přístupem IMGUI mají vyšší režijní náklady a nehodí se tak pro aplikace s důrazem na nižší spotřebu. Využití procesoru není ale příliš závislé na aktuálním stavu aplikace, což nelze říci o knihovně Qt. Před implementací libovolné aplikace v knihovně s přístupem IMGUI je vhodné prozkoumat chování jednotlivých ovládacích prvků, které se mají nacházet v navrhovaném řešení. Tak se může předem vyhodnotit, zdali je např. v knihovně egui spotřeba operační paměti textovým polem problém.
 	
 	\chapter{Závěr}
 	
@@ -1037,40 +1061,59 @@
 		\label{_tag_code_NumericUpDown}
 	\end{code}
 	
+	\begin{code}[H]
+		\vspace{2cm}
+		\lstinputlisting[language=CppSettings]{code/settings.cpp}
+		\caption{Dear ImGui a Qt: záložka \textit{Zobrazení} v okně s nastavením}
+		\label{_tag_code_settings}
+	\end{code}
+	
 	\begin{figure}[ht]
 		\centering
 		\includegraphics[width=\textwidth]{img/bench/nodes_CPU_shon.pdf}
-		\caption{Benchmark...}
+		\caption{Benchmark vykreslení diagramu: celkové využití procesoru systémem}
+		\label{_bench_1_cpu_shon}
 	\end{figure}
 	
 	\begin{figure}[ht]
 		\centering
 		\includegraphics[width=\textwidth]{img/bench/nodes_RAM_shon.pdf}
-		\caption{Benchmark...}
+		\caption{Benchmark vykreslení diagramu: využití operační paměti procesem}
+		\label{_bench_1_ram_shon}
 	\end{figure}
 	
 	\begin{figure}[ht]
 		\centering
 		\includegraphics[width=\textwidth]{img/bench/nodes_DUR_shon.pdf}
-		\caption{Benchmark...}
+		\caption{Benchmark vykreslení diagramu: doba trvání mezi dvěma měřeními}
+		\label{_bench_1_dur_shon}
 	\end{figure}
 	
 	\begin{figure}[ht]
 		\centering
 		\includegraphics[width=\textwidth]{img/bench/nodes_DUR_txoff.pdf}
-		\caption{Benchmark...}
+		\vspace{-.5cm}
+		\caption{Benchmark vykreslení diagramu: doba trvání mezi dvěma měřeními bez textového pole}
+		\vspace{-.5cm}
+		\label{_bench_1_dur_txoff}
 	\end{figure}
 	
 	\begin{figure}[ht]
 		\centering
 		\includegraphics[width=\textwidth]{img/bench/nodes_trend.pdf}
-		\caption{Benchmark...}
+		\vspace{-.5cm}
+		\caption{Benchmark vykreslení diagramu: stejný trend využití procesoru na dvou různých zařízeních}
+		\vspace{-.5cm}
+		\label{_bench_1_trend}
 	\end{figure}
 	
 	\begin{figure}[ht]
 		\centering
-		\includegraphics[width=.95\textwidth]{img/bench/widgets.pdf}
-		\caption{Benchmark...}
+		\includegraphics[width=.96\textwidth]{img/bench/widgets.pdf}
+		\vspace{-.4cm}
+		\caption{Benchmark ovládacích prvků}
+		\vspace{-.5cm}
+		\label{_bench_2}
 	\end{figure}
 	
 \end{document}
