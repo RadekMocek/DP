@@ -855,7 +855,7 @@
 	
 	Příčinou tohoto chování je třída pro zvýrazňování syntaxe. Po tom, co zvýrazňovač dostane odkaz na textové pole, v něm provede určité změny. I když se obsahově dokument nijak nezmění, pro zavolání callback metody to stačí. Snadným řešením by tak mělo být na konci konstruktoru označit dokument jako nezměněný. Jak se ale ukázalo, změny dokumentu probíhají až po dokončení logiky konstruktoru v interní smyčce knihovny Qt. Proto jsem musel na konci konstruktoru spustit časovač \texttt{QTimer}, který má po svém uběhnutí označit dokument jako nezměněný (kód \ref{_tag_code_QtQTimer}). Doba trvání časovače může být nastavena na 0 milisekund, protože obsluha časovačů probíhá v interní smyčce až poté, co je obsloužen zvýrazňovač.
 	
-	Řešení s časovačem muselo být použito i v okně nastavení. Zde může uživatel vypnout zvýrazňování syntaxe, nebo přepnout aplikaci do tmavého režimu, což vede i na přepnutí zvýrazňovače. V obou těchto případech je tedy dokument opět označen jako změněný. Na obrázku \ref{_tag_img_qtStar} je vidět, jak přepnutí vzhledu aplikace přidá znak hvězdičky do záhlaví okna. Na dalším snímku již indikátor není, protože byla provedena logika časovače. 
+	Řešení s časovačem muselo být použito i v okně nastavení. Zde může uživatel vypnout zvýrazňování syntaxe, nebo přepnout aplikaci do tmavého režimu, což vede i na přepnutí zvýrazňovače. V obou těchto případech je tedy dokument opět označen jako změněný. Na obrázku \ref{_tag_img_qtStar} je vidět, jak přepnutí vzhledu aplikace přidá znak hvězdičky do záhlaví okna. Na dalším snímku již indikátor není, protože byla provedena logika časovače \texttt{QTimer}. 
 	
 	\begin{figure}[ht]
 		\centering
@@ -876,7 +876,7 @@
 	
 	Pro každý objekt diagramu je vytvořena instance takovéto třídy a ukazatel na ní je předán grafické scéně, která od té chvíle přebírá nad objektem kontrolu. Scéna podle aktuálního pohledu na plátno určuje, jaké objekty jsou viditelné, a mají tedy být vykresleny. Pokud je vstupní dokument jakkoliv změněn, pak je celá scéna vyčištěna a následně znovu vybudována. Logika, která by hlídala, jaké uzly ve scéně se změnily a jaké byly přidány či odebrány, by byla zbytečně komplexní a náchylná na chyby. Dokud ovšem není vstupní dokument upraven, tak je obsah scény neměnný. To je rozdíl oproti projektům s přístupem IMGUI, kde je zpracování vstupu a následné vykreslení součást každého průchodu hlavní smyčkou.
 	
-	Aby mohla být grafická scéna použita, musí být ještě celá „zabalena“ do další vlastní třídy, která dědí z \texttt{QGraphicsView}. Tato třída reprezentuje pohled na danou scénu a ve výchozím nastavení ji vykresluje s posuvnými lištami. Lišty jsou v ukázkové aplikaci skryty a velikost výřezu scény, kde se může pohled pohybovat, je nastavena na velké číslo. Díky tomu odpovídá chování aplikace předchozím projektům, kde lze z pohledem posouvat „donekonečna“.
+	Aby mohla být grafická scéna zobrazena uživateli, musí být ještě celá „zabalena“ do další vlastní třídy, která dědí z \texttt{QGraphicsView}. Tato třída reprezentuje pohled na danou scénu a ve výchozím nastavení ji vykresluje s posuvnými lištami. Lišty jsou v ukázkové aplikaci skryty a velikost výřezu scény, kde se může pohled pohybovat, je nastavena na velké číslo. Díky tomu odpovídá chování aplikace předchozím projektům, kde lze s pohledem posouvat „donekonečna“.
 	
 	Třída obalující scénu dále implementuje logiku posouvání pohledu při držení pravého tlačítka myši. V projektech s přístupem IMGUI je podle pohybu myši upravena hodnota proměnné, která reprezentuje posun pohledu a přičítá se k souřadnicím všech objektů diagramu. Zde jsou podle pohybu myši upravovány hodnoty posuvných lišt, které jsou sice skryty, ale stále určují pozici pohledu na scénu.
 	
@@ -901,15 +901,24 @@
 		\label{_tag_img_qtColorpicker}
 	\end{figure}
 	
-	Pod vykresleným diagramem se nachází čtveřice tlačítek pro přidání nového uzlu a posuvník pro změnu úrovně přiblížení vykresleného diagramu. V projektech s přístupem IMGUI byla proměnná reprezentující úroveň přiblížení členem hlavní třídy a její hodnota mohla být upravována ovládacím prvkem posuvníku i kolečkem myši. V tomto projektu je ale úroveň přiblížení držena na dvou místech: v grafické scéně, resp. ve třídě reprezentující pohled na tuto scénu, a jako součást stavu posuvníku.
+	Pod vykresleným diagramem se nachází čtveřice tlačítek pro přidání nového uzlu a posuvník pro změnu úrovně přiblížení vykresleného diagramu. Tyto ovládací prvky se nacházejí v horizontálním rozložení \texttt{QHBoxLayout}. Pomocí metody \texttt{addStretch} lze snadno nastavit, aby se posuvník nacházel v pravé části rozložení. Tato metoda vloží do daného rozložení oddělovač levé a pravé strany, a je tedy volána mezi přidáním tlačítek a posuvníku.
+	
+	V projektech s přístupem IMGUI byla proměnná reprezentující úroveň přiblížení diagramu členem hlavní třídy a její hodnota mohla být upravována ovládacím prvkem posuvníku i kolečkem myši. V tomto projektu je ale úroveň přiblížení držena na dvou místech: ve třídě, která reprezentuje pohled na grafickou scénu, a jako součást stavu posuvníku.
 	
 	Tyto dvě hodnoty je potřeba nějak synchronizovat pomocí signálů, protože jedna se nachází ve „třídě pohledu“ a druhá v hlavním okně. Místo pokusu o obousměrnou synchronizaci jsem zvolil jednosměrný přístup. Posuvník má na sebe navěšenou callback metodu, která při změně jeho hodnoty změní úroveň přiblížení. Hlavní okno, a tedy i callback metoda, má přístup ke třídě pohledu, a tak může její hodnotu přiblížení změnit napřímo. Hodnota ve třídě pohledu je ta, která určuje skutečnou úroveň přiblížení vykreslené scény. Logika posuvníku je tímto tedy zprovozněna a zbývá vyřešit kolečko myši.
 	
-	Pokud uživatel otáčí kolečkem myši nad scénou, pak je volána metoda \texttt{wheelEvent} právě ve třídě pohledu. Než aby ale třída rovnou upravila svou hodnotu přiblížení a následně ji propagovala do posuvníku, vyšle pouze signál do hlavního okna. Po přijetí signálu upraví hlavní okno hodnotu posuvníku, čímž se spustí jeho callback metoda, která se postará o zbytek.
+	Otáčí-li uživatel kolečkem myši nad plátnem, pak je volána poskytnutá metoda \texttt{wheelEvent} právě ve třídě pohledu. Než aby ale třída rovnou upravila svou hodnotu přiblížení a následně ji propagovala do posuvníku, vyšle pouze signál do hlavního okna. Po přijetí signálu upraví hlavní okno hodnotu posuvníku, čímž se spustí jeho callback metoda, která se postará o zbytek. Obrázek \ref{_tag_img_QtSlider} ukazuje schéma popsané synchronizace a porovnává ji s řešením v předchozích projektech.
 	
-	Zprovoznění tlačítek typu „táhni a pusť“ s sebou také neslo určité komplikace. Stejně jako v Dear ImGui a egui, jsou i v knihovně Qt poskytnuté \textit{drag and drop} funkce zbytečně komplexní pro scénář v ukázkové aplikaci. Proto jsem implementoval další typ tlačítka, které vysílá dva signály: jeden pro začátek tažení a druhý pro jeho puštění. Tyto signály přijímá grafická scéna, kde jsem zamýšlel, že po prvním signálu do sebe přidá nový objekt náhledového uzlu. Dokud nepřijde druhý signál, tak aktualizuje pozici náhledového uzlu tak, aby se nacházel pod kurzorem myši. S druhým signálem pak scéna pošle signál do hlavního okna, aby patřičně změnilo vstupní dokument, a náhledový uzel smaže.
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{img/diag/slider.pdf}
+			\caption{Princip změny úrovně přiblížení vykresleného diagramu}
+		\label{_tag_img_QtSlider}
+	\end{figure}
 	
-	Pro zjištění pozice kurzoru, která poslouží k určení souřadnic náhledového uzlu, jsem chtěl použít metodu \texttt{mouseMoveEvent} v grafické scéně, která se má zavolat při pohybu kurzoru nad scénou. Zde ale nastal problém: pokud uživatel táhne nějaké tlačítko, tak se tato metoda nikdy nezavolá. Další informace, kterou je potřeba znát, je zdali se při puštění tlačítka nachází kurzor nad plátnem. Je-li kurzor mimo plátno, tak to znamená, že se má operace přidání nového uzlu zrušit. Pro zjištění této informace by měla sloužit metoda \texttt{underMouse} ve třídě pohledu. Ta ale podléhá stejnému problému: při tažení tlačítka vrací vždycky \texttt{false} nehledě na pozici kurzoru.
+	Zprovoznění tlačítek typu „táhni a pusť“ s sebou také neslo určité komplikace. Stejně jako v Dear ImGui a egui, jsou i v knihovně Qt poskytnuté \textit{drag and drop} funkce zbytečně komplexní pro scénář v ukázkové aplikaci. Proto jsem implementoval další typ tlačítka, které vysílá dva signály: jeden pro začátek tažení a druhý pro jeho puštění. Tyto signály přijímá grafická scéna, kde jsem zamýšlel, že po prvním signálu do sebe přidá nový objekt náhledového uzlu. Dokud nepřijde druhý signál, tak aktualizuje pozici náhledového uzlu tak, aby se nacházel pod kurzorem myši. S druhým signálem pak scéna pošle vlastní signál do hlavního okna, aby patřičně změnilo vstupní dokument, a náhledový uzel smaže.
+	
+	Pro zjištění pozice kurzoru, která poslouží k určení souřadnic náhledového uzlu, jsem chtěl použít metodu \texttt{mouseMoveEvent} v grafické scéně, která se má zavolat při pohybu kurzoru nad scénou. Zde ale nastal problém: pokud uživatel táhne nějaké tlačítko, tak se tato metoda nikdy nezavolá. Další informace, kterou je potřeba znát, je zdali se při puštění tlačítka nachází kurzor nad plátnem. Je-li kurzor mimo plátno, tak to znamená, že se má operace přidání nového uzlu zrušit. Pro zjištění této informace by měla sloužit metoda \texttt{underMouse} ve třídě pohledu. Ta ale podléhá stejnému problému: při tažení tlačítka vrací vždy \texttt{false} nehledě na pozici kurzoru.
 	
 	Logika přidání nového uzlu se tedy v tu chvíli nacházela ve čtyřech různých třídách: vlastní tlačítko, hlavní okno, scéna a pohled na scénu. Z toho dvě části nefungovaly tak, jak jsem podle dokumentace očekával. Proto musím v konstruktoru třídy pohledu volat metodu \texttt{installEventFilter}, což umožňuje reagovat na veškeré interní události knihovny přepsáním metody \texttt{eventFilter}. V této metodě je již možné získat souřadnice kurzoru myši, i když uživatel táhne tlačítko.
 	
@@ -927,14 +936,38 @@
 	
 	\section{Porovnání přístupů IMGUI a RMGUI z pohledu funkcí a aplikačního kódu}
 	
-	\temporary{\\Pro začátek by šlo zmínit, že porovnávám dva IMGUI frameworky vs Qt; možností je ve skutečnosti mnohem víc...\\Šlo by zde zmínit modaly v IMGUI vs. trápení s preferences window u Qt\\ IMGUI (viz také egui a dvui readmes):\\ * Pořadí operací ve smyčce a případy, kdy bylo potřeba dát si na pořadí pozor.\\ * Unsavedwarn modal je dobrý příkladem, modaly jsou celkově zvláštní, v Qt zprvu dávají větší smysl, ale zase je to hodně psaní\\ * MultiLineTextEdit je problémový widget\\ * Rychlost vývoje! \\ RMGUI:\\ * Callback hell (footnote signal vs. callback <-> já vs. qt)\\ * „Ukecané“\\ * Synchronizace stavů}
+	Implementace ukázkových aplikací ve vybraných knihovnách poskytla hlubší vzhled do problematiky přístupů IMGUI a RMGUI. Opět je ale třeba zmínit, že definice těchto dvou přístupů je velmi prostá, a některé detaily v architekturách vybraných knihoven proto nemusí nutně vypovídat o daném přístupu jako takovém. Např. v přístupu RMGUI je nutné pro reakci na stisk tlačítka použít callback metodu, ale komunikace mezi částmi aplikace nemusí být nutně řešena pomocí signálů, jako tomu je v knihovně Qt.
+	
+	Z pohledu dostupných funkcí je knihovna Qt více připravená k tvorbě „běžných“ aplikací pro koncové uživatele. V aplikačním kódu lze snadno upravit text v záhlaví okna, nastavit ikonu aplikace, nebo zobrazit nativní dialogové okno. Pro vykreslení diagramu, nebo jiné libovolné grafiky, je zde připravena grafická scéna, která umožňuje svůj obsah exportovat do formátu SVG.
+	
+	Víceřádkové textové pole je jeden ze standardních ovládacích prvků, ale i tak má knihovna Qt v tomto ohledu náskok. Použité knihovny s přístupem IMGUI jsou v aktivním vývoji, a tak se toto může časem zlepšit, aktuálně jsou však dostupná řešení pro textová pole zatížena drobnými chybami a chybějícími funkcemi. V knihovnách s IMGUI je oproti Qt jednodušší přepínat mezi barevnými styly aplikace a lépe se mi zde pracovalo s fontem ikon.
+	
+	Co se týče vzhledu, tak aplikace využívající přístup IMGUI by měly vypadat vždy stejně nehledě na cílovou platformu. Knihovna Qt může na některých místech využívat nativní ovládací prvky poskytnuté operačním systémem, a na jiných místech může vykreslovat vlastní prvky, které tento vzhled imitují. I při použití multiplatformního vzhledu \textit{Fusion} se může stát, že bude vzhled určitých částí aplikace platformně závislý.
+
+	Knihovny s přístupem RMGUI mají obvykle k dispozici robustnější řešení pro rozložení ovládacích prvků. V knihovně Qt např. není problém umístit ovládací prvky do pravidelné mřížky, která aktualizuje rozměry svých řádků a sloupců na základě velikosti okna aplikace. Funkce pro „responsivní“ rozložení jsou v knihovnách s přístupem IMGUI často omezené.		
+
+	Hlavní rozdíl mezi přístupy IMGUI a RMGUI je v principu psaní aplikačního kódu. Přístup IMGUI je o programování v nekonečné smyčce, kdy je knihovně na základě stavu aplikace popsáno, jak má být vykresleno uživatelské rozhraní. Přístup RMGUI je o programování callback metod a synchronizaci stavů.
+	
+	Při programování v nekonečné smyčce může hrát roli pořadí provedených operací. V ukázkové aplikaci se např. nachází logika, která zajišťuje, aby nemohl být vybrán neexistující uzel. Uživatel totiž může kliknout na uzel diagramu, čímž ho vybere, a následně jeho definici smazat ze vstupního dokumentu. Zmíněná logika zjistí, že identifikátor vybraného uzlu se v dokumentu  již nenachází, a výběr zruší. Součástí funkce \textit{drag and drop}, kdy uživatel přetáhne na plátno nový uzel, by mělo být vybrání nově přidaného uzlu. Pokud je ale tato funkce obsloužena výše popsanou logikou, tak je výběr nově přidaného uzlu okamžitě zrušen. Třída \texttt{Parser} jej totiž ještě nezpracovala, a tak je jeho identifikátor vyhodnocen jako neexistující. Prohozením pořadí těchto dvou operací se problém vyřeší.
+	
+	\temporary{[!] Nejen v IMGUI je potřeba dávat si pozor na pořadí operací}
+	
+	Při práci s callback metodami a se signály v knihovně Qt může také dojít k nečekanému chování aplikace.
+	
+	\temporary{Dále v Qt horší synchronizace stavů}
+	
+	\temporary{IMGUI == rychlost vývoje (méně ukecané, funkce viz dvui), Qt je ukecané}
+	
+	Obecně vede přístup IMGUI na kratší kód a rychlejší vývoj uživatelských rozhraní.
+	
+	\temporary{trápení s preferences window u Qt}
 	
 	\section{Porovnání výkonu ukázkových aplikací}
 	
 	V ukázkových aplikacích jsem implementoval dva testy pro srovnání jejich výkonu. První test sleduje výkon aplikace při vykreslování diagramu s velkým počtem uzlů a druhý test sleduje dobu potřebnou pro zobrazení dialogového okna s velkým množstvím ovládacích prvků.	Testy jsem provedl na třech zařízeních:	\begin{enumerate}
-		\item Stolní počítač s OS Windows 10 22H2 x64, CPU Intel Xeon E3-1270 v3 (\textbf{2013}) @ 3.5 GHz $\times$ 4, RAM 16 GB, dedikovaná GPU NVIDIA GeForce GTX 1060.
-		\item Laptop s OS Linux Mint 22.3 Cinnamon x64, CPU Intel Core i7-6700HQ (\textbf{2015}) @ 2.6 GHz $\times$ 4, RAM 16 GB. Na tomto zařízení byly testy provedeny dvakrát: jednou s dedikovanou GPU NVIDIA GeForce GTX 960M, podruhé s integrovanou GPU Intel HD Graphics 530.
-		\item Laptop s OS Linux Mint 22.3 Cinnamon x64, CPU Intel Core i5-2430M (\textbf{2011}) @ 2.4 GHz $\times$ 2, RAM 8 GB, integrovaná GPU Intel HD Graphics 3000.
+		\item Stolní počítač s OS Windows 10 22H2 x64; CPU Intel Xeon E3-1270 v3 (\textbf{2013}) @ 3,5 GHz $\times$ 4; RAM 16 GB; dedikovaná GPU NVIDIA GeForce GTX 1060.
+		\item Laptop s OS Linux Mint 22.3 Cinnamon x64; CPU Intel Core i7-6700HQ (\textbf{2015}) @ 2,6 GHz $\times$ 4; RAM 16 GB. Na tomto zařízení byly testy provedeny dvakrát: jednou s dedikovanou GPU NVIDIA GeForce GTX 960M, podruhé s integrovanou GPU Intel HD Graphics 530.
+		\item Laptop s OS Linux Mint 22.3 Cinnamon x64; CPU Intel Core i5-2430M (\textbf{2011}) @ 2,4 GHz $\times$ 2; RAM 8 GB; integrovaná GPU Intel HD Graphics 3000.
 	\end{enumerate}
 	
 	Aplikace implementované v \textit{Dear ImGui} a \textit{Qt} jsou sestaveny na OS Windows pomocí programu Visual Studio 2022 ve verzi 17.14.29 a na OS Linux pomocí sady GCC ve verzi 13.3.0. Aplikace implementovaná v \textit{egui} je na obou systémech sestavena nástrojem rustc ve verzi 1.93.0.

@@ -1,6 +1,7 @@
 $filenames = @(
     "err_high"
     "m_canvas_nodes"
+    "slider"
     "wireframe"
 )
 

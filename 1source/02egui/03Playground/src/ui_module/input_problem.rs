@@ -8,6 +8,11 @@ impl MyApp {
             .collapsible(false)
             .open(&mut self.do_show_win_input_problem)
             .show(ui.ctx(), |ui| {
+                ui.horizontal(|ui| {
+                    ui.label("egui version 0.34.1");
+                    ui.spinner();
+                });
+
                 ui.scope(|ui| {
                     ui.style_mut().text_styles.insert(
                         egui::TextStyle::Body,
@@ -38,7 +43,6 @@ impl MyApp {
                 ui.separator();
                 ui.checkbox(&mut self.do_fill_big_text, "Keep adding characters");
                 ui.checkbox(&mut self.do_show_big_text, "Show the textedit widget");
-                ui.spinner();
 
                 if self.do_fill_big_text && self.big_text.len() < 10_000_000 {
                     self.big_text.push_str(&"A".repeat(10_000));

@@ -17,9 +17,9 @@ impl Default for MyApp {
     fn default() -> Self {
         Self {
             do_show_win_input_tests: false,
-            do_show_win_input_problem: false,
+            do_show_win_input_problem: true,
             do_show_win_canvas: false,
-            do_show_win_random_tests: true,
+            do_show_win_random_tests: false,
             do_show_win_textedit: false,
             do_show_win_textedit2: false,
             test_text: String::from("aabbccddeeffgghhiijjkkllmmnnooqqpprrssttuuvvwwxxyyzz"),
