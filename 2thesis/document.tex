@@ -64,12 +64,12 @@
 	
 	% Abstrakt česky
 	\begin{abstractCZ}
-		Abstrakt česky.
+		Tato práce se zabývá paradigmatem označovaným jako IMGUI, což je specifický přístup k vývoji aplikací s grafickým uživatelským rozhraním. Cílem práce je prozkoumat, jak jsou existující knihovny s tímto přístupem vhodné k tvorbě aplikací pro koncové uživatele. Zároveň je tento přístup porovnán s „tradičním“ paradigmatem označovaným jako RMGUI. Ukázkovou aplikací této práce je editor diagramů, který je implementován v knihovnách \textit{Dear ImGui}, \textit{egui} a \textit{Qt}. Během implementace vyšlo najevo, že z pohledu dostupných funkcí nejsou vybrané knihovny s přístupem IMGUI tak vyspělé, jako je knihovna Qt s přístupem RMGUI. Zároveň ale přístup \mbox{IMGUI} vede na kratší a přímočařejší kód, což se může projevit i v rychlosti vývoje. Výkon ukázkových aplikací je nakonec otestován ve dvou typech benchmarků. Aplikace v Dear ImGui a egui mají vyšší režijní náklady, ale oproti knihovně Qt se jejich spotřeba po přidání zátěže příliš nemění. Nečekaným výsledkem je však nadměrné využití operační paměti knihovnou egui, které se objevuje s přibývajícím počtem znaků v textovém poli.
 	\end{abstractCZ}
 	
 	% Klíčová slova česky
 	\begin{keywordsCZ}
-		grafické uživatelské rozhraní, Dear ImGui, egui, Qt, editor diagramů
+		grafické uživatelské rozhraní, režim okamžitého vykreslování, Dear ImGui, egui, Qt, editor diagramů
 	\end{keywordsCZ}
 	
 	\smallskip
@@ -83,7 +83,7 @@
 	
 	% Klíčová slova anglicky
 	\begin{keywordsEN}
-		\begin{english}graphical user interface, Dear ImGui, egui, Qt, diagram editor\end{english}
+		\begin{english}graphical user interface, immediate mode, Dear ImGui, egui, Qt, diagram editor\end{english}
 	\end{keywordsEN}
 	
 	% Obsah
@@ -138,13 +138,13 @@
 	% Jádro zprávy
 	\chapter{Úvod}
 	
-	Úvod
+	Úvod % Zde by měly být uvedeny účel a cíle práce a v hrubých rysech popsána metoda řešení. Rozhodně by se neměl opakovat text abstraktu, ani by zde neměly být popisovány výsledky.
 	
 	\temporary{\\ * Motivace\\ * Obsah práce\\ * Ohledně českých názvů ovládacích prvků (\textit{widgetů}), vypíchnout nemodální dialogové okno?}
 	
 	\chapter{Grafické uživatelské rozhraní v režimu okamžitého vykreslování}
 	
-	Grafické uživatelské rozhraní v režimu okamžitého vykreslování (\textit{immediate mode graphical user interface}, zkráceně IMGUI) je specifický přístup k programování aplikačního softwaru s grafickým uživatelským rozhraním. Základní koncept tohoto přístupu veřejně představil Casey Muratori v roce 2005 a s podobnou myšlenkou pracoval i Thierry Excoffier v roce 2003 \cite{report_zeromemorywidgets}. Definice IMGUI není příliš komplexní ani striktní, a proto se postupem času začaly objevovat různé úhly pohledu a interpretace toho, co by „okamžitý režim“ v kontextu vývoje GUI aplikací měl a neměl znamenat. \cite{online_casey}
+	Grafické uživatelské rozhraní v režimu okamžitého vykreslování (\textit{immediate \mbox{mode} graphical user interface}, zkráceně IMGUI) je specifický přístup k programování aplikačního softwaru s grafickým uživatelským rozhraním. Základní koncept tohoto přístupu veřejně představil Casey Muratori v roce 2005 a s podobnou myšlenkou pracoval i Thierry Excoffier v roce 2003 \cite{report_zeromemorywidgets}. Definice IMGUI není příliš komplexní ani striktní, a proto se postupem času začaly objevovat různé úhly pohledu a interpretace toho, co by „okamžitý režim“ v kontextu vývoje GUI aplikací měl a neměl znamenat. \cite{online_casey}
 	
 	Autor přístupu IMGUI využil pro jeho pojmenování přívlastek „okamžitý“ z důvodu určité podobnosti k režimu okamžitého vykreslování v některých grafických API té doby \cite{online_casey}. Příkladem může být Direct3D, grafické API od společnosti Microsoft, které mohlo dříve pracovat ve dvou režimech: soběstačný (\textit{retained}) a okamžitý (\textit{immediate}). Z pohledu abstrakce je soběstačný režim na vyšší úrovni, kdy si knihovna interně uchovává model 3D scény a od aplikačního kódu přijímá příkazy, které manipulují s objekty v této scéně. Pro vykreslení snímku pak knihovna transformuje informace o objektech ve scéně na sadu příkazů pro vykreslování. V okamžitém režimu se s modelem scény pracuje na straně aplikačního kódu a knihovna přijímá až samotné příkazy pro vykreslování. Tím sice narůstá počet úkonů, které musí být provedeny na straně aplikačního kódu, zároveň se ale zvětšuje flexibilita a prostor pro optimalizace. \cite{book_direct3dbible, online_direct2d}
 	
@@ -156,7 +156,7 @@
 	
 	Tlačítka jsou označena symboly „$+$“ a „$-$“. Po kliknutí na tlačítko se symbolem „$+$“ se přičte jednička k hodnotě čítače a kliknutím na tlačítko se symbolem „$-$“ se jednička naopak odečte. Jelikož se má čítat pouze od jedné do pěti, tak je tlačítko se symbolem „$-$“ neaktivní (\textit{disabled}) v případě, kdy je hodnota čítače rovna jedné. Podobné pravidlo platí pro tlačítko se symbolem „$+$“, které je neaktivní zase tehdy, pokud je hodnota čítače rovna pěti.
 	
-	Z důvodu zvýšení přehlednosti neobsahují ukázky logiku pro nastavení vzhledu a rozmístění ovládacích prvků, je zde pouze to důležité pro pochopení principu daného přístupu. Kód \ref{_tag_code_HelloCounterQt} představuje přístup RMGUI v knihovně Qt. Metoda \texttt{init} obsahuje logiku inicializační fáze, která postupně nastaví čtyři ovládaní prvky a stavovou proměnnou. Všechny ovládací prvky jsou vytvořeny a přidány do rozložení hlavního okna, které je reprezentované proměnnou \texttt{layout}. U tlačítek je pomocí funkce \texttt{connect} nastavena jejich callback metoda, která se volá po kliknutí na dané tlačítko. Nakonec je čítač nastaven na svou výchozí hodnotu a volá se metoda \texttt{on\_counter\_update}, která zajistí, aby textové popisky a stav tlačítek (zdali jsou nebo nejsou aktivní) odpovídaly aktuální hodnotě čítače. Callback metody upravují hodnotu čítače, a následně opět volají metodu \texttt{on\_counter\_update}. Všechny čtyři ovládací prvky v této ukázce jsou dynamické, a proto se musí jednat o členy třídy \texttt{App}, aby k nim bylo možné přistupovat z callback metod.
+	Z důvodu zvýšení přehlednosti neobsahují ukázky logiku pro nastavení vzhledu a rozmístění ovládacích prvků, je zde pouze to důležité pro pochopení principu daného přístupu. Kód \ref{_tag_code_HelloCounterQt} představuje přístup RMGUI v knihovně Qt. Metoda \texttt{init} obsahuje logiku inicializační fáze, která postupně nastaví čtyři ovládací prvky a stavovou proměnnou. Všechny ovládací prvky jsou vytvořeny a přidány do rozložení hlavního okna, které je reprezentované proměnnou \texttt{layout}. U tlačítek je pomocí funkce \texttt{connect} nastavena jejich callback metoda, která se volá po kliknutí na dané tlačítko. Nakonec je čítač nastaven na svou výchozí hodnotu a volá se metoda \texttt{on\_counter\_update}, která zajistí, aby textové popisky a stav tlačítek (zdali jsou nebo nejsou aktivní) odpovídaly aktuální hodnotě čítače. Callback metody upravují hodnotu čítače, a následně opět volají metodu \texttt{on\_counter\_update}. Všechny čtyři ovládací prvky v této ukázce jsou dynamické, a proto se musí jednat o členy třídy \texttt{App}, aby k nim bylo možné přistupovat z callback metod.
 	
 	Kód \ref{_tag_code_HelloCounterImGui} představuje přístup IMGUI v knihovně \textit{Dear ImGui}. Metoda \texttt{update} obsahuje logiku hlavní smyčky, která je obvykle volána se stejnou frekvencí, jako je obnovovací frekvence zobrazovacího zařízení. Nejprve je čítač nastaven na svou výchozí hodnotu, kterou si díky klíčovému slovu \texttt{static} drží i při opakovaném volání metody. Vybraná knihovna se chová jako stavový automat, což je vidět na kódu, který následuje: po zavolání metody \texttt{Begin($x$)} je vytvořeno okno s názvem $x$ a všechny další příkazy se provádí relativně k tomuto oknu, dokud není zavolána metoda \texttt{End}. To samé platí pro dvojici metod \texttt{BeginDisabled($p$)} a \texttt{EndDisabled}. Je-li  splněna podmínka $p$, pak jsou veškeré ovládací prvky, jejichž vykreslení je definováno mezi voláními těchto dvou metod, označeny jako neaktivní. Metoda \texttt{Button} říká, že má být vykresleno dané tlačítko. Zároveň vrací pravdivostní hodnotu, která vyjadřuje, zdali bylo v tomto průchodu smyčkou tlačítko stisknuto. Metoda \texttt{Text} pak vykresluje textové popisky. V ukázce přístupu RMGUI je textový popisek s pozdravem objekt pod správou knihovny Qt, u kterého se přepíná viditelnost. Oproti tomu je v přístupu IMGUI vykreslení textu s pozdravem jednoduše podmíněno.
 	
@@ -242,7 +242,7 @@
 	
 	Dear ImGui poskytuje ovládací prvek víceřádkového textového pole, který lze zobrazit voláním metody \texttt{InputTextMultiline}. Oproti většině ostatních knihoven s přístupem IMGUI má zdejší textové pole relativně hodně funkcí. Ve své výchozí podobě vykresluje obsah staticky alokovaného pole znaků, součástí knihovny je ale i volitelná implementace pro kolekci \texttt{std::string}. Je-li použito vlastní písmo, které podporuje české znaky, není pak problém tyto znaky zobrazit v textovém poli. Výchozí písmo, které je součástí knihovny, totiž všechny české znaky neobsahuje. Zvýrazňování syntaxe tento ovládací prvek nepodporuje, veškerý text může mít pouze jednu společnou barvu.
 	
-	V textovém poli je možné myší označovat text a ten pak pomocí klávesových zkratek vyjmout, kopírovat, nebo vložit. Klávesami kurzorových šipek lze posouvat textovým kurzorem (kadetem), kdy se s přidržením klávesy \textit{Ctrl} přeskakují celá slova a s klávesou \textit{Shift} se text označuje. Klávesu \textit{Ctrl} lze také použít v kombinaci s klávesou \textit{Backspace} nebo \textit{Delete} pro mazání celých slov. Dále jsou k dispozici klávesové zkratky pro zrušení poslední změny (\textit{undo}) a její obnovení (\textit{redo}).
+	V textovém poli je možné myší označovat text a ten pak pomocí klávesových zkratek vyjmout, kopírovat, nebo vložit. Klávesami kurzorových šipek lze posouvat textovým kurzorem (karetem), kdy se s přidržením klávesy \textit{Ctrl} přeskakují celá slova a s klávesou \textit{Shift} se text označuje. Klávesu \textit{Ctrl} lze také použít v kombinaci s klávesou \textit{Backspace} nebo \textit{Delete} pro mazání celých slov. Dále jsou k dispozici klávesové zkratky pro zrušení poslední změny (\textit{undo}) a její obnovení (\textit{redo}).
 	
 	Má-li editovaný dokument větší množství řádků, objeví se na pravé straně textového pole vertikální posuvná lišta (\textit{scrollbar}). Horizontální posuvná lišta ale není podporována. Pokud je tedy nějaký řádek textu příliš dlouhý, tak se na jeho konec uživatel nejlépe dostane posunem textového kurzoru pomocí kláves. Přidání horizontální posuvné lišty by se údajně v tuto chvíli příliš negativně podepsalo na výkonu. Textové pole interně využívá „jednohlavičkovou“ (\textit{header-only}) knihovnu \textit{stb-textedit} a v plánu je jeho kompletní přepsání \cite{online_imgui10yrs}. Ve verzi 1.92 (červen 2025) byla každopádně přidána možnost zalamovat příliš dlouhé řádky.
 
@@ -293,7 +293,7 @@
 	
 	Gio poskytuje ovládací prvek víceřádkového textového pole v podobě struktury zvané \texttt{Editor}, která automaticky zalamuje dlouhé řádky. Vertikální posuvná lišta není k dispozici, a tak lze s textem posouvat pouze kolečkem myši nebo změnou pozice textového kurzoru. Textové pole umožňuje zrušení a obnovení poslední změny a výchozí písmo podporuje všechny české znaky. Je také možné označovat text a manipulovat s ním, ale nelze přeskakovat či mazat celá slova. Zvýrazňování syntaxe není k dispozici.
 	
-	V knihovně Gio se styl psaní aplikačního kódu nejvíce odlišuje od ostatních zmíněných knihoven. Před hlavní smyčkou je nejprve nutné definovat všechny ovládací prvky, které se v aplikaci vyskytují. Ve hlavní smyčce jsou pak oddělené fáze aktualizace stavu a vykreslení. Do první fáze patří např. obsluha stisknutých tlačítek. V druhé fázi se definuje rozložení a vzhled ovládacích prvků.
+	V knihovně Gio se styl psaní aplikačního kódu nejvíce odlišuje od ostatních zmíněných knihoven. Před hlavní smyčkou je nejprve nutné definovat všechny ovládací prvky, které se v aplikaci vyskytují. V hlavní smyčce jsou pak oddělené fáze aktualizace stavu a vykreslení. Do první fáze patří např. obsluha stisknutých tlačítek. V druhé fázi se definuje rozložení a vzhled ovládacích prvků.
 	
 	Rozložení ovládacích prvků se definuje relativně robustním způsobem pomocí vnořování anonymních funkcí. I pro vytvoření menší aplikace je tak potřeba větší množství kódu. Např. u demonstrační aplikace čítače s pozdravem (obrázek \ref{_tag_img_HelloCounter}) bylo pro definici rozložení čtyř ovládacích prvků potřeba více než 40 řádků kódu.
 	
@@ -338,7 +338,7 @@
 	
 	Existující aplikace, které umožňují tvorbu diagramů, lze rozdělit do dvou kategorií. První jsou programy využívající přístup WYSIWYG, kde uživatel interaguje přímo s objekty diagramu vykreslenými na plátně. Do této kategorie se řadí např. programy \textit{draw.io} nebo \textit{yEd}. Druhou kategorií je přístup WYSIWYM. V něm uživatel píše kód, který popisuje, co by měl daný diagram vyobrazovat. Do této kategorie patří např. programy \textit{Mermaid} nebo \textit{Graphviz}. Jelikož kód popisuje především význam daného diagramu, nemá uživatel velkou kontrolu nad jeho vzhledem. Kód může např. popisovat vztahy mezi jednotlivými uzly. Přesné umístění těchto uzlů v diagramu už ale určuje samotný program.
 	
-	Ukázková aplikace této práce se snaží o unikátní přístup k tomuto problému. Diagram je také generován na základě dodaného kódu, tento kód ovšem popisuje, jak by měl diagram přesně vypadat. Popis přesného vzhledu v podstatě probíhá i při použití formátu SVG. Export do tohoto formátu je navíc dle návrhu jediný způsob, jak může uživatel vykreslit svůj diagram mimo  program. Přímé použití formátu SVG pro popis diagramu je ale nevhodné. Z důvodu své všestrannosti a syntaxi jazyka XML má tento formát vyšší  režijní náklady ve smyslu délky kódu, který je potřeba pro popsání libovolného diagramu.
+	Ukázková aplikace této práce se snaží o unikátní přístup k tomuto problému. Diagram je také generován na základě dodaného kódu, tento kód ovšem popisuje, jak by měl diagram přesně vypadat. Popis přesného vzhledu v podstatě probíhá i při použití formátu SVG. Export do tohoto formátu je navíc dle návrhu jediný způsob, jak může uživatel vykreslit svůj diagram mimo  program. Přímé použití formátu SVG pro popis diagramu je ale nevhodné. Z důvodu své všestrannosti a syntaxe jazyka XML má tento formát vyšší  režijní náklady ve smyslu délky kódu, který je potřeba pro popsání libovolného diagramu.
 	
 	Nejideálnější by bylo použít doménově specifický jazyk, který by byl od začátku navržen pro účely této aplikace. Tuto myšlenku jsem ale v rané fázi vývoje opustil. Důvodem byla těžko odhadnutelná časová náročnost návrhu a implementace takového jazyka. Nástroj ANTLR, který bych pravděpodobně použil, navíc nemá v ekosystému jazyka Rust velkou podporu. Proto jsem se rozhodl pro použití existujícího jazyka.
 	
@@ -464,7 +464,7 @@
 	
 	Podokno (\textit{child window}) je samostatná oblast, kterou lze umístit do normálního okna. Ve své výchozí podobě má pevnou velikost a při přidávání prvků se chová stejně jako normální okno. Jakmile se do něj tedy prvky „nevejdou“, objeví se v něm posuvná lišta. Podokna mají své speciální příznaky jako \texttt{ResizeX}, který umožňuje uživateli měnit jeho šířku.
 
-	V ukázkové aplikaci je rozložení textového editoru a kreslicího plátna řešeno právě pomocí podoken, kterým je stanovena pevná velikost. Výška obou podoken je rovna volnému místu od kreslícího kurzoru na ose y po odečtení výšky stavového řádku. Šířka podokna, které obsahuje textové pole, je při startu aplikace nastavena na polovinu dostupného místa na ose x. Textové pole tak vždy zabírá polovinu okna i při změně jeho velikosti, protože je tento kód volán s každým průchodem smyčky. Poté je volána metoda \texttt{SameLine} a je vytvořeno podokno pro plátno, které si může vzít zbytek dostupné šířky. Nejprve jsem použil pro levé podokno příznak \texttt{ResizeX}, aby mohl uživatel měnit poměr šířek mezi textovým polem a plátnem, což je u tohoto typu aplikace běžná funkce. S tímto příznakem je ale při změně velikosti hostitelského okna zachována šířka levého podokna, nikoliv poměř šířek obou podoken. Proto bylo nutné přijít s vlastním řešením.
+	V ukázkové aplikaci je rozložení textového editoru a kreslicího plátna řešeno právě pomocí podoken, kterým je stanovena pevná velikost. Výška obou podoken je rovna volnému místu od kreslícího kurzoru na ose y po odečtení výšky stavového řádku. Šířka podokna, které obsahuje textové pole, je při startu aplikace nastavena na polovinu dostupného místa na ose x. Textové pole tak vždy zabírá polovinu okna i při změně jeho velikosti, protože je tento kód volán s každým průchodem smyčky. Poté je volána metoda \texttt{SameLine} a je vytvořeno podokno pro plátno, které si může vzít zbytek dostupné šířky. Nejprve jsem použil pro levé podokno příznak \texttt{ResizeX}, aby mohl uživatel měnit poměr šířek mezi textovým polem a plátnem, což je u tohoto typu aplikace běžná funkce. S tímto příznakem je ale při změně velikosti hostitelského okna zachována šířka levého podokna, nikoliv poměr šířek obou podoken. Proto bylo nutné přijít s vlastním řešením.
 	
 	Mezi podokna je metodou \texttt{InvisibleButton} přidáno tzv. neviditelné tlačítko. Jedná se o ovládací prvek, se kterým lze interagovat jako s tlačítkem a který zabírá určitý prostor, ale není nijak vykreslen. Zde má tlačítko stejnou výšku jako obě podokna. Pokud je drženo, tak se podle pohybu myši mění hodnota proměnné reprezentující poměr šířek podoken. Zdali je neviditelné tlačítko drženo, lze zjistit metodou \texttt{IsItemActive}. Knihovna se chová jako stavový automat, a proto tato metoda vrací hodnotu vždy pro poslední vykreslený prvek.
 
@@ -568,7 +568,7 @@
 	
 	Poté, co má třída \texttt{App} k dispozici informace o objektech v aktuálním diagramu, může jej začít vykreslovat. Obrázek \ref{_tag_img_DearMCanvasNodes} naznačuje, jak jsou dopočítány přesné souřadnice těch uzlů, jejichž velikost je určena implicitně podle velikosti textového popisku. V této části kódu je již možné použít metody z knihovny Dear ImGui, a tak je metodou \texttt{CalcTextSizeA} spočtena velikost textového popisku, ze které je pak odvozena velikost celého uzlu. Nemá-li uzel nastavený parametr \textit{pivot}, pak je na zadaných souřadnicích vykreslen jeho levý horní roh. Pokud je hodnota pivota nastavena např. na \texttt{"center"}, pak je uzel před vykreslením posunut o polovinu vypočtené velikosti, aby se na zadaných souřadnicích nacházel jeho střed.
 	
-	U závislých uzlů ještě dochází k posunu podle přesných souřadnic rodiče, které jsou v danou chvíli již známy. Jednotlivé uzly jsou totiž zpracovány v pořadí určeném třídou \texttt{Parser}. Po zpracování každého uzlu jsou pro tento účel vypočítané souřadnice uloženy do mapy \texttt{m\_canvas\_nodes}. Konkrétně jsou ukládány pozice levého horního rohu, pravého dolního rohu a středu. Z těchto třech bodů lze snadno dopočítat všechny ostatní pozice, které by mohl případný potomek referovat. Spodní část obrázku ukazuje, jak je v jednoduchém diagramu postupně určena pozice závislého uzlu. Po stanovení přesné pozice je již možné tento uzel vykreslit.
+	U závislých uzlů ještě dochází k posunu podle přesných souřadnic rodiče, které jsou v danou chvíli již známy. Jednotlivé uzly jsou totiž zpracovány v pořadí určeném třídou \texttt{Parser}. Po zpracování každého uzlu jsou pro tento účel vypočítané souřadnice uloženy do mapy \texttt{m\_canvas\_nodes}. Konkrétně jsou ukládány pozice levého horního rohu, pravého dolního rohu a středu. Z těchto tří bodů lze snadno dopočítat všechny ostatní pozice, které by mohl případný potomek referovat. Spodní část obrázku ukazuje, jak je v jednoduchém diagramu postupně určena pozice závislého uzlu. Po stanovení přesné pozice je již možné tento uzel vykreslit.
 	
 	\begin{figure}[ht]
 		\centering
@@ -880,7 +880,7 @@
 	
 	Pro každý objekt diagramu je vytvořena instance takovéto třídy a ukazatel na ní je předán grafické scéně, která od té chvíle přebírá nad objektem kontrolu. Scéna podle aktuálního pohledu na plátno určuje, jaké objekty jsou viditelné, a mají tedy být vykresleny. Pokud je vstupní dokument jakkoliv změněn, pak je celá scéna vyčištěna a následně znovu vybudována. Logika, která by hlídala, jaké uzly ve scéně se změnily a jaké byly přidány či odebrány, by byla zbytečně komplexní a náchylná na chyby. Dokud ovšem není vstupní dokument upraven, tak je obsah scény neměnný. To je rozdíl oproti projektům s přístupem IMGUI, kde je zpracování vstupu a následné vykreslení součást každého průchodu hlavní smyčkou.
 	
-	Aby mohla být grafická scéna zobrazena uživateli, musí být ještě celá „zabalena“ do další vlastní třídy, která dědí z \texttt{QGraphicsView}. Tato třída reprezentuje pohled na danou scénu a ve výchozím nastavení ji vykresluje s posuvnými lištami. Lišty jsou v ukázkové aplikaci skryty a velikost výřezu scény, kde se může pohled pohybovat, je nastavena na velké číslo. Díky tomu odpovídá chování aplikace předchozím projektům, kde lze s pohledem posouvat „donekonečna“.
+	Aby mohla být grafická scéna zobrazena uživateli, musí být ještě celá „zabalena“ do další vlastní třídy, která dědí z \texttt{QGraphicsView}. Tato třída reprezentuje pohled na danou scénu a ve výchozím nastavení ji vykresluje s posuvnými lištami. Lišty jsou v ukázkové aplikaci skryty a velikost výřezu scény, kde se může pohled pohybovat, je nastavena na velké číslo. Chování aplikace díky tomu odpovídá předchozím projektům, kde lze s pohledem posouvat „donekonečna“.
 	
 	Třída obalující scénu dále implementuje logiku posouvání pohledu při držení pravého tlačítka myši. V projektech s přístupem IMGUI je podle pohybu myši upravena hodnota proměnné, která reprezentuje posun pohledu a přičítá se k souřadnicím všech objektů diagramu. Zde jsou podle pohybu myši upravovány hodnoty posuvných lišt, které jsou sice skryty, ale stále určují pozici pohledu na scénu.
 	
@@ -896,11 +896,11 @@
 		\label{_tag_code_QtSignal}
 	\end{code}
 	
-	Po přijetí signálu si hlavní okno získá informace o uzlu, na který uživatel klikl, a aktualizuje podle nich panel nástrojů. Pro účel výběru barev má knihovna Qt předpřipravené dialogové okno. Do panelu nástrojů jsem umístil vlastní tlačítko, které dědí ze třídy \texttt{QPushButton} a jehož barva odpovídá právě vybranému uzlu. Po kliknutí na toto tlačítko je zobrazen dialog výběru barev. Na obrázku \ref{_tag_img_qtColorpicker} je vidět, že i když je použit multiplatformní styl \textit{Fusion}, tak se vzhled tohoto dialogu liší v závislosti na platformě. Vybere-li uživatel novou barvu, pak je vyslán signál do hlavního okna, které odpovídajícím způsobem upraví obsah textového pole, což díky navěšené callback metodě překreslí grafickou scénu.
+	Po přijetí signálu si hlavní okno získá informace o uzlu, na který uživatel klikl, a aktualizuje podle nich panel nástrojů. Pro účel výběru barev má knihovna Qt předpřipravené dialogové okno. Do panelu nástrojů jsem umístil vlastní tlačítko, které dědí ze třídy \texttt{QPushButton} a jehož barva odpovídá právě vybranému uzlu. Po kliknutí na toto tlačítko je zobrazen dialog výběru barev. Na obrázku \ref{_tag_img_qtColorpicker} je vidět, že i když je použit multiplatformní styl \textit{Fusion}, tak se vzhled tohoto dialogu liší v závislosti na platformě. Vybere-li uživatel v dialogu novou barvu, pak je ze třídy barevného tlačítka vyslán signál do hlavního okna, které odpovídajícím způsobem upraví obsah textového pole. Díky navěšené callback metodě se po úpravě textového pole překreslí grafická scéna.
 	
 	\begin{figure}[ht]
 		\centering
-		\includegraphics[width=.91\textwidth]{img/qt_colorpicker}
+		\includegraphics[width=.96\textwidth]{img/qt_colorpicker}
 		\caption{Qt: výběr barev v prostředích Windows 10 a Cinnamon}
 		\label{_tag_img_qtColorpicker}
 	\end{figure}
@@ -920,9 +920,11 @@
 		\label{_tag_img_QtSlider}
 	\end{figure}
 	
+	Pokud by třída pohledu při reakci na otáčení kolečkem myši rovnou měnila svou úroveň přiblížení, tak by nastala komplikace při pokusu o aktualizování hodnoty posuvníku. Callback metoda, která je navěšená na posuvníku, by totiž měnila hodnotu přiblížení podruhé. V této metodě nelze nijak zjistit, zdali změnu hodnoty provedl uživatel, nebo aplikační kód. Jediným řešením by tak bylo dočasné vypnutí obsluhy callback metod pomocí volání metody \texttt{blockSignals}.
+	
 	Zprovoznění tlačítek typu „táhni a pusť“ s sebou také neslo určité komplikace. Stejně jako v Dear ImGui a egui, jsou i v knihovně Qt poskytnuté \textit{drag and drop} funkce zbytečně komplexní pro scénář v ukázkové aplikaci. Proto jsem implementoval další typ tlačítka, které vysílá dva signály: jeden pro začátek tažení a druhý pro jeho puštění. Tyto signály přijímá grafická scéna, kde jsem zamýšlel, že po prvním signálu do sebe přidá nový objekt náhledového uzlu. Dokud nepřijde druhý signál, tak aktualizuje pozici náhledového uzlu tak, aby se nacházel pod kurzorem myši. S druhým signálem pak scéna pošle vlastní signál do hlavního okna, aby patřičně změnilo vstupní dokument, a náhledový uzel smaže.
 	
-	Pro zjištění pozice kurzoru, která poslouží k určení souřadnic náhledového uzlu, jsem chtěl použít metodu \texttt{mouseMoveEvent} v grafické scéně, která se má zavolat při pohybu kurzoru nad scénou. Zde ale nastal problém: pokud uživatel táhne nějaké tlačítko, tak se tato metoda nikdy nezavolá. Další informace, kterou je potřeba znát, je zdali se při puštění tlačítka nachází kurzor nad plátnem. Je-li kurzor mimo plátno, tak to znamená, že se má operace přidání nového uzlu zrušit. Pro zjištění této informace by měla sloužit metoda \texttt{underMouse} ve třídě pohledu. Ta ale podléhá stejnému problému: při tažení tlačítka vrací vždy \texttt{false} nehledě na pozici kurzoru.
+	Pro zjištění pozice kurzoru, která poslouží k určení souřadnic náhledového uzlu, jsem chtěl použít metodu \texttt{mouseMoveEvent} v grafické scéně, která se má zavolat při pohybu kurzoru nad scénou. Zde ale nastal problém: pokud uživatel táhne nějaké tlačítko, tak se tato metoda nikdy nezavolá. Další informace, kterou je potřeba znát, je zdali se při puštění tlačítka nachází kurzor nad plátnem. Je-li kurzor mimo plátno, tak to znamená, že se má operace přidání nového uzlu zrušit. Pro zjištění této informace by měla sloužit metoda \texttt{underMouse} ve třídě pohledu. Ta ale podléhá podobnému problému: při tažení tlačítka vrací vždy \texttt{false} nehledě na pozici kurzoru.
 	
 	Logika přidání nového uzlu se tedy v tu chvíli nacházela ve čtyřech různých třídách: vlastní tlačítko, hlavní okno, scéna a pohled na scénu. Z toho dvě části nefungovaly tak, jak jsem podle dokumentace očekával. Proto musím v konstruktoru třídy pohledu volat metodu \texttt{installEventFilter}, což umožňuje reagovat na veškeré interní události knihovny přepsáním metody \texttt{eventFilter}. V této metodě je již možné získat souřadnice kurzoru myši, i když uživatel táhne tlačítko.
 	
@@ -932,23 +934,25 @@
 	
 	Pokud třída pohledu potvrdí, že se kurzor nachází nad plátnem, je možné poslat signál hlavnímu oknu, aby do vstupního dokumentu přidalo definici nového uzlu. Po odeslání signálu jsem se snažil náhledový uzel ze scény smazat. Nedošlo mi ale, že změna vstupního dokumentu znamená kompletní vyčištění scény. Snažil jsem se tedy smazat neexistující objekt, což vedlo k pádu aplikace. Po opravení této chyby byl celý mechanismus již funkční.
 	
+	% V grafické scéně knihovny Qt je totiž pro práci s jejími objekty nutné používat surové ukazatele (\textit{raw pointers}).
+	
 	Implementace této funkce by se pravděpodobně dost usnadnila, pokud by byl nový uzel přidáván pomocí dvou kliknutí namísto tažení. Uživatel by např. stiskl tlačítko s obdélníkem a to by zůstalo „zamáčklé“. Druhým kliknutím do scény by se pak na toto místo přidal obdélníkový uzel. Chtěl jsem ale, aby se aplikace chovala co nejpodobněji předchozím projektům s přístupem IMGUI, kde implementace této funkce nebyla zdaleka tak problémová.
 
-	Co se naopak v knihovně Qt implementovalo velmi snadno, byl export diagramu do formátu SVG. Knihovna má totiž k dispozici třídu \texttt{QSvgGenerator}, která dokáže do tohoto formátu uložit obsah grafické scény. Další funkce, pro kterou má knihovna připravené řešení, je zobrazení nativního dialogu pro výběr souboru. V předchozích projektech je toto řešeno dodatečnou závislostí, zatímco v knihovně Qt je to záležitost volání jedné metody.
+	Co se naopak v knihovně Qt implementovalo velmi snadno, byl export diagramu do formátu SVG. Knihovna má totiž k dispozici třídu \texttt{QSvgGenerator}, která dokáže do tohoto formátu uložit obsah grafické scény. Další funkce, pro kterou má knihovna připravené řešení, je zobrazení nativního dialogu pro výběr souboru. V předchozích projektech se toto řeší dodatečnou závislostí, zatímco v knihovně Qt je to záležitost volání jedné metody.
 		
 	\chapter{Porovnání přístupů a ukázkových aplikací}
 	
 	\section{Porovnání přístupů IMGUI a RMGUI z pohledu funkcí a aplikačního kódu}
 	
-	Implementace ukázkových aplikací ve vybraných knihovnách poskytla hlubší vzhled do problematiky přístupů IMGUI a RMGUI. Opět je ale třeba zmínit, že definice těchto dvou přístupů je velmi prostá, a některé detaily v architekturách vybraných knihoven proto nemusí nutně vypovídat o daném přístupu jako takovém. Např. v přístupu RMGUI je nutné pro reakci na stisk tlačítka použít callback metodu, ale komunikace mezi částmi aplikace nemusí být nutně řešena pomocí signálů, jako tomu je v knihovně Qt.
+	Implementace ukázkových aplikací ve vybraných knihovnách poskytla hlubší vhled do problematiky přístupů IMGUI a RMGUI. Opět je ale třeba zmínit, že definice rozdílu mezi těmito přístupy není příliš striktní, a některé detaily v architekturách vybraných knihoven proto nemusí nutně vypovídat o daném přístupu jako takovém. Např. v přístupu RMGUI je nutné pro reakci na stisk tlačítka použít callback metodu, ale komunikace mezi částmi aplikace nemusí být nutně řešena pomocí signálů, jako tomu je v knihovně Qt.
 	
-	Z pohledu dostupných funkcí je knihovna Qt více připravená k tvorbě „běžných“ aplikací pro koncové uživatele. V aplikačním kódu lze snadno upravit text v záhlaví okna, nastavit ikonu aplikace, nebo zobrazit nativní dialogové okno. Pro vykreslení diagramu, nebo jiné libovolné grafiky, je zde připravena grafická scéna, která umožňuje svůj obsah exportovat do formátu SVG.
+	Z pohledu dostupných funkcí je knihovna Qt více připravená k tvorbě „běžných“ aplikací pro koncové uživatele. V aplikačním kódu lze snadno upravit text v záhlaví okna, nastavit ikonu aplikace, nebo zobrazit nativní dialogové okno. Pro vykreslení diagramu, nebo jiné libovolné grafiky, je zde připravena grafická scéna, která \mbox{umožňuje} svůj obsah exportovat do formátu SVG. K dispozici je dále např. kontejner \texttt{QSplitter}, který v ukázkové aplikaci obsahuje víceřádkové textové pole a kreslicí plátno. Tento kontejner umožňuje uživateli upravovat poměr šířek mezi svými ovládacími prvky, a není tak nutné přicházet s vlastním řešením.
 	
 	Víceřádkové textové pole je jeden ze standardních ovládacích prvků, ale i tak má knihovna Qt v tomto ohledu náskok. Použité knihovny s přístupem IMGUI jsou v aktivním vývoji, a tak se toto může časem zlepšit, momentálně jsou však dostupná řešení pro textová pole zatížena drobnými chybami a chybějícími funkcemi. V knihovnách s přístupem IMGUI bylo naopak jednodušší přepínat mezi barevnými styly aplikace a lépe se mi zde pracovalo s fontem ikon.
 	
 	Co se týče vzhledu, tak aplikace využívající přístup IMGUI by měly vypadat vždy stejně nehledě na cílovou platformu. Knihovna Qt může na některých místech využívat nativní ovládací prvky poskytnuté operačním systémem, a na jiných místech vykreslovat vlastní prvky, které tento vzhled imitují. I při použití multiplatformního vzhledu \textit{Fusion} se může stát, že bude vzhled určitých částí aplikace platformně závislý.
 
-	Knihovny s přístupem RMGUI mají obvykle k dispozici robustnější řešení pro rozložení ovládacích prvků. V knihovně Qt není např. problém umístit ovládací prvky do pravidelné mřížky, která aktualizuje rozměry svých řádků a sloupců na základě velikosti okna aplikace. Funkce pro „responzivní“ rozložení jsou v knihovnách s přístupem IMGUI často omezené.		
+	Knihovny s přístupem RMGUI mají obvykle k dispozici robustnější řešení pro rozložení ovládacích prvků. V knihovně Qt není problém umístit ovládací prvky do mřížky, která aktualizuje rozměry svých řádků a sloupců na základě velikosti okna aplikace. Funkce pro „responzivní“ rozložení ovládacích prvků jsou v knihovnách s přístupem IMGUI často omezené.		
 
 	Hlavní rozdíl mezi přístupy IMGUI a RMGUI je v principu psaní aplikačního kódu. Přístup IMGUI je o programování v nekonečné smyčce, kdy je knihovně na základě stavu aplikace popsáno, jak má být vykresleno uživatelské rozhraní. Přístup RMGUI je o programování callback metod a synchronizaci stavů.
 	
@@ -972,9 +976,9 @@
 	\section{Porovnání výkonu ukázkových aplikací}
 	
 	V ukázkových aplikacích jsem implementoval dva testy pro srovnání jejich výkonu. První test sleduje výkon aplikace při vykreslování diagramu s velkým počtem uzlů a druhý test sleduje dobu potřebnou pro zobrazení dialogového okna s velkým množstvím ovládacích prvků.	Testy jsem provedl na třech zařízeních:	\begin{enumerate}
-		\item Stolní počítač s OS Windows 10 22H2 x64; CPU Intel Xeon E3-1270 v3 (\textbf{2013}) @ 3,5 GHz $\times$ 4; RAM 16 GB; dedikovaná GPU NVIDIA GeForce GTX 1060.
-		\item Laptop s OS Linux Mint 22.3 Cinnamon x64; CPU Intel Core i7-6700HQ (\textbf{2015}) @ 2,6 GHz $\times$ 4; RAM 16 GB. Na tomto zařízení byly testy provedeny dvakrát: jednou s dedikovanou GPU NVIDIA GeForce GTX 960M, podruhé s integrovanou GPU Intel HD Graphics 530.
-		\item Laptop s OS Linux Mint 22.3 Cinnamon x64; CPU Intel Core i5-2430M (\textbf{2011}) @ 2,4 GHz $\times$ 2; RAM 8 GB; integrovaná GPU Intel HD Graphics 3000.
+		\item Stolní počítač s OS Windows 10 22H2 x64; CPU Intel Xeon E3-1270 v3 (\textbf{2013}) @ 3,5~GHz $\times$~4; RAM 16~GB; dedikovaná GPU NVIDIA GeForce GTX 1060.
+		\item Laptop s OS Linux Mint 22.3 Cinnamon x64; CPU Intel Core i7-6700HQ (\textbf{2015}) @ 2,6~GHz $\times$~4; RAM 16~GB. Na tomto zařízení byly testy provedeny dvakrát: jednou s dedikovanou GPU NVIDIA GeForce GTX 960M, podruhé s integrovanou GPU Intel HD Graphics 530.
+		\item Laptop s OS Linux Mint 22.3 Cinnamon x64; CPU Intel Core i5-2430M (\textbf{2011}) @ 2,4~GHz $\times$~2; RAM 8~GB; integrovaná GPU Intel HD Graphics 3000.
 	\end{enumerate}
 	
 	Aplikace implementované v \textit{Dear ImGui} a \textit{Qt} jsou sestaveny na OS Windows pomocí programu Visual Studio 2022 ve verzi 17.14.29 a na OS Linux pomocí sady GCC ve verzi 13.3.0. Aplikace implementovaná v \textit{egui} je na obou systémech sestavena nástrojem rustc ve verzi 1.93.0.
@@ -983,13 +987,13 @@
 	
 	\subsection{Porovnání výkonu při vykreslování diagramu}
 	
-	Porovnání výkonu při vykreslování diagramu probíhá ve třech fázích. V první fázi se v diagramu nachází pouze jeden uzel, což by mělo reprezentovat aplikaci v „klidovém“ stavu. V druhé fázi jsou do vstupního dokumentu postupně přidávány definice nových uzlů, a diagram je tedy ve všech třech aplikacích pravidelně překreslován. Na konci druhé fáze se v diagramu nachází zhruba 13 tisíc uzlů. V poslední fázi se do diagramu již nic nepřidává, ale všechny uzly z předchozí fáze zůstávají vykresleny.
+	Porovnání výkonu při vykreslování diagramu probíhá ve třech fázích. V první fázi se v diagramu nachází pouze jeden uzel, což by mělo reprezentovat aplikaci v „klidovém“ stavu. V druhé fázi jsou do vstupního dokumentu postupně přidávány definice nových uzlů, a diagram je tedy ve všech třech aplikacích pravidelně překreslován. Na konci druhé fáze se v diagramu nachází zhruba 13~tisíc uzlů. V poslední fázi se do diagramu již nic nepřidává, ale všechny uzly z předchozí fáze zůstávají vykresleny.
 	
-	Během tohoto procesu je každých 300 ms posouván pohled a měněna úroveň přiblížení kreslicího plátna. V druhé fázi je s tímto intervalem do diagramu přidávána nová várka uzlů. Každých 900 ms je pak zaznamenáno celkové využití procesoru systémem a využití operační paměti daným procesem. Dále se zaznamenává skutečná doba trvání mezi jednotlivými měřeními, jelikož může při vyšší zátěži docházet ke zpoždění. Obrázek \ref{_tag_img_bench1} ukazuje, jak vypadá část diagramu během poslední fáze měření výkonu.
+	Během tohoto procesu je každých 300~ms posouván pohled a měněna úroveň přiblížení kreslicího plátna. V druhé fázi je s tímto intervalem do diagramu přidávána nová várka uzlů. Každých 900~ms je pak zaznamenáno celkové využití procesoru systémem a využití operační paměti daným procesem. Jelikož může při vyšší zátěži docházet ke zpoždění, tak se dále zaznamenává skutečná doba trvání mezi jednotlivými měřeními. Obrázek \ref{_tag_img_bench1} ukazuje, jak vypadá část diagramu během poslední fáze měření výkonu.
 	
 	\begin{figure}[ht]
 		\centering
-		\includegraphics[width=.92\textwidth]{img/bench1}
+		\includegraphics[width=\textwidth]{img/bench1}
 		\caption{Benchmark vykreslení diagramu: ukázka}
 		\label{_tag_img_bench1}
 	\end{figure}
@@ -1000,18 +1004,18 @@
 		
 	\begin{figure}[ht]
 		\centering
-		\includegraphics[width=.92\textwidth]{img/egui_ram_issue}
+		\includegraphics[width=.95\textwidth]{img/egui_ram_issue}
 		\caption{egui: textové pole a využití operační paměti}
 		\label{_tag_img_eguiRAM}
 	\end{figure}
 	
 	Benchmark jsem dále spustil se skrytým víceřádkovým textovým polem a obrázek \ref{_bench_1_dur_txoff} ukazuje graf naměřeného zpoždění. Zde je u knihovny Qt vidět přibývající zpoždění ve druhé fázi měření. Logika měření výkonu se v knihovně Qt nachází v samostatném koprogramu (\textit{coroutine}), zatímco v Dear ImGui a egui je součástí hlavní smyčky. To se projevuje na kolísání doby trvání mezi měřeními ve třetí fázi.
 	
-	Grafy z důvodu přehlednosti obsahují záznam pouze jednoho měření. Naměřené hodnoty na ostatních zařízeních však vykazovaly stejné trendy, což je vidět na obrázku \ref{_bench_1_trend}. Benchmark jsem také zkusil spustit s vypnutým zvýrazňováním syntaxe, na výsledcích se to však nijak neprojevilo. Nakonec jsem zkusil aplikaci v knihovně Dear ImGui upravit tak, aby zpracovávala vstupní dokument jen tehdy, jsou-li v něm provedeny nějaké změny. Toto se na naměřené spotřebě opět nijak neprojevilo.
+	Z důvodu přehlednosti obsahují grafy záznam pouze jednoho měření. Naměřené hodnoty na ostatních zařízeních však vykazovaly stejné trendy, což je vidět na obrázku \ref{_bench_1_trend}. Benchmark jsem také zkusil spustit s vypnutým zvýrazňováním syntaxe, na výsledcích se to však nijak neprojevilo. Nakonec jsem zkusil aplikaci v knihovně Dear ImGui upravit tak, aby zpracovávala vstupní dokument jen tehdy, jsou-li v něm provedeny nějaké změny. Toto se na naměřené spotřebě opět nijak neprojevilo.
 	
 	\subsection{Porovnání výkonu při vykreslování ovládacích prvků}
 	
-	Druhé porovnání výkonu spočívá ve zobrazení dialogového okna, které obsahuje velké množství ovládacích prvků. Měří se, jak dlouho trvá takové okno zobrazit a zase zavřít. Okno nejprve obsahuje jednu „dávku“ ovládacích prvků, v níž se nachází několik textových popisků a polí, běžných a zaškrtávacích tlačítek, přepínačů (\textit{radio button}) a posuvníků. Celkem se v jedné dávce nachází 172 ovládacích prvků. Obrázek \ref{_tag_img_bench2} ukazuje výřez okna ve všech třech knihovnách.	
+	Druhé porovnání výkonu spočívá ve zobrazení dialogového okna, které obsahuje velké množství ovládacích prvků. Měří se, jak dlouho trvá takové okno zobrazit a zase zavřít. Okno nejprve obsahuje jednu „dávku“ ovládacích prvků, v níž se nachází několik textových popisků, textových polí, tlačítek, zaškrtávacích tlačítek, přepínačů (\textit{radio button}) a posuvníků. Celkem se v jedné dávce nachází 172 ovládacích prvků. Obrázek \ref{_tag_img_bench2} ukazuje výřez okna ve všech třech knihovnách.	
 	
 	\begin{figure}[ht]
 		\centering
@@ -1022,12 +1026,32 @@
 	
 	Doba potřebná pro zobrazení a zavření okna je měřena vždy desetkrát. Začíná se na jedné dávce a po každých deseti měřeních  je počet dávek zdvojnásoben. Měření končí, jakmile se na zobrazení okna čeká déle než 15 vteřin.	
 	
-	Obrázek \ref{_bench_2} ukazuje výsledky měření. Aplikace v Qt končí u 88 tisíc dávek a její spotřeba operační paměti se mírně zvyšuje. Aplikace v egui je v tomto ohledu sice rychlejší, ale opět je zde problém se spotřebou operační paměti. V této knihovně jsem zkusil také zobrazovat pouze „prázdné“ ovládací prvky bez žádného textu, ale na výsledcích se to neprojevilo. Aplikace v Dear ImGui se dostává do řádu desítek milionů dávek a jako jediná si drží téměř konstantní spotřebu operační paměti.% okolo 100 MiB. Zároveň tato aplikace jako jediná v okně automaticky zobrazuje vertikální posuvnou lištu.
+	Obrázek \ref{_bench_2} ukazuje výsledky měření. Aplikace v knihovně Qt končí jako první a její spotřeba operační paměti se mírně zvyšuje. Aplikace v egui je v tomto ohledu sice rychlejší, ale opět je zde problém se spotřebou operační paměti. V této knihovně jsem zkusil také zobrazovat pouze „prázdné“ ovládací prvky bez žádného textu, ale na výsledcích se to neprojevilo. Aplikace v Dear ImGui se dostává do řádu desítek milionů vykreslených ovládacích prvků a jako jediná si drží téměř konstantní spotřebu operační paměti. Na využití procesoru se tento test nijak neprojevil.%, a proto jsou výsledky tohoto měření vynechány.% okolo 100 MiB. Zároveň tato aplikace jako jediná v okně automaticky zobrazuje vertikální posuvnou lištu.
 	
-	Z výsledků vyplývá, že knihovny s přístupem IMGUI mají vyšší režijní náklady a nehodí se tak pro aplikace s důrazem na nižší spotřebu. Využití procesoru není ale příliš závislé na aktuálním stavu aplikace, což nelze říci o knihovně Qt. Před implementací libovolné aplikace v knihovně s přístupem IMGUI je vhodné prozkoumat chování jednotlivých ovládacích prvků, které se mají nacházet v navrhovaném řešení. Tak se může předem vyhodnotit, zdali je např. v knihovně egui spotřeba operační paměti textovým polem problém.
+	Z výsledků vyplývá, že knihovny s přístupem IMGUI mají vyšší režijní náklady a nehodí se tak pro aplikace s důrazem na nižší spotřebu. Využití procesoru není ale příliš závislé na aktuálním stavu aplikace, což nelze říci o knihovně Qt. Před implementací libovolné aplikace v knihovně s přístupem IMGUI je vhodné prozkoumat chování jednotlivých ovládacích prvků, které se mají nacházet v navrhovaném řešení. Tak se může předem přijít na problémy, jako je spotřeba operační paměti u textového pole v knihovně egui. Poté je možné vyhodnotit, zdali jsou nalezené problémy relevantní pro navrhované řešení.
 	
-	\chapter{Závěr}
+	\chapter{Závěr}	
 	
+	Hlavním cílem této práce bylo prozkoumat, jak jsou existující knihovny s přístupem IMGUI vhodné k tvorbě aplikací pro koncové uživatele. V teoretické části práce jsem nejprve popsal princip přístupu IMGUI a porovnal jej s „tradičním“ přístupem pro tvorbu GUI aplikací, který lze označit jako RMGUI. Následně jsem v rešerši představil existující knihovny, které umožňují vývoj s přístupem IMGUI. Pro potřeby ukázkové aplikace jsem zkoumal především schopnosti knihoven vykreslit a obsloužit víceřádkové textové pole. Jako nejvhodnější zástupce pro implementaci ukázkové aplikace jsem zvolil knihovny \textit{Dear ImGui} a \textit{egui}. V rešerši také krátce představuji knihovnu \textit{Qt}, kterou jsem vybral jako zástupce přístupu~RMGUI.
+	
+	V praktické části práce jsem začal návrhem ukázkové aplikace. Jedná se o editor diagramů, který na základě uživatelem dodaného textového popisu vykreslí odpovídající diagram. Pokouším se zde o unikátnější přístup, kdy uživatel ve vstupním textu nepopisuje pouze význam diagramu, ale i jeho přesný vzhled. Aplikace je navržena tak, aby bylo možné při její implementaci prozkoumat větší množství funkcí jednotlivých knihoven. Zároveň má ale praktické využití, a nejedná se tak pouze o „galerii ovládacích prvků“.
+	
+	% Obsahuje např. ovládací prvek výběru barev nebo rozbalovacího seznamu, pomocí nichž lze upravovat diagram bez přímého zásahu do jeho textového popisu.
+	
+	Navrženou aplikaci jsem postupně implementoval v knihovnách Dear ImGui, egui a Qt. Výsledkem jsou tři programy, ve kterých lze vytvořit blokové schéma či základní vývojový diagram s možností exportu do souboru ve formátu SVG. V této části práce popisuji, jak se v jednotlivých knihovnách programuje uživatelské rozhraní a na jaké problémy jsem během implementace narazil. Větší pozornost zde opět dostává víceřádkové textové pole, kde v knihovnách s přístupem IMGUI může být problém např. zobrazit horizontální posuvnou lištu, zvýrazňovat části textu, nebo zvýrazňovat syntax.
+	
+	Během implementace se potvrdilo, že přístup IMGUI vede na kratší a přímočařejší kód, a urychluje proto vývoj některých částí aplikace. Tento přístup je o programování v nekonečné smyčce, kde může hrát roli pořadí provedených operací. Všechna data aplikace jsou držena na straně aplikačního kódu a knihovně je popisováno, jak má na základě těchto dat vykreslovat uživatelské rozhraní.
+	
+	Přístup RMGUI je o programování callback metod a synchronizaci stavů. Oproti psaní kódu ve smyčce, kde je jasně daná posloupnost operací, zde s přibývajícími funkcemi přibývá i složitost komunikace mezi jednotlivými prvky. Data aplikace jsou zde součástí stavu ovládacích prvků, které spravuje daná knihovna. To vede na složitější aplikační kód v případech, kdy má být možné upravovat hodnotu jedné proměnné z více částí aplikace.
+	
+	Z pohledu dostupných funkcí na tom byla knihovna Qt nejlépe. Bez externích závislostí dokáže např. exportovat obsah kreslicího plátna do formátu SVG nebo zobrazit nativní dialogová okna pro výběr souboru. Víceřádkové textové pole zde také bylo nejschopnější. Zkoumané knihovny s přístupem IMGUI jsou však v aktivním vývoji, a tak se v určitých ohledech mohou časem zlepšit.
+	
+	V knihovně Dear ImGui jsem během implementace objevil dvě nezdokumentované vizuální chyby, které jsem nahlásil jako \textit{issue} na platformě GitHub. První se týkala víceřádkového textového pole, kdy uživatel mohl měnit velikost jeho vnitřního okraje (\textit{padding}). Druhá chyba se týká rozmazaného textu v případě, kdy je použito nové výchozí písmo knihovny v kombinaci s balíkem FreeType. První chyba již byla opravena a ta druhá je nastavena jako jeden z milníků pro vydání další vedlejší verze (\textit{minor version}).
+	
+	Nakonec jsem v ukázkových aplikacích implementoval dva testy pro srovnání jejich výkonu. Jeden vykresluje diagram s velkým počtem uzlů a druhý měří dobu potřebnou pro zobrazení dialogového okna s velkým počtem ovládacích prvků. Z výsledků je vidět, že knihovny Dear ImGui a egui mají v základu vyšší využití procesoru a operační paměti. Jejich spotřeba je relativně stabilní a knihovna Qt, kde v tomto ohledu více závisí na aktuálním stavu aplikace, je může v určitých situacích „dohnat“.
+	
+	Nečekaným objevem měření je nadměrné využití operační paměti knihovnou egui v případech, kdy textové pole obsahuje větší množství znaků. Před začátkem vývoje je proto vhodné otestovat chování konkrétních ovládacích prvků. Velká spotřeba operační paměti knihovnou egui se projevila také při testu zobrazení okna s velkým počtem ovládacích prvků. V této kategorii vedla aplikace implementovaná v Dear ImGui, která si jako jediná držela konstantní spotřebu.
+		
 	% Zdroje
 	\chapter*{Seznam použité literatury}
 	\addcontentsline{toc}{chapter}{Seznam použité literatury}
