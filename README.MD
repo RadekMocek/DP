@@ -2,11 +2,7 @@
 
 This is the repository for my master's thesis, which is about the IMGUI paradigm.
 
-__This repository contains everything except the main sample program (the diagram editor), where each implementation is stored in its own repository:__
-
-* __Dear ImGui @ <https://github.com/RadekMocek/DiagramPche_DearImGui>__
-* __egui @ <https://github.com/RadekMocek/DiagramPche_egui>__
-* __Qt @ <https://github.com/RadekMocek/DiagramPche_Qt>__
+__This repository contains everything except the main sample program (the diagram editor), where each implementation is stored in its own repository. See [radekmocek.github.io/DPDoc](https://radekmocek.github.io/DPDoc).__
 
 ## Table of contents
 
