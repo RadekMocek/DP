@@ -8,7 +8,6 @@ egui::TopBottomPanel::top("top_panel").show(ctx, |ui| {
       });                    
    });
 });
-
 // Dear ImGui (C++)
 if (ImGui::BeginMainMenuBar()) {
    if (ImGui::BeginMenu("File")) {

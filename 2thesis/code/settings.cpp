@@ -9,7 +9,7 @@ if (ImGui::BeginTabBar("PreferencesTabBar")) {
     }
     ImGui::EndTabBar();
 }
-// Změna stavu zaškrtávacího pole se v aplikaci projeví okamžitě.
+// Změna stavu zaškrtávacího tlačítka se v aplikaci projeví okamžitě.
 
 // --- Qt --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 const QPointer layout = new QVBoxLayout();
