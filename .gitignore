@@ -19,7 +19,6 @@ PUBLISHED/
 [Bb]uild/
 
 # Thesis & Slideshow (MiKTeX + TeXstudio)
-document.pdf
 presentation.pdf
 *.acn
 *.acr
