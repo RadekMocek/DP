@@ -1,0 +1,11 @@
+[node.a]
+[node.b]
+xy = ["a", "top-right", 100, 0]
+[node.c]
+pivot = "top"
+xy = ["b", "bottom", 0, 50]
+[[path]]
+start = ["a", "bottom", 0, 0]
+ends = [["b", "left", 0, 0], ["c", "left", 0, 0]]
+points = [["", "prev", 40, "", "prev", 0]]
+shift = 25

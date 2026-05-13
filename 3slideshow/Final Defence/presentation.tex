@@ -1,0 +1,135 @@
+% !TEX TS-program = xelatex
+\documentclass[FM,widescreen]{tulpresentation} % https://github.com/RadekMocek/tulpresentation
+\input{code/code}
+\title{Grafické uživatelské rozhraní\\v režimu okamžitého vykreslování}
+\titlesub{Bc. Radek Mocek}{}{Ing. Jiří Jeníček, Ph.D.}{}
+\begin{document}
+    % Titulní slide
+    \TULtitleframe
+	
+	% Zadání
+	\begin{frame}[plain]\frametitle{Cíle diplomové práce}
+		\smallskip
+		\begin{enumerate}
+			\item Proveďte rešerši GUI v režimu okamžitého vykreslování.
+			\item Navrhněte ukázkovou aplikaci.
+			\item Ve vybraných knihovnách implementujte a otestujte aplikaci.
+			\item Zhodnoťte výsledky.
+		\end{enumerate}
+	\end{frame}	
+	
+	% RMGUI
+	\begin{frame}[plain]\frametitle{RMGUI – Retained Mode GUI}
+		\begin{itemize}
+			\item „Režim soběstačného vykreslování“
+			\item V inicializační fázi se definují jednotlivé ovládací prvky a na ně se navěšují callback metody
+			\item Hlavní smyčka pak řeší vykreslování prvků a reakce na události, před programátorem je skryta
+			\item Knihovny \textit{Qt}, \textit{GTK}, \textit{wxWidgets}, \textit{WPF}, \dots
+		\end{itemize}
+		\begin{columns}[T]
+			\begin{column}{0.88\textwidth}
+				\lstinputlisting[language=pseudo]{code/rmgui.txt}
+			\end{column}
+			\begin{column}{0.12\textwidth}
+				\includegraphics[width=\linewidth]{img/imgbtn}
+			\end{column}
+		\end{columns}
+	\end{frame}
+	
+	% IMGUI
+	\begin{frame}[plain]\frametitle{IMGUI – Immediate mode GUI}
+		\begin{itemize}
+			\item „Režim okamžitého vykreslování“
+			\item Žádná inicializační fáze ani callback metody, pouze hlavní smyčka			
+			\item Knihovny \textit{Dear ImGui}, \textit{egui}, \textit{Nuklear}, \dots
+		\end{itemize}
+		\lstinputlisting[language=pseudo]{code/imgui.txt}
+		\begin{itemize}
+			\item Definice zmiňuje pouze tento rozdíl z pohledu programátora koncové aplikace, implementace knihoven mohou být různé.
+			\item V praxi ale:
+			\begin{itemize}
+				\item Využití grafického API pro vykreslování ovládacích prvků (\textit{OpenGL}, \textit{DirectX}, \dots)
+				\item Časté použití pro přidání ovládacích prvků do existující interaktivní aplikace
+				\item Spíše GUI pro ladění vývojářem, než user-facing GUI
+				\item Zmatek ohledně toho, co přesně je a není IMGUI
+			\end{itemize}
+		\end{itemize}
+	\end{frame}
+	
+	% Motivace, návrh diagram language
+	\begin{frame}[plain]\frametitle{Motivace}
+		\begin{itemize}
+			\item Jak jsou IMGUI knihovny použitelné pro psaní běžných user-facing aplikací?
+			\item Jaký je dopad na výkon oproti RMGUI knihovnám?
+			\item IMGUI knihovny jsou v aktivním vývoji
+			\item Vnést do chaosu trochu řádu
+		\end{itemize}		
+		\anothertitle{Návrh ukázkové aplikace}		
+		\begin{itemize}
+			\item Program, který vykreslí diagram na základě dodaného strukturovaného popisu
+		\end{itemize}		
+		\begin{columns}[T]
+			\begin{column}{0.5\textwidth}
+				\lstinputlisting[language=toml]{code/diagram.toml}
+			\end{column}
+			\begin{column}{0.4\textwidth}
+				\medskip
+				\includegraphics[width=.9\linewidth]{img/diagram}
+			\end{column}
+		\end{columns}		
+	\end{frame}
+	
+	% Ukázková aplikace, big screenshot
+	\begin{frame}[plain]\frametitle{Ukázková aplikace}
+		\includegraphics[width=.95\paperwidth]{img/app0}
+	\end{frame}
+	
+	% Ukázková aplikace, detail
+	\begin{frame}[plain]\frametitle{Ukázková aplikace}
+		\begin{itemize}
+			\item Implementována v:
+			\begin{enumerate}
+				\item Dear ImGui (C++, IMGUI)
+				\item egui (Rust, IMGUI)
+				\item Qt (C++, RMGUI)
+			\end{enumerate}
+			\item Podporuje:
+			\begin{itemize}
+				\item Zvýrazňování syntaxe
+				\item Tmavý režim
+				\item Nativní dialogy pro uložení/nahrání
+				\item Export do formátu SVG
+			\end{itemize}
+		\end{itemize}
+		\vspace{-3.6cm}
+		\includegraphics[width=.96\paperwidth]{img/app1}
+	\end{frame}
+	
+	% IMGUI nevýhody
+	\begin{frame}[plain]\frametitle{IMGUI a textová pole}
+		\begin{itemize}
+			\item omezené funkce
+			\item GH issue?
+			\item egui RAM
+			\item 3rd party pro syntax highlight
+		\end{itemize}
+	\end{frame}
+	
+	% RMGUI nevýhody
+	\begin{frame}[plain]\frametitle{Qt a signal hell}
+		
+	\end{frame}
+	
+	% Benchmark
+	\begin{frame}[plain]\frametitle{Porovnání výkonu aplikací}
+		
+	\end{frame}
+	
+	% Závěr
+	\begin{frame}[plain]\frametitle{Závěr}
+		
+	\end{frame}
+	
+	% Děkuji
+	\TULendframe
+\end{document}
