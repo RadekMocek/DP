@@ -108,15 +108,47 @@
 	% IMGUI nevýhody
 	\begin{frame}[plain]\frametitle{IMGUI a textová pole}
 		\begin{itemize}
-			\item omezené funkce
-			\item GH issue?
-			\item egui RAM
-			\item 3rd party pro syntax highlight
+			\item Textové pole je komplexní ovládací prvek, který má napříč IMGUI knihovnami omezené funkce%. Častá je např. absence horizontální posuvné lišty (\textit{scrollbar}).
+			\item V knihovnách \textit{Dear ImGui} a \textit{egui}:
+			\begin{itemize}
+				\item Pro zvýrazňování syntaxe používám doplněk třetí strany
+				\item Pro vyznačení chyby vykresluji červený obdélník nad textovým polem
+			\end{itemize}
+			\item Výchozí textové pole v knihovně \textit{Qt} toto podporuje
+			\item Textové pole v \textit{egui} má problém s nadměrným využitím operační paměti
 		\end{itemize}
+		\begin{columns}[T]
+			\begin{column}{0.55\textwidth}
+				\includegraphics[height=.45\paperheight]{img/err_high}
+			\end{column}
+			\begin{column}{0.45\textwidth}
+				\bigskip
+				\includegraphics[height=.28\paperheight]{img/egui_ram}
+			\end{column}
+		\end{columns}
+	\end{frame}
+	
+	% Délka kódu
+	\begin{frame}[plain]\frametitle{Dear ImGui a Qt: délka kódu}		
+		\begin{columns}[T]
+			\begin{column}{0.6\textwidth}
+				\vspace{-0.05cm}
+				\scalebox{0.57}{
+					\lstinputlisting[language=CppSettings]{code/settings.cpp}
+				}
+			\end{column}
+			\begin{column}{0.4\textwidth}
+				\smallskip
+				\includegraphics[height=.3\paperheight]{img/settings_dear}				
+				
+				\smallskip
+				\includegraphics[height=.42\paperheight]{img/settings_qt}
+			\end{column}
+		\end{columns}		
 	\end{frame}
 	
 	% RMGUI nevýhody
-	\begin{frame}[plain]\frametitle{Qt a signal hell}
+	\begin{frame}[plain]\frametitle{Qt a callback hell}
 		
 	\end{frame}
 	
@@ -127,7 +159,14 @@
 	
 	% Závěr
 	\begin{frame}[plain]\frametitle{Závěr}
-		
+		V rámci práce jsem provedl:
+		\begin{itemize}
+			\item Rešerši dvou přístupů ke psaní GUI aplikací: RMGUI a IMGUI
+			\item Rešerši existujících IMGUI knihoven
+			\item Navrhl a implementoval ukázkovou aplikaci: editor diagramů v knihovnách \textit{Dear ImGui}, \textit{egui} a \textit{Qt}			
+			\item Implementoval dva benchmarky a porovnal v nich výsledné aplikace
+			\item \dots
+		\end{itemize}
 	\end{frame}
 	
 	% Děkuji
