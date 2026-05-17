@@ -148,24 +148,61 @@
 	\end{frame}
 	
 	% RMGUI nevýhody
-	\begin{frame}[plain]\frametitle{Qt a callback hell}
-		
+	\begin{frame}[plain]\frametitle{Programování v knihovně Qt}
+		\begin{itemize}
+			\item Založeno na callback metodách a signálech			
+		\end{itemize}
+		\scalebox{0.89}{
+			\lstinputlisting[language=qt]{code/qt.cpp}
+		}
+		\begin{itemize}
+			\item Definice související logiky často na třech různých místech
+			\item S přibývajícími funkcemi se zvyšuje rozštěpení logiky v aplikačním kódu
+			\item Knihovna může interně spouštět callback metody v nečekaných situacích
+			\begin{itemize}
+				\item Např. zapnutí zvýrazňování syntaxe se bere jako změna obsahu dokumentu
+				\item $\implies$ Nečekané chování, horší ladění
+			\end{itemize}
+			\item Některé poskytnuté metody se nechovají konzistentně
+			\begin{itemize}
+				\item Např. pokud uživatel táhne tlačítko, přestane se volat \texttt{mouseMoveEvent}
+				\item $\implies$ Některé problémy je nutné řešit na nižší úrovni abstrakce%, na což knihovna není dělaná
+			\end{itemize}
+		\end{itemize}
 	\end{frame}
 	
 	% Benchmark
 	\begin{frame}[plain]\frametitle{Porovnání výkonu aplikací}
 		
+		\begin{columns}[T]
+			\begin{column}{0.66\textwidth}
+				\begin{itemize}
+					\item \small{Benchmark má tři fáze: jeden uzel ve scéně, postupné přidávání uzlů, velké množství uzlů ve scéně}
+					\item \small{Knihovny s IMGUI mají vyšší režijní náklady, knihovna Qt je v druhé fázi dožene}
+					\item \small{Stejný trend na různých zařízeních}
+				\end{itemize}
+			\end{column}
+			\begin{column}{\textwidth}
+				\includegraphics[height=.33\textheight]{img/bench}
+			\end{column}
+		\end{columns}		
+		\includegraphics[width=1.05\textwidth]{img/nodes_trend_ppt}
 	\end{frame}
 	
 	% Závěr
 	\begin{frame}[plain]\frametitle{Závěr}
+		\smallskip
 		V rámci práce jsem provedl:
 		\begin{itemize}
 			\item Rešerši dvou přístupů ke psaní GUI aplikací: RMGUI a IMGUI
 			\item Rešerši existujících IMGUI knihoven
-			\item Navrhl a implementoval ukázkovou aplikaci: editor diagramů v knihovnách \textit{Dear ImGui}, \textit{egui} a \textit{Qt}			
-			\item Implementoval dva benchmarky a porovnal v nich výsledné aplikace
-			\item \dots
+			\item Návrh a implementaci ukázkových aplikací: editor diagramů v knihovnách \textit{Dear~ImGui}, \textit{egui} a \textit{Qt}			
+			\item Porovnání výsledných aplikací:
+			\begin{itemize}
+				\item Z pohledu aplikačního kódu
+				\item Z pohledu koncového uživatele
+				\item Ve dvou typech benchmarku
+			\end{itemize}			
 		\end{itemize}
 	\end{frame}
 	

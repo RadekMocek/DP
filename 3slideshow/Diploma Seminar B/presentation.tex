@@ -78,33 +78,6 @@
 		\includegraphics[width=.95\paperwidth]{img/img1}
 	\end{frame}
 	
-%	\begin{frame}[plain]\frametitle{Qt a práce s callbacky}
-%		\begin{itemize}
-%			\item V projektu celkem 58 volám \texttt{connect}
-%			\item Z toho 25 odkazuje na metodu definovanou někde jinde
-%		\end{itemize}
-%		\lstinputlisting[language=qt1]{code/qt1.txt}
-%		\lstinputlisting[language=qt2]{code/qt2.txt}		
-%	\end{frame}
-
-% = Ain't Nobody Got Time for That =	
-%	\begin{frame}[plain]\frametitle{Qt a práce s callbacky}
-%		\lstinputlisting[language=qt1]{code/qt1.txt}
-%		\begin{itemize}
-%			\item Callback při změně textu (mimo jiné) vyčistí grafickou scénu, vykreslí aktualizovaný diagram a označí dokument jako „dirty“ (neuložené změny)
-%			\item Zvýrazňovač syntaxe, který Qt poskytuje, po své inicializaci také volá tento callback, i když se text obsahově nijak nezměnil
-%			\item Dochází k tomu po volání konstruktoru daného okna $\implies$ aplikace startuje s dokumentem označeným jako dirty
-%			\item Vyřešeno pomocí \texttt{QTimer}, který zpožděně tuto změnu neguje			
-%		\end{itemize}		
-%		
-%		%\medskip
-%		%\includegraphics[width=.97\paperwidth]{img/img2}
-%		%Po jeho umístění je náhledový uzel smazán ze scény, ta byla ale kompletně vyčištěna callbackem. Mazání již smazaného $\implies$ pád aplikace.		
-%	\end{frame}
-	
-%	\begin{frame}[plain]\frametitle{IMGUI a práce ve smyčce}
-%	\end{frame}
-	
 	\begin{frame}[plain]\frametitle{IMGUI a textová pole}
 		\begin{itemize}
 			\item Textové pole je komplexní ovládací prvek, který má napříč IMGUI knihovnami omezené funkce

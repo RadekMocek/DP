@@ -169,11 +169,11 @@ def main():
     # for key, run in runs.items():
     #    print(f"{key.ljust(26)}{run.get_duration_str()}")
 
-    switch = False
+    switch_trend = False
 
     libs = [Lib.DEAR, Lib.EGUI, Lib.QT]
 
-    if switch:
+    if switch_trend:
         devices = [Device.LIN]
     else:
         devices = [Device.OLD, Device.LIN]
@@ -188,7 +188,7 @@ def main():
     do_moveavg = False
     n_subplots = 3
 
-    if switch:
+    if switch_trend:
         metrics = [Metric.RAM, Metric.CPU, Metric.DUR]
     else:
         metrics = [Metric.CPU]
@@ -202,7 +202,7 @@ def main():
             if metric != Metric.DUR and benchtype == "txoff":
                 continue
 
-            figsize = (9, 3)  # if switch else (18, 6)
+            figsize = (9, 3)  # if switch_trend else (18, 6)
 
             fig = plt.figure(figsize=figsize)
             axs = fig.subplots(1, n_subplots, sharey=True)
@@ -234,11 +234,17 @@ def main():
                             arry = moveavg(arry, 20)
 
                         label = lib_str_long(lib)
-                        if not switch:
-                            if lib != Lib.DEAR:
-                                label = "_nolegend_"
+                        if not switch_trend:
+                            if idx == 2:
+                                if lib != Lib.DEAR:
+                                    label = "_nolegend_"
+                                else:
+                                    label = device_name(dev)
                             else:
-                                label = device_name(dev)
+                                if dev == Device.OLD:
+                                    label = "_nolegend_"
+                                else:
+                                    label = lib_str_long(lib)
 
                         axs[idx].plot(
                             y_,
@@ -258,9 +264,13 @@ def main():
                                                      rotation=40, ha="left")
 
                         if idx == 0:
-                            axs[idx].set_xlabel("Číslo měření")
+                            if switch_trend:
+                                axs[idx].set_xlabel("Číslo měření")
+                            else:
+                                axs[idx].set_xlabel("Číslo měření (měření je provedeno každých 900 ms)")
+                                axs[idx].xaxis.set_label_coords(0.7, -0.151)
+
                             ax_tops[idx].set_xlabel("Počet vykreslených uzlů")
-                            # ax_top.xaxis.set_label_coords(0.5, 1.08)
 
                             axs[idx].set_ylabel(str(metric))
                         # force y tick labels
@@ -272,20 +282,22 @@ def main():
                             axs[idx].tick_params(labelright=True)
                             axs[idx].yaxis.set_tick_params(right=True, labelright=True)
 
-            if switch:
+            if switch_trend:
                 axs[0].legend(loc="upper left")
             else:
-                axs[2].legend(loc="upper right")
+                axs[2].legend(loc="upper right", bbox_to_anchor=(1.91, 1.0), bbox_transform=axs[2].transAxes)
                 leg = axs[2].get_legend()
                 leg.legend_handles[0].set_color("black")
                 leg.legend_handles[1].set_color("black")
 
+                axs[1].legend(loc="upper right", bbox_to_anchor=(1.735, 0.75), bbox_transform=axs[2].transAxes)
+
             fig.subplots_adjust(wspace=0.024)
 
-            if switch:
+            if switch_trend:
                 fig.savefig(f"figs2/nodes_{metric_str_short(metric)}_{benchtype}.pdf", bbox_inches="tight")
             else:
-                fig.savefig(f"figs2/nodes_trend.pdf", bbox_inches="tight")
+                fig.savefig(f"figs2/nodes_trend_ppt.pdf", bbox_inches="tight")
 
     # plt.tight_layout()
     # plt.show()

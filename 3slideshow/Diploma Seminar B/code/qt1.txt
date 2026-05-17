@@ -1,2 +1,0 @@
-connect(m_source, &QPlainTextEdit::textChanged,
-            this, &MainWindow::OnSourceChange);
