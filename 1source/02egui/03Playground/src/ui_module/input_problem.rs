@@ -8,8 +8,11 @@ impl MyApp {
             .collapsible(false)
             .open(&mut self.do_show_win_input_problem)
             .show(ui.ctx(), |ui| {
+
+                puffin::profile_scope!("TextEdit memory usage show");
+
                 ui.horizontal(|ui| {
-                    ui.label("egui version 0.34.2");
+                    ui.label("egui version 0.34.3");
                     ui.spinner();
                 });
 

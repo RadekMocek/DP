@@ -292,6 +292,11 @@ def main():
 
                 axs[1].legend(loc="upper right", bbox_to_anchor=(1.735, 0.75), bbox_transform=axs[2].transAxes)
 
+            if not switch_trend:
+                for idx in range(3):
+                    axs[idx].text(.98, .98, f"Fáze {idx + 1}",
+                                  ha="right", va="top", transform=axs[idx].transAxes, fontstyle="italic", color="0.5")
+
             fig.subplots_adjust(wspace=0.024)
 
             if switch_trend:

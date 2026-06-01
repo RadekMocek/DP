@@ -11,8 +11,8 @@ all-features = true
 targets = ["x86_64-unknown-linux-gnu", "wasm32-unknown-unknown"]
 
 [dependencies]
-egui = "0.34.2"
-eframe = { version = "0.34.2", default-features = false, features = [
+egui = "0.34.3"
+eframe = { version = "0.34.3", default-features = false, features = [
     #"accesskit",     # Make egui compatible with screen readers. NOTE: adds a lot of dependencies.
     "default_fonts", # Embed the default egui fonts.
     "glow",          # Use the glow rendering backend. Alternative: "wgpu".
@@ -21,8 +21,11 @@ eframe = { version = "0.34.2", default-features = false, features = [
     "x11",           # To support older Linux distributions (restores one of the default features)
 ] }
 #log = "0.4.27"
-egui_extras = "0.34.2"
+egui_extras = "0.34.3"
 memory-stats = "1.2.0"
+
+puffin = "0.20.0"
+puffin_http = "0.17.0"
 
 num-format = "0.4.4"
 

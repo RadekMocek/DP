@@ -51,7 +51,6 @@
 				\item Využití grafického API pro vykreslování ovládacích prvků (\textit{OpenGL}, \textit{DirectX}, \dots)
 				\item Časté použití pro přidání ovládacích prvků do existující interaktivní aplikace
 				\item Spíše GUI pro ladění vývojářem, než user-facing GUI
-				\item Zmatek ohledně toho, co přesně je a není IMGUI
 			\end{itemize}
 		\end{itemize}
 	\end{frame}
@@ -62,18 +61,19 @@
 			\item Jak jsou IMGUI knihovny použitelné pro psaní běžných user-facing aplikací?
 			\item Jaký je dopad na výkon oproti RMGUI knihovnám?
 			\item IMGUI knihovny jsou v aktivním vývoji
-			\item Vnést do chaosu trochu řádu
 		\end{itemize}		
 		\anothertitle{Návrh ukázkové aplikace}		
 		\begin{itemize}
 			\item Program, který vykreslí diagram na základě dodaného strukturovaného popisu
-		\end{itemize}		
+			\item Kromě základních ovládacích prvků prozkoumá víceřádkové textové pole a schopnost vykreslování vlastních grafických primitiv
+		\end{itemize}
+		\vspace{-0.38cm}
 		\begin{columns}[T]
 			\begin{column}{0.5\textwidth}
 				\lstinputlisting[language=toml]{code/diagram.toml}
 			\end{column}
 			\begin{column}{0.4\textwidth}
-				\medskip
+				\vspace{0.28cm}
 				\includegraphics[width=.9\linewidth]{img/diagram}
 			\end{column}
 		\end{columns}		
@@ -177,8 +177,8 @@
 		\begin{columns}[T]
 			\begin{column}{0.66\textwidth}
 				\begin{itemize}
-					\item \small{Benchmark má tři fáze: jeden uzel ve scéně, postupné přidávání uzlů, velké množství uzlů ve scéně}
-					\item \small{Knihovny s IMGUI mají vyšší režijní náklady, knihovna Qt je v druhé fázi dožene}
+					\item \small{Benchmark má tři fáze: jeden uzel ve scéně$^1$, postupné přidávání uzlů$^2$, velké množství uzlů ve scéně$^3$}
+					\item \small{Knihovny s IMGUI mají vyšší počáteční náklady, knihovna Qt je v druhé fázi dožene}
 					\item \small{Stejný trend na různých zařízeních}
 				\end{itemize}
 			\end{column}
@@ -195,7 +195,7 @@
 		V rámci práce jsem provedl:
 		\begin{itemize}
 			\item Rešerši dvou přístupů ke psaní GUI aplikací: RMGUI a IMGUI
-			\item Rešerši existujících IMGUI knihoven
+			\item Rešerši nejčastěji používaných IMGUI knihoven
 			\item Návrh a implementaci ukázkových aplikací: editor diagramů v knihovnách \textit{Dear~ImGui}, \textit{egui} a \textit{Qt}			
 			\item Porovnání výsledných aplikací:
 			\begin{itemize}
@@ -208,4 +208,21 @@
 	
 	% Děkuji
 	\TULendframe
+	
+	% Otázky
+	\begin{frame}[plain, noframenumbering]
+		\medskip
+		„Pátral jste po důvodu, proč egui spotřebovává tolik paměti v případě použití textového pole?“
+		
+		\bigskip
+		TODO
+	\end{frame}
+	
+	\begin{frame}[plain, noframenumbering]
+		\medskip
+		„Jak je to s použitím IMGUI a RMGUI přístupů na mobilních platformách?“
+		
+		\bigskip
+		TODO
+	\end{frame}
 \end{document}
