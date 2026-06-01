@@ -48,8 +48,10 @@ impl eframe::App for MyApp {
     fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
         // Put your widgets into a `SidePanel`, `TopBottomPanel`, `CentralPanel`, `Window` or `Area`.
 
+        puffin::GlobalProfiler::lock().new_frame();
+
         puffin::profile_scope!("Main update loop");
-        
+
         self.panel_top(ui);
         self.panel_bottom(ui);
         self.panel_central(ui);

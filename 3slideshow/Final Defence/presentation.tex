@@ -215,7 +215,14 @@
 		„Pátral jste po důvodu, proč egui spotřebovává tolik paměti v případě použití textového pole?“
 		
 		\bigskip
-		TODO
+		\begin{itemize}
+			\item Knihovna připravuje na vykreslení veškerý text bez ohledu na to, jestli je aktuálně vidět
+			\item Je možné přijít s vlastní logikou, která vykresluje jen to potřebné, ale pouze pro read-only textová pole
+			\item Spotřeba se navíc může několikanásobně zvýšit při náhodné editaci textu uživatelem, oproti Dear ImGui je zde i vyšší spotřeba při vykreslení velkého množství ovládacích prvků (i bez textu)
+			\item Autor knihovny se k tomu oficiálně nevyjádřil, ale vypadá to spíše na „důsledek robustní implementace“, nežli chybu v kódu
+		\end{itemize}
+		\bigskip
+		\includegraphics[width=\textwidth]{img/zzz_egui_profiler}
 	\end{frame}
 	
 	\begin{frame}[plain, noframenumbering]
@@ -223,6 +230,9 @@
 		„Jak je to s použitím IMGUI a RMGUI přístupů na mobilních platformách?“
 		
 		\bigskip
+		\begin{itemize}
+			\item \dots
+		\end{itemize}
 		TODO
 	\end{frame}
 \end{document}

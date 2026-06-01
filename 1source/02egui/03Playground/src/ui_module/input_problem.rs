@@ -8,8 +8,7 @@ impl MyApp {
             .collapsible(false)
             .open(&mut self.do_show_win_input_problem)
             .show(ui.ctx(), |ui| {
-
-                puffin::profile_scope!("TextEdit memory usage show");
+                puffin::profile_scope!("TextEdit Window show");
 
                 ui.horizontal(|ui| {
                     ui.label("egui version 0.34.3");
@@ -24,6 +23,8 @@ impl MyApp {
 
                     //
                     if self.do_show_big_text {
+                        puffin::profile_scope!("text_edit_singleline call");
+
                         ui.text_edit_singleline(&mut self.big_text);
                         //ui.add(egui::TextEdit::singleline(&mut self.big_text).clip_text(false));
                     }
@@ -32,6 +33,8 @@ impl MyApp {
                     let length = self.big_text.len();
 
                     if let Some(usage) = memory_stats::memory_stats() {
+                        puffin::profile_scope!("memory_stats");
+
                         const MIBI: f32 = 1024.0 * 1024.0;
                         let usage = usage.physical_mem as f32 / MIBI;
                         ui.label(format!(
