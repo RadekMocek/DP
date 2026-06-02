@@ -1,6 +1,7 @@
 % !TEX TS-program = xelatex
 \documentclass[FM,widescreen]{tulpresentation} % https://github.com/RadekMocek/tulpresentation
 \input{code/code}
+\newcommand{\grayit}[1]{{\textit{\textcolor{gray}{#1}}}}
 \title{Grafické uživatelské rozhraní\\v režimu okamžitého vykreslování}
 \titlesub{Bc. Radek Mocek}{}{Ing. Jiří Jeníček, Ph.D.}{}
 \begin{document}
@@ -67,13 +68,13 @@
 			\item Program, který vykreslí diagram na základě dodaného strukturovaného popisu
 			\item Kromě základních ovládacích prvků prozkoumá víceřádkové textové pole a schopnost vykreslování vlastních grafických primitiv
 		\end{itemize}
-		\vspace{-0.38cm}
+		\vspace{-0.40cm}
 		\begin{columns}[T]
 			\begin{column}{0.5\textwidth}
 				\lstinputlisting[language=toml]{code/diagram.toml}
 			\end{column}
 			\begin{column}{0.4\textwidth}
-				\vspace{0.28cm}
+				\vspace{0.30cm}
 				\includegraphics[width=.9\linewidth]{img/diagram}
 			\end{column}
 		\end{columns}		
@@ -91,14 +92,14 @@
 			\begin{enumerate}
 				\item Dear ImGui (C++, IMGUI)
 				\item egui (Rust, IMGUI)
-				\item Qt (C++, RMGUI)
+				\item Qt (C++, RMGUI)%, porovnání s běžným přístupem
 			\end{enumerate}
 			\item Podporuje:
 			\begin{itemize}
 				\item Zvýrazňování syntaxe
 				\item Tmavý režim
 				\item Nativní dialogy pro uložení/nahrání
-				\item Export do formátu SVG
+				\item Export diagramu do formátu SVG
 			\end{itemize}
 		\end{itemize}
 		\vspace{-3.6cm}
@@ -177,8 +178,8 @@
 		\begin{columns}[T]
 			\begin{column}{0.66\textwidth}
 				\begin{itemize}
-					\item \small{Benchmark má tři fáze: jeden uzel ve scéně$^1$, postupné přidávání uzlů$^2$, velké množství uzlů ve scéně$^3$}
-					\item \small{Knihovny s IMGUI mají vyšší počáteční náklady, knihovna Qt je v druhé fázi dožene}
+					\item \small{Benchmark má tři fáze: jeden uzel ve scéně\grayit{$^1$}, postupné přidávání uzlů\grayit{$^2$}, velké množství uzlů ve scéně\grayit{$^3$}}
+					\item \small{Knihovny s IMGUI mají vyšší počáteční náklady, knihovna Qt je ve druhé fázi dožene}
 					\item \small{Stejný trend na různých zařízeních}
 				\end{itemize}
 			\end{column}
@@ -201,8 +202,9 @@
 			\begin{itemize}
 				\item Z pohledu aplikačního kódu
 				\item Z pohledu koncového uživatele
-				\item Ve dvou typech benchmarku
-			\end{itemize}			
+				\item Ve dvou typech benchmarku (velký počet uzlů v diagramu a velký počet ovládacích prvků v okně)
+			\end{itemize}
+			\item Nahlášení dvou chyb v Dear ImGui jako \textit{issue} na platformě GitHub
 		\end{itemize}
 	\end{frame}
 	
@@ -210,6 +212,20 @@
 	\TULendframe
 	
 	% Otázky
+	\begin{frame}[plain, noframenumbering]
+		\medskip
+		„Jedna z implementací ukázkového programu byla v jazyce Rust. Jsou v přístupu k tvorbě GUI v Rustu významné rozdíly oproti jiným programovacím jazykům? Uvítal byste výuku Rustu na univerzitě?“
+		
+		\bigskip
+		\begin{itemize}
+			\item Záleží na konkrétní knihovně, ale pro definici GUI je častá kompozice struktur, nebo \textit{builder pattern}:\lstinputlisting[language=rust]{code/builder.rs}	
+			\item Knihovna egui kombinuje builder pattern s vnořováním uzávěrů. Obecný přístup je zde podobný jako v Dear ImGui.
+			\item Pro potřeby IMGUI chybí v jazyce Rust klíčové slovo \texttt{static}, takže všechna persistentní data musí být součástí nějaké struktury
+			\item \textit{The roots aren't deep but the seeds are planted.}\\ — \url{https://areweguiyet.com/}
+		\end{itemize}
+		
+	\end{frame}
+	
 	\begin{frame}[plain, noframenumbering]
 		\medskip
 		„Pátral jste po důvodu, proč egui spotřebovává tolik paměti v případě použití textového pole?“
@@ -231,8 +247,12 @@
 		
 		\bigskip
 		\begin{itemize}
-			\item \dots
+			\item Obecně (nejen na mobilu) se nejedná o černobílou problematiku a populární jsou JavaScript knihovny, kde programátor definuje \textit{komponenty}, ze kterých se skládá GUI
+			\begin{itemize}
+				\item Správa stromu komponent je \textit{soběstačná}, definice komponent mohou připomínat \textit{okamžitý} režim („locality of behavior“, možnost skrýt část GUI podmíněním, \dots)
+			\end{itemize}
+			\item Nejčastěji používané knihovny pro tvorbu mobilních GUI také využívají přístupu s komponentami (Jetpack Compose, Flutter, React Native, \dots)
+			\item Knihovny použité v této práci podporují export pro Android, ale nejsou v tomto ohledu zdaleka tak populární jako výše zmíněné
 		\end{itemize}
-		TODO
 	\end{frame}
 \end{document}
