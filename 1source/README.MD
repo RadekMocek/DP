@@ -37,6 +37,7 @@ Other dependencies:
 * [raylib](https://github.com/raysan5/raylib) ([zlib](https://github.com/raysan5/raylib/blob/master/LICENSE))
 * [memory-stats](https://github.com/Arc-blroth/memory-stats) ([MIT](https://github.com/Arc-blroth/memory-stats/blob/main/LICENSE-MIT))
 * [num-format](https://github.com/bcmyers/num-format) ([MIT](https://github.com/bcmyers/num-format/blob/main/LICENSE-MIT))
+* David Robert Nadeau's `getCurrentRSS` (CC BY 3.0)
 
 Fonts used is some projects:
 

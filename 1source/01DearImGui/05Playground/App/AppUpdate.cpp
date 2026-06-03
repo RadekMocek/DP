@@ -2,6 +2,9 @@
 
 #include "App.hpp"
 
+#include "Misc/imgui_stdlib.h"
+#include "Misc/RSS.hpp"
+
 enum Choice
 {
     Akat, Bliskavice, Cilovnici
@@ -17,8 +20,8 @@ void App::Update()
     const auto io = ImGui::GetIO();
 
     // State
-    static bool show_demo_window = true;
-    static bool show_inputtextmultiline_window = true;
+    static bool show_demo_window = false;
+    static bool show_inputtextmultiline_window = false;
     static bool show_widgettest_window = true;
 
     // Main menu bar
@@ -66,7 +69,7 @@ void App::Update()
         ImGui::CheckboxFlags("AutoSelectAll (no work in multiline?)", &txt_flags, ImGuiInputTextFlags_AutoSelectAll);
         ImGui::CheckboxFlags("ImGuiInputTextFlags_WordWrap (Beta)", &txt_flags, ImGuiInputTextFlags_WordWrap);
 
-        static char text[1024 * INPUT_HEIGHT] =
+        static std::string text =
             "abcde ABCDE\n"
             "fghij FGHIJ fghij FGHIJ\n"
             "klmno KLMNO klmno KLMNO klmno KLMNO\n"
@@ -80,7 +83,7 @@ void App::Update()
         //ImGui::Text("Default style:");
         ImGui::Separator();
         Dummy();
-        ImGui::InputTextMultiline("##source1", text, IM_ARRAYSIZE(text),
+        ImGui::InputTextMultiline("##source1", &text, 
                                   ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * INPUT_HEIGHT), txt_flags);
 
         /*
@@ -119,6 +122,7 @@ void App::Update()
         ImGui::Button("B");
         //*/
 
+        /*
         if (ImGui::BeginCombo("A", "B")) {
             if (ImGui::Selectable("C")) {
                 std::cout << "c\n";
@@ -129,6 +133,20 @@ void App::Update()
             ImGui::Button("F");
             ImGui::EndCombo();
         }
+        //*/
+
+        ImGui::PushFont(nullptr, 18.0f);
+        ImGui::Text("Dear ImGui version 1.92.6");
+        ImGui::PopFont();
+
+        static std::string text = "";
+        ImGui::InputText("##textinput", &text);
+
+        ImGui::Text("Text size: %d chars", text.size());
+
+        constexpr auto MIBI = 1024.0 * 1024.0;
+        double mem_usage_mib = static_cast<double>(getCurrentRSS()) / MIBI;
+        ImGui::Text("Current memory usage: %.1f MiB", mem_usage_mib);
 
         ImGui::End();
     }

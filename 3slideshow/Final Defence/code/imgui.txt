@@ -1,4 +1,4 @@
 fn update():
     static value = 0
-    if GUI::btn(str(value)):
+    if GUI::button(str(value)):
         value += 1

@@ -51,7 +51,7 @@
 			\begin{itemize}
 				\item Využití grafického API pro vykreslování ovládacích prvků (\textit{OpenGL}, \textit{DirectX}, \dots)
 				\item Časté použití pro přidání ovládacích prvků do existující interaktivní aplikace
-				\item Spíše GUI pro ladění vývojářem, než user-facing GUI
+				\item Spíše GUI pro ladění vývojářem, než \textit{user-facing GUI}
 			\end{itemize}
 		\end{itemize}
 	\end{frame}
@@ -59,30 +59,32 @@
 	% Motivace, návrh diagram language
 	\begin{frame}[plain]\frametitle{Motivace}
 		\begin{itemize}
+			\item Vede na kratší kód a IMGUI knihovny jsou v aktivním vývoji
 			\item Jak jsou IMGUI knihovny použitelné pro psaní běžných user-facing aplikací?
-			\item Jaký je dopad na výkon oproti RMGUI knihovnám?
-			\item IMGUI knihovny jsou v aktivním vývoji
+			\item Jaký je dopad na výkon oproti RMGUI knihovnám?			
 		\end{itemize}		
 		\anothertitle{Návrh ukázkové aplikace}		
 		\begin{itemize}
 			\item Program, který vykreslí diagram na základě dodaného strukturovaného popisu
-			\item Kromě základních ovládacích prvků prozkoumá víceřádkové textové pole a schopnost vykreslování vlastních grafických primitiv
+			\begin{itemize}
+				\item Kromě základních ovládacích prvků prozkoumá víceřádkové textové pole a schopnost vykreslování vlastních grafických primitiv
+			\end{itemize}	
 		\end{itemize}
-		\vspace{-0.40cm}
+		\vspace{-0.25cm}
 		\begin{columns}[T]
 			\begin{column}{0.5\textwidth}
 				\lstinputlisting[language=toml]{code/diagram.toml}
 			\end{column}
 			\begin{column}{0.4\textwidth}
-				\vspace{0.30cm}
-				\includegraphics[width=.9\linewidth]{img/diagram}
+				\vspace{0.3cm}
+				\includegraphics[width=0.9\linewidth]{img/diagram}
 			\end{column}
 		\end{columns}		
 	\end{frame}
 	
 	% Ukázková aplikace, big screenshot
 	\begin{frame}[plain]\frametitle{Ukázková aplikace}
-		\includegraphics[width=.95\paperwidth]{img/app0}
+		\includegraphics[width=0.95\paperwidth]{img/app0}
 	\end{frame}
 	
 	% Ukázková aplikace, detail
@@ -103,7 +105,7 @@
 			\end{itemize}
 		\end{itemize}
 		\vspace{-3.6cm}
-		\includegraphics[width=.96\paperwidth]{img/app1}
+		\includegraphics[width=0.96\paperwidth]{img/app1}
 	\end{frame}
 	
 	% IMGUI nevýhody
@@ -120,33 +122,14 @@
 		\end{itemize}
 		\begin{columns}[T]
 			\begin{column}{0.55\textwidth}
-				\includegraphics[height=.45\paperheight]{img/err_high}
+				\includegraphics[height=0.45\paperheight]{img/err_high}
 			\end{column}
 			\begin{column}{0.45\textwidth}
 				\bigskip
-				\includegraphics[height=.28\paperheight]{img/egui_ram}
+				\includegraphics[height=0.28\paperheight]{img/egui_ram}
 			\end{column}
 		\end{columns}
-	\end{frame}
-	
-	% Délka kódu
-	\begin{frame}[plain]\frametitle{Dear ImGui a Qt: délka kódu}		
-		\begin{columns}[T]
-			\begin{column}{0.6\textwidth}
-				\vspace{-0.05cm}
-				\scalebox{0.57}{
-					\lstinputlisting[language=CppSettings]{code/settings.cpp}
-				}
-			\end{column}
-			\begin{column}{0.4\textwidth}
-				\smallskip
-				\includegraphics[height=.3\paperheight]{img/settings_dear}				
-				
-				\smallskip
-				\includegraphics[height=.42\paperheight]{img/settings_qt}
-			\end{column}
-		\end{columns}		
-	\end{frame}
+	\end{frame}	
 	
 	% RMGUI nevýhody
 	\begin{frame}[plain]\frametitle{Programování v knihovně Qt}
@@ -172,8 +155,27 @@
 		\end{itemize}
 	\end{frame}
 	
+	% Délka kódu
+	\begin{frame}[plain]\frametitle{Dear ImGui a Qt: délka kódu}		
+		\begin{columns}[T]
+			\begin{column}{0.6\textwidth}
+				\vspace{-0.05cm}
+				\scalebox{0.57}{
+					\lstinputlisting[language=CppSettings]{code/settings.cpp}
+				}
+			\end{column}
+			\begin{column}{0.4\textwidth}
+				\smallskip
+				\includegraphics[height=0.3\paperheight]{img/settings_dear}				
+				
+				\smallskip
+				\includegraphics[height=0.42\paperheight]{img/settings_qt}
+			\end{column}
+		\end{columns}		
+	\end{frame}
+	
 	% Benchmark
-	\begin{frame}[plain]\frametitle{Porovnání výkonu aplikací}
+	\begin{frame}[plain]\frametitle{Porovnání výkonu aplikací: velké množství uzlů v diagramu}
 		
 		\begin{columns}[T]
 			\begin{column}{0.66\textwidth}
@@ -184,9 +186,11 @@
 				\end{itemize}
 			\end{column}
 			\begin{column}{\textwidth}
-				\includegraphics[height=.33\textheight]{img/bench}
+				\vspace{0.1cm}
+				\includegraphics[height=0.33\textheight]{img/bench}
 			\end{column}
 		\end{columns}		
+		\vspace{-0.1cm}
 		\includegraphics[width=1.05\textwidth]{img/nodes_trend_ppt}
 	\end{frame}
 	
@@ -204,7 +208,7 @@
 				\item Z pohledu koncového uživatele
 				\item Ve dvou typech benchmarku (velký počet uzlů v diagramu a velký počet ovládacích prvků v okně)
 			\end{itemize}
-			\item Nahlášení dvou chyb v Dear ImGui jako \textit{issue} na platformě GitHub
+			%\item Nahlášení dvou chyb v Dear ImGui jako \textit{issue} na platformě GitHub
 		\end{itemize}
 	\end{frame}
 	
@@ -219,7 +223,7 @@
 		\bigskip
 		\begin{itemize}
 			\item Záleží na konkrétní knihovně, ale pro definici GUI je častá kompozice struktur, nebo \textit{builder pattern}:\lstinputlisting[language=rust]{code/builder.rs}	
-			\item Knihovna egui kombinuje builder pattern s vnořováním uzávěrů. Obecný přístup je zde podobný jako v Dear ImGui.
+			\item Knihovna egui kombinuje builder pattern s vnořováním uzávěrů. Obecný přístup ke tvorbě aplikace je zde podobný jako v Dear ImGui.
 			\item Pro potřeby IMGUI chybí v jazyce Rust klíčové slovo \texttt{static}, takže všechna persistentní data musí být součástí nějaké struktury
 			\item \textit{The roots aren't deep but the seeds are planted.}\\ — \url{https://areweguiyet.com/}
 		\end{itemize}
@@ -232,13 +236,13 @@
 		
 		\bigskip
 		\begin{itemize}
-			\item Knihovna připravuje na vykreslení veškerý text bez ohledu na to, jestli je aktuálně vidět
-			\item Je možné přijít s vlastní logikou, která vykresluje jen to potřebné, ale pouze pro read-only textová pole
+			\item \textbf{Knihovna připravuje na vykreslení veškerý text bez ohledu na to, jestli je aktuálně vidět}
+			\item Je možné přijít s vlastní logikou, která vykresluje jen to potřebné, ale pouze pro read-only víceřádková textová pole
 			\item Spotřeba se navíc může několikanásobně zvýšit při náhodné editaci textu uživatelem, oproti Dear ImGui je zde i vyšší spotřeba při vykreslení velkého množství ovládacích prvků (i bez textu)
-			\item Autor knihovny se k tomu oficiálně nevyjádřil, ale vypadá to spíše na „důsledek robustní implementace“, nežli chybu v kódu
+			\item Autor knihovny se k tomu oficiálně nevyjádřil, ale vypadá to spíše na „důsledek robustní implementace“, která tento problém nebere v potaz, nežli konkrétní chybu v kódu, která by šla snadno opravit
 		\end{itemize}
-		\bigskip
-		\includegraphics[width=\textwidth]{img/zzz_egui_profiler}
+		\medskip
+		\centering\includegraphics[width=0.9\textwidth]{img/zzz_egui_profiler}
 	\end{frame}
 	
 	\begin{frame}[plain, noframenumbering]
@@ -247,12 +251,13 @@
 		
 		\bigskip
 		\begin{itemize}
-			\item Obecně (nejen na mobilu) se nejedná o černobílou problematiku a populární jsou JavaScript knihovny, kde programátor definuje \textit{komponenty}, ze kterých se skládá GUI
-			\begin{itemize}
+			\item Obecně (nejen na mobilu) se nejedná o černobílou problematiku:\\ RMGUI vs. IMGUI je zjednodušený pohled
+			\item Populární jsou JavaScript knihovny, kde programátor definuje \textit{komponenty}, ze kterých se skládá GUI
+			\begin{itemize}				
 				\item Správa stromu komponent je \textit{soběstačná}, definice komponent mohou připomínat \textit{okamžitý} režim („locality of behavior“, možnost skrýt část GUI podmíněním, \dots)
 			\end{itemize}
 			\item Nejčastěji používané knihovny pro tvorbu mobilních GUI také využívají přístupu s komponentami (Jetpack Compose, Flutter, React Native, \dots)
-			\item Knihovny použité v této práci podporují export pro Android, ale nejsou v tomto ohledu zdaleka tak populární jako výše zmíněné
+			\item Knihovny použité v této práci podporují platformy Android/iOS, ale nejsou v tomto ohledu zdaleka tak populární jako výše zmíněné
 		\end{itemize}
 	\end{frame}
 \end{document}
