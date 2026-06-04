@@ -237,9 +237,14 @@
 		\bigskip
 		\begin{itemize}
 			\item \textbf{Knihovna připravuje na vykreslení veškerý text bez ohledu na to, jestli je aktuálně vidět}
-			\item Je možné přijít s vlastní logikou, která vykresluje jen to potřebné, ale pouze pro read-only víceřádková textová pole
-			\item Spotřeba se navíc může několikanásobně zvýšit při náhodné editaci textu uživatelem, oproti Dear ImGui je zde i vyšší spotřeba při vykreslení velkého množství ovládacích prvků (i bez textu)
-			\item Autor knihovny se k tomu oficiálně nevyjádřil, ale vypadá to spíše na „důsledek robustní implementace“, která tento problém nebere v potaz, nežli konkrétní chybu v kódu, která by šla snadno opravit
+			\begin{itemize}
+				\item Je možné přijít s vlastní logikou, která vykresluje jen to potřebné, ale pouze pro read-only víceřádková textová pole
+			\end{itemize}
+			\smallskip
+			\item Spotřeba se navíc může několikanásobně zvýšit při náhodné editaci textu uživatelem, oproti Dear ImGui je zde i vyšší spotřeba při vykreslení velkého množství ovládacích prvků (i těch bez textu)
+			\begin{itemize}
+				\item Autor knihovny se k tomu oficiálně nevyjádřil, ale vypadá to spíše na „důsledek robustní implementace“, která tento problém nebere v potaz, nežli konkrétní chybu v kódu, která by šla snadno opravit
+			\end{itemize}
 		\end{itemize}
 		\medskip
 		\centering\includegraphics[width=0.9\textwidth]{img/zzz_egui_profiler}
